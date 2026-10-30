@@ -88,3 +88,10 @@ The English guide `fix-chrome-secure-connection-error.md` separates exact browse
 ## The October 29 review improves three existing answers
 
 The 95-candidate review updates HTTPS connection checks, missing versus null MX results, and registrar versus hosting identification. The review adds no duplicate article. The dated editorial record preserves all candidate decisions, changed-claim sources and image checks.
+
+## The October 30 batch delivers all 95 requested manuscripts
+
+The batch adds 56 English pages and substantively revises 35 English blog pages
+and four TLD references. Each article answers its assigned intent with primary
+sources. The [dated ledger](../../../editorial/2026-10-30-create95/README.md)
+records the assignment scope, independent review, images, and translation limits.

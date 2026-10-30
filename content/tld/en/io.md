@@ -1,207 +1,145 @@
 ---
-title: "What Is an .io Domain? Meaning, Origin, and Uses"
+title: Buying a .IO Domain? Check the Price, Renewal, and Trade-Offs First
 date: '2026-06-15'
-updated: '2026-10-21'
-ogImage: '../../assets/io-og.jpg'
-language: 'en'
+updated: '2026-10-30'
+ogImage: ../../assets/io-og.jpg
+language: en
 priority: P1
-tags: ['tld']
-authors: ['namefiteam']
-editors: ['victor-zhou']
+tags:
+- tld
+authors:
+- namefiteam
+editors:
+- victor-zhou
 draft: false
-description: "Learn what .io means, where the domain extension comes from, and how technology companies use it, with practical considerations for choosing one."
-keywords: ["io domain meaning", "British Indian Ocean Territory ccTLD", "input output domain", "technology domain extension"]
-faqs:
-  - question: 'Can anyone register a .io domain?'
-    answer: 'For a second-level name such as example.io, NIC.IO permits applicants from any legal jurisdiction. Third-level registrations such as example.com.io have territory-residence requirements. Registry terms and use rules still apply.'
-  - question: 'Does a .io domain affect SEO?'
-    answer: 'Google treats .io as generic for geographic targeting. A .io address does not automatically target the territory, but the extension does not guarantee rankings.'
-  - question: 'Who should register a .io domain?'
-    answer: 'Software startups, SaaS products, developer tools, open-source projects, API services, browser game studios, and Web3 or blockchain teams. The "Input/Output" reading fits wherever a technology focus is part of the brand.'
-  - question: 'Is the .io domain going away because of the Chagos sovereignty deal?'
-    answer: 'IANA listed .io as active without a retirement date on October 21, 2026. Loss of country-code eligibility would invoke the IANA retirement process. No statement here guarantees the future of .io.'
+description: Buy a .io domain with clear eligibility, renewal, search-targeting, and continuity checks. Use registry rules and current official records.
+keywords:
+- io domain
+- buy io domain
+- io domain name
+- register io domain
+- io domain renewal
 relatedArticles:
-  - /en/blog/why-are-io-domains-expensive/
-  - /en/blog/ai-vs-io-domain/
-  - /en/blog/what-is-a-tld/
-  - /en/blog/top-tlds-to-secure-for-your-startup/
-  - /en/blog/how-tld-affects-domain-value/
+- /en/blog/why-are-io-domains-expensive/
+- /en/blog/ai-vs-io-domain/
+- /en/blog/what-is-a-tld/
+- /en/blog/top-tlds-to-secure-for-your-startup/
+- /en/blog/how-tld-affects-domain-value/
 relatedTopics:
-  - /en/topics/choosing-a-tld/
-  - /en/topics/domain-basics/
+- /en/topics/choosing-a-tld/
+- /en/topics/domain-basics/
 relatedSeries:
-  - /en/series/best-tlds-by-industry/
-  - /en/series/domain-flipping-skills/
+- /en/series/best-tlds-by-industry/
+- /en/series/domain-flipping-skills/
 relatedGlossary:
-  - /en/glossary/tld/
-  - /en/glossary/registrar/
-  - /en/glossary/icann/
-  - /en/glossary/registry/
-  - /en/glossary/dns/
+- /en/glossary/tld/
+- /en/glossary/registrar/
+- /en/glossary/icann/
+- /en/glossary/registry/
+- /en/glossary/dns/
+cluster: choosing-a-tld
+format: guide
 ---
 
-The **.io domain** is the country-code top-level domain for the **British Indian Ocean Territory**, as the [IANA delegation record](https://www.iana.org/domains/root/db/io.html) confirms. Technology brands also use the letters to suggest **input/output (I/O)**, as [Yuka explains about its own domain](https://help.yuka.io/l/fr/article/0crz5kblss-pourquoi-io-comme-nom-de-domaine). That association does not change the extension’s country-code status.
+To buy a `.io` domain, search the exact name with a registrar that supports `.io`, then review the registration and renewal terms. For a second-level name directly beneath `.io`, the registry permits applicants from any legal jurisdiction. [The registry’s allocation rules distinguish second-level and third-level names](#the-io-registry-defines-registration-eligibility).
 
-Buyers usually mean a second-level name such as `example.io`. The [registry allocation rules](https://nic.io/rules.htm) permit applicants from any legal jurisdiction at that level. The same rules impose residence requirements on third-level registrations such as `example.com.io`.
+A `.io` purchase needs more than an attractive first-term quote. Compare the renewal obligation, applicant rules, intended audience, and long-term dependence on the address. Use the official records below to evaluate the extension before paying.
 
-If you are launching a SaaS product, an API, an open-source project, or a [blockchain](/en/glossary/blockchain/) venture, .io is one of the most recognized signals you can put after your brand name. This page covers where it came from, who can register one, how pricing works, and how it stacks up against the alternatives.
+## The .io extension remains a country-code domain
 
-## .io at a glance
+[IANA’s delegation record](#iana-identifies-the-io-delegation) classifies `.io` as a country-code top-level domain and lists Internet Computer Bureau Limited as the manager. The record associates the delegation with the British Indian Ocean Territory.
 
-| Fact | Detail |
+The familiar technology use of the letters does not change that registry classification. Choose `.io` because the complete name fits the project, rather than assuming the ending represents a different legal category.
+
+At the time checked, IANA’s record lists `.io` as active. That is a statement about the checked record, not a guarantee about every future policy decision. Keep the current delegation record separate from speculation about the extension’s future.
+
+Our [TLD explainer](/en/blog/what-is-a-tld/) explains the difference between a generic TLD and a country-code TLD. The distinction matters because registry policies and search-engine treatment can follow different categories.
+
+## Second-level and third-level registration rules differ
+
+The registry’s second-level rule says an applicant may reside in any legal jurisdiction. The third-level rule requires an applicant to reside in the British Indian Ocean Territory. [Read the relevant registry sections](#the-io-registry-defines-registration-eligibility) before assuming every `.io` structure follows the same conditions.
+
+| Proposed structure | Relevant registry question |
 | --- | --- |
-| TLD type | Country-code TLD (ccTLD), treated as generic by Google |
-| Registry operator | Internet Computer Bureau Ltd (a subsidiary of Identity Digital) |
-| Year delegated | 1997 |
-| Assigned to | British Indian Ocean Territory (BIOT) |
-| DNSSEC | Yes |
-| Registration eligibility | Second-level names accept applicants from any legal jurisdiction; third-level rules differ |
-| Best for | Tech startups, SaaS, developer tools, APIs, browser games, Web3 |
+| A name registered directly beneath `.io` | Does the second-level name meet the applicable rules? |
+| A name beneath `com.io` | Do the third-level residency and naming conditions apply? |
+| A subdomain beneath a registered `.io` name | Which DNS and hosting settings create the subdomain? |
 
-## What is .io?
+The table describes registration levels. The table does not claim that a particular name is available.
 
-The **.io top-level domain** is a [country-code TLD (ccTLD)](/en/blog/cctld-market-share-by-registration-volume/) assigned to the **British Indian Ocean Territory** in the Chagos Archipelago. It was delegated in 1997 under the ISO 3166-1 standard, as documented in the [IANA root-zone entry for .io](https://www.iana.org/domains/root/db/io.html). The ccTLD manager of record is **Internet Computer Bureau Ltd**, now a subsidiary of registry-services provider [Identity Digital](https://www.identity.digital/).
+The registry also requires accurate, verifiable contact information. Open residency eligibility does not waive those duties. Use the correct legal individual or entity as the holder, and keep the contact email monitored.
 
-Google lists .io among the [ccTLDs it treats as generic for geographic targeting](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#generic-domains). A .io address therefore does not automatically target the territory in Google Search. That treatment does not promise a ranking advantage or remove registry rules.
+If someone else registers the name for the business, document who controls the registrar account and holder details. Treat an employee’s personal payment account as an operational issue to resolve before launch.
 
-## History of .io
+![Second-level.io and third-level.com.io registrations have different applicant categories.](../../assets/io-03-registration-eligibility.jpg)
 
-.io was delegated in 1997, making it one of the older ccTLDs in active commercial use. For its first decade it was an obscure island code. Two things changed that. First, developers noticed that "io" reads as **I/O (Input/Output)** — a coincidence that gave the suffix instant meaning to a technical audience. Second, in the 2010s a wave of well-funded startups and developer platforms adopted it, turning .io into a status marker for software companies.
+## The checkout quote should expose recurring obligations
 
-The suffix also lent its name to an entire genre: **"io games"** — browser-based multiplayer titles like Agar.io and Slither.io that required no downloads and drew tens of millions of players. On the registry side, the original operator was eventually folded into the Identity Digital portfolio, which now provides registry services for the namespace.
+This article does not publish a universal `.io` price. A price depends on the exact name, registrar, term, currency, and applicable charges. Read the live search result and final cart for the candidate you intend to buy.
 
-## How people use .io
+Compare candidates using the same information:
 
-The suffix clusters tightly around technology niches:
-
-- **SaaS and tech startups** establishing instant credibility with a tech-native audience
-- **Developer tools, APIs, and infrastructure** where "I/O" is a literal fit
-- **Open-source projects, documentation sites, and developer portfolios**
-- **Web3, blockchain, and decentralized application** teams signaling technical depth
-- **Browser-based "io games"** and indie game marketplaces
-
-**Who it's not ideal for:** local brick-and-mortar businesses that want to rank for a specific country, non-technical consumer brands, or budget buyers who need the cheapest registration — .io carries a premium price and a techy connotation that can feel off-brand outside software.
-
-## Notable sites using .io
-
-- **GitHub Pages** (`github.io`) — millions of developer sites hosted from repositories
-- **Etherscan** (`etherscan.io`) — the leading [Ethereum](/en/glossary/ethereum/) blockchain explorer
-- **itch.io** — a popular open [marketplace](/en/glossary/marketplace/) for indie game creators
-- **Agar.io** and **Slither.io** — the browser games that defined the "io games" genre
-
-These span developer infrastructure, Web3, indie publishing, and gaming, illustrating why .io reads as credible to a technical audience.
-
-## .io vs other domains
-
-The extension’s meaning answers a branding question. The registration rules, recurring price, and policy context answer separate purchasing questions.
-
-| Buyer question | What to compare |
+| Item | What to record |
 | --- | --- |
-| Does the name explain the product? | Test the complete name with the intended audience. |
-| Can the applicant register it? | Check the registry rules for the exact registration level. |
-| Can the buyer maintain it? | Compare renewal and recovery charges, not only the first-term price. |
-| What happens if policy changes? | Monitor IANA notices and keep a practical migration plan. |
+| Initial registration | Exact name, term length, currency, and amount due |
+| Renewal | Renewal amount, term, and auto-renew behavior |
+| Premium treatment | Whether special pricing applies initially or repeatedly |
+| Transfer | Eligibility, authorization process, and disclosed fees |
+| Extra services | Separate email, hosting, DNS, or security subscriptions |
+| Recovery | Registrar support and restoration terms |
 
-Pick [.com](/en/tld/com/) for the universal default when you can find or afford the name. Choose [.ai](/en/tld/ai/) when your product is explicitly about artificial intelligence, or [.dev](/en/tld/dev/) for developer tools and documentation. Choose **.io** for general tech, SaaS, infrastructure, gaming, and Web3 where the Input/Output association fits and short names are still attainable.
+This is editorial buying advice. The actual registrar agreement controls the transaction. Do not infer a renewal quote from a promotional headline or another customer’s historical receipt.
 
-## Why choose .io?
+Keep the purchase and ongoing registration costs separate when buying an existing domain from a seller. A seller’s acquisition price does not replace the registrar’s future renewal charges.
 
-- **Industry recognition.** Among founders, engineers, and investors, .io instantly reads as "technology company."
-- **Better short-name availability.** The namespace is younger and smaller than [.com](/en/tld/com/), so concise, brandable names are far easier to find.
-- **Domain-hack potential.** The two-letter suffix folds neatly into words (`rad.io`, `stud.io`), enabling clever, memorable names.
-- **Global SEO.** Search engines treat it as generic, so your site can rank worldwide without being boxed into one region.
+For a project budget, compare the full period the project expects to use the name. A shorter spelling may be attractive, but the team still needs to accept the recurring obligation. Our [discussion of .io pricing](/en/blog/why-are-io-domains-expensive/) provides context without replacing a live quote.
 
-## Things to consider
+![The ongoing bill separates registration, renewal, transfer and recovery.](../../assets/how-much-is-a-domain-understanding-holding-cost-01-bills.jpg)
 
-- **Premium pricing.** The registry sets a relatively high wholesale price, so .io typically costs several times a basic .com — at both registration and renewal.
-- **Niche connotation.** The techy meaning is an asset in software and a liability for mainstream consumer brands.
-- **Sovereignty uncertainty.** The Chagos Archipelago is the subject of an ongoing UK–Mauritius sovereignty arrangement, which has fueled speculation about the suffix's long-term future (covered below).
-- **Single-TLD risk.** As with any extension, betting an entire brand on one suffix without a backup is a risk worth weighing.
+## Google treats .io as generic for geographic targeting
 
-## Who can register a .io domain?
+Google includes `.io` in the country-code extensions that Google treats as generic. [Google’s regional-site documentation publishes that list](#google-explains-ios-search-treatment).
 
-For `example.io`, [NIC.IO rule 3.1](https://nic.io/rules.htm) allows an applicant in any legal jurisdiction. Rules for `example.com.io` require territory residence. Some short labels have controlled allocation, so a three-character minimum is not a universal registry rule.
+The distinction helps a globally directed project evaluate the address. Google’s search treatment does not alter IANA’s country-code classification, and the classification does not promise a ranking benefit.
 
-The rules require accurate contact details and prohibit spam and specified unlawful or sexual uses. Applicants must also follow the [registration terms](https://nic.io/terms.htm). Transfers follow the procedure and fee applicable at the time. Renewals use the then-current terms. Confirm expiry, recovery deadlines, and fees with the registrar before buying. Do not assume every ICANN gTLD grace period applies to .io.
+Compare the complete address with your alternatives. Consider pronunciation, spelling, how the address appears in email, and whether the intended audience expects another ending. Ask a person unfamiliar with the project to type the address after hearing the address once.
 
-![Two .io registration levels show worldwide applicants for name.io and territory residents for name.com.io.](../../assets/io-01-registration-levels.jpg)
+A descriptive or short address can still create confusion. If the business also needs another extension, include that registration in the budget. Do not describe a defensive registration as automatic protection against every impersonation attempt.
 
-### The Chagos sovereignty question
+## Continuity planning should use official retirement information
 
-As checked **October 21, 2026**, [IANA lists .io as active](https://www.iana.org/domains/root/db/io.html) and displays no retirement date. The UK and Mauritius [signed a Chagos agreement on May 22, 2025](https://commonslibrary.parliament.uk/research-briefings/cbp-10273/). That political event alone does not announce a domain shutdown.
+IANA explains that country-code eligibility depends on the associated ISO 3166-1 assignment. When eligibility ends, IANA’s documented retirement process provides an orderly transition framework. [The official retirement guide describes the trigger and notices](#iana-explains-the-country-code-retirement-process).
 
-[ICANN’s explanation](https://www.icann.org/en/blogs/details/the-chagos-archipelago-and-the-io-domain-14-11-2024-en) distinguishes a sovereignty change from removal of the IO code in ISO 3166-1. Under the [IANA retirement process](https://www.iana.org/help/cctld-retirement), loss of eligibility leads to a public Notice of Removal. The default removal period is five years. An approved extension can add up to five more years. A manager can retire a domain earlier.
+That general policy is different from a specific retirement notice for `.io`. This article does not infer a deadline from a political announcement or assign a shutdown date that the checked record does not provide.
 
-These rules do not guarantee that .io will close or continue indefinitely. A long-lived business should monitor official notices and consider migration costs alongside the name’s branding value.
+For a business-critical name, continuity planning is sensible regardless of the extension. Keep an inventory of website links, email addresses, application callbacks, customer documentation, and integrations that use the domain. The inventory helps estimate the work of any future migration.
 
-## .io pricing and value
+Monitor official registry and IANA notices. Avoid relying on a social post that presents a possible future policy event as a completed DNS removal.
 
-This page never quotes live prices, but the pricing **dynamics** are worth understanding:
+![Current delegation information and a possible future official retirement notice are different evidence.](../../assets/io-02-conditional-retirement.jpg)
 
-- **A premium wholesale floor.** The .io registry sets a relatively high base price, which registrars pass on. Even a plain, unregistered .io typically costs several times a basic .com.
-- **First-year vs. renewal pricing differ.** An introductory first-year rate can sit below the recurring renewal rate, so budget for the renewal — not just the signup price.
-- **Premium-tier names exist.** Short, dictionary, or highly brandable .io names may be registry-reserved as premium, and the secondary market for them is active. We cover the drivers in [why are .io domains expensive](/en/blog/why-are-io-domains-expensive/).
+## You can complete the purchase with a short final review
 
-## Reputation and email deliverability
+Search the exact name, open the quoted terms, and confirm that the holder meets the registry rules. Review the renewal price before adding optional services.
 
-.io carries a **premium, technical reputation**. To founders, developers, and investors it reads as serious and modern — closer to a status signal than a discount extension, the opposite of the cheap, spam-prone new gTLDs that some aggressive mail filters treat with suspicion.
+Secure the registrar account with the available authentication controls. Record the expiration date, billing contact, and account recovery process. Then configure DNS, hosting, and email according to the services the project needs.
 
-Because .io is widely used by reputable startups and major developer platforms, it does not suffer the blanket spam-filtering problems that affect some bargain extensions. As always, deliverability depends far more on your own sending practices — properly configured SPF, DKIM, and DMARC records, a warmed-up sending domain, and clean list hygiene — than on the suffix itself.
+Buy `.io` when the complete address, recurring terms, and continuity requirements fit the project. Keep a different extension on the shortlist when any of those checks creates a practical problem.
 
-## Branding and naming tips
+## Sources and further reading
 
-The two-letter suffix is built for **domain hacks** — names where the TLD becomes part of the word, folding ".io" onto a stem (`stud.io`, `rad.io`, `scenar.io`). Keep names short and pronounceable; the strength of .io is concision.
+### The io registry defines registration eligibility
 
-Watch two pitfalls. First, spoken aloud, "io" can be misheard, so test how your full name sounds on a phone call. Second, because .io is so strongly tied to software, a name in a non-technical category may feel mismatched.
+[The io registry defines registration eligibility](https://nic.io/rules.htm#:~:text=3.1%20An%20applicant%20may%20reside%20in%20any%20legal%20jurisdiction.), checked 2026-10-30.
 
-## How to register a .io domain at Namefi
+### IANA identifies the io delegation
 
-1. **Search** for your desired name at [Namefi](https://namefi.io) to check availability.
-2. **Choose** the .io result (and any alternates worth securing).
-3. **Register** and configure DNS.
+[IANA identifies the io delegation](https://www.iana.org/domains/root/db/io.html#:~:text=Category%20Classification%20based%20on%20purpose%20and%20governing%20global%20allocation%20policy%20Country-code%20top-level%20domain), checked 2026-10-30.
 
-As an [ICANN-accredited](/en/glossary/icann/) [registrar](/en/glossary/registrar/), Namefi bridges Web2 and Web3: transparent pricing, fast [DNS](/en/glossary/dns/) management, and the option to hold your name as a [tokenized domain](/en/blog/what-are-tokenized-domains/) for verifiable [domain ownership](/en/glossary/domain-ownership/) and easy transferability. Get started at [Namefi](https://namefi.io).
+### Google explains ios search treatment
 
-## Frequently asked questions
+[Google explains ios search treatment](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#:~:text=Country-code%20top-level%20domain%20names%20%28ccTLDs%29.%20These%20are%20tied%20to%20a%20specific%20country), checked 2026-10-30.
 
-### Can anyone register a .io domain?
+### IANA explains the country code retirement process
 
-For a second-level name such as example.io, NIC.IO permits applicants from any legal jurisdiction. Third-level registrations such as example.com.io have territory-residence requirements. Registry terms and use rules still apply.
-
-### Does a .io domain affect SEO?
-
-Google treats .io as generic for geographic targeting. A .io address does not automatically target the territory, but the extension does not guarantee rankings.
-
-### Who should register a .io domain?
-
-Software startups, SaaS products, developer tools, open-source projects, API services, browser game studios, and Web3 or blockchain teams. The "Input/Output" reading fits wherever a technology focus is part of the brand.
-
-### Is the .io domain going away because of the Chagos sovereignty deal?
-
-IANA listed .io as active without a retirement date on October 21, 2026. Loss of country-code eligibility would invoke the IANA retirement process. No statement here guarantees the future of .io.
-
-### Does .io support WHOIS privacy and DNSSEC?
-
-DNSSEC is supported by the .io registry. WHOIS privacy availability depends on your registrar; most modern registrars, including Namefi, offer privacy protection on eligible registrations.
-
-## Related resources
-
-- [What is a domain?](/en/blog/what-is-domain/)
-- [Domain terminology guide](/en/blog/domain-terminology-guide/)
-- [Why are .io domains expensive?](/en/blog/why-are-io-domains-expensive/)
-- [.ai vs .io domain](/en/blog/ai-vs-io-domain/)
-- [Tokenized domain use cases (2026)](/en/blog/tokenized-domain-use-cases-2026/)
-- TLD guides: [.com](/en/tld/com/), [.ai](/en/tld/ai/), [.dev](/en/tld/dev/), [.app](/en/tld/app/), [.tech](/en/tld/tech/)
-- Glossary: [ICANN](/en/glossary/icann/), [registrar](/en/glossary/registrar/), [DNS](/en/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)
-
-## These sources explain the current rules
-
-The following sources were opened on **October 21, 2026**. The update covers meaning, registration eligibility, geographic search treatment, and retirement policy.
-
-- [Yuka domain explanation](https://help.yuka.io/l/fr/article/0crz5kblss-pourquoi-io-comme-nom-de-domaine): a primary brand example of the input/output association.
-- [IANA .io record](https://www.iana.org/domains/root/db/io.html): active delegation and manager.
-- [NIC.IO allocation rules](https://nic.io/rules.htm): registration levels, contact requirements, and use restrictions.
-- [NIC.IO terms](https://nic.io/terms.htm): transfer and renewal conditions.
-- [Google Search documentation](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites): generic geographic treatment.
-- [UK Parliament treaty briefing](https://commonslibrary.parliament.uk/research-briefings/cbp-10273/): agreement signing date.
-- [ICANN Chagos explanation](https://www.icann.org/en/blogs/details/the-chagos-archipelago-and-the-io-domain-14-11-2024-en) and [IANA retirement process](https://www.iana.org/help/cctld-retirement): eligibility and transition rules.
+[IANA explains the country code retirement process](https://www.iana.org/help/cctld-retirement#:~:text=ccTLD%20eligibility%20is%20determined%20by%20the%20associated%20country%20or%20territory%20being%20assigned%20in%20the%20ISO%203166-1%20standard.), checked 2026-10-30.

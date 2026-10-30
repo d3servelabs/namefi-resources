@@ -30,7 +30,7 @@ relatedSeries:
   - /de/series/domain-apocalypse/
 ---
 
-**Bei der Wahl eines SSL-Zertifikats zählen zwei Fragen: Welche Identität muss der Aussteller prüfen, und welche Hostnamen muss das Zertifikat abdecken?** DV, OV und EV bezeichnen die Identitätsprüfung. Einzelname, Wildcard und Multi-Domain beschreiben die Namensabdeckung. Ein Wildcard-Zertifikat kann zugleich ein DV-Zertifikat sein.
+**Bei der Wahl eines SSL-Zertifikats zählen zwei Fragen: Welche Identität muss der Aussteller prüfen, und welche Hostnamen muss das Zertifikat abdecken?** [DV](/de/blog/domain-validation-ssl-certificate/), OV und EV bezeichnen die Identitätsprüfung. Einzelname, Wildcard und Multi-Domain beschreiben die Namensabdeckung. Ein Wildcard-Zertifikat kann zugleich ein DV-Zertifikat sein.
 
 „SSL-Zertifikat“ bleibt eine gängige Suchbezeichnung für Zertifikate, die modernes TLS verwenden. Der Beitrag über [HTTPS](/de/blog/what-is-https/) erklärt den Verbindungsaufbau. Dieser Leitfaden hilft Website-Betreibern, einen Zertifikatsantrag vorzubereiten und Angebote zu vergleichen.
 

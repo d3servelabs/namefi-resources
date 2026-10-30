@@ -61,7 +61,7 @@ relatedGlossary:
 2. **확인하고 등록합니다.** “일 년 동안 등록해 줘”라고 하면 주문이 제출되고, 에이전트는 완료될 때까지 상태를 확인합니다.
 3. **배포 위치를 가리키게 합니다.** 호스팅 플랫폼에서 요구하는 레코드(루트 도메인에는 A 레코드, 서브도메인에는 CNAME)를 에이전트에게 주면 에이전트가 해당 DNS 레코드를 설정합니다. DNS를 호스트에 완전히 맡기는 경우라면 대신 도메인의 [네임서버 (NS 레코드)](/ko/glossary/nameserver/) 수준 위임이 호스트를 가리키도록 변경합니다.
 
-전체적인 모습은 이렇습니다. 각 에디터가 읽는 설정 파일과 Vercel 및 Cloudflare Pages에서 요구하는 실제 DNS 값 등 정확한 절차는 이미 [Namefi MCP 빠른 시작: Claude Code, Cursor, Windsurf](/ko/blog/mcp-quickstart/)에서 단계별로 설명했으므로 여기서 반복하지 않습니다. 이 세 에디터가 아닌 OpenAI Codex, Gemini CLI, Claude Desktop 또는 [MCP](https://modelcontextprotocol.io)를 지원하는 다른 도구로 코딩한다면 [Namefi에서 AI 에이전트로 도메인을 등록하는 방법](/ko/blog/ai-agent-register/)에서 각 도구별로 검증된 설정을 확인할 수 있습니다. MCP 네이티브가 아닌 도구를 위한 직접 REST 방식도 함께 제공합니다.
+전체적인 모습은 이렇습니다. 각 에디터가 읽는 설정 파일과 [Vercel](/ko/blog/connect-domain-to-vercel/) 및 Cloudflare Pages에서 요구하는 실제 DNS 값 등 정확한 절차는 이미 [Namefi MCP 빠른 시작: Claude Code, Cursor, Windsurf](/ko/blog/mcp-quickstart/)에서 단계별로 설명했으므로 여기서 반복하지 않습니다. 이 세 에디터가 아닌 OpenAI Codex, Gemini CLI, Claude Desktop 또는 [MCP](https://modelcontextprotocol.io)를 지원하는 다른 도구로 코딩한다면 [Namefi에서 AI 에이전트로 도메인을 등록하는 방법](/ko/blog/ai-agent-register/)에서 각 도구별로 검증된 설정을 확인할 수 있습니다. MCP 네이티브가 아닌 도구를 위한 직접 REST 방식도 함께 제공합니다.
 
 ## 이름 아이디어도 에이전트에게 맡기기
 

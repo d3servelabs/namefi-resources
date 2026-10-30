@@ -61,7 +61,7 @@ relatedGlossary:
 2. **确认并注册。** “注册一年”会提交订单；智能体会持续监控，直到订单完成。
 3. **将它指向你的部署。** 把托管平台要求的记录交给智能体（根域名使用 A 记录，子域名使用 CNAME），它会写入该记录；或者，如果你把 DNS 完全交给主机托管，它会改为重新指向域名在[域名服务器（NS 记录）](/zh-CN/glossary/nameserver/)层面的委派。
 
-大致流程就是这样；至于各编辑器读取哪个配置文件、Vercel 和 Cloudflare Pages 要求哪些具体的 DNS 值，均已在[Namefi MCP 快速入门：Claude Code、Cursor 与 Windsurf](/zh-CN/blog/mcp-quickstart/)中逐步说明，所以本文不再重复。如果你使用的不是这三个编辑器——OpenAI Codex、Gemini CLI、Claude Desktop，或任何其他支持 [MCP](https://modelcontextprotocol.io) 的工具——[如何在 Namefi 上通过 AI 智能体注册域名](/zh-CN/blog/ai-agent-register/)是汇总页，提供了每一种工具已验证的设置方法；对于完全不原生支持 MCP 的工具，也提供直接调用 REST API 的方案。
+大致流程就是这样；至于各编辑器读取哪个配置文件、[Vercel](/zh-CN/blog/connect-domain-to-vercel/) 和 Cloudflare Pages 要求哪些具体的 DNS 值，均已在[Namefi MCP 快速入门：Claude Code、Cursor 与 Windsurf](/zh-CN/blog/mcp-quickstart/)中逐步说明，所以本文不再重复。如果你使用的不是这三个编辑器——OpenAI Codex、Gemini CLI、Claude Desktop，或任何其他支持 [MCP](https://modelcontextprotocol.io) 的工具——[如何在 Namefi 上通过 AI 智能体注册域名](/zh-CN/blog/ai-agent-register/)是汇总页，提供了每一种工具已验证的设置方法；对于完全不原生支持 MCP 的工具，也提供直接调用 REST API 的方案。
 
 ## 也让智能体为你头脑风暴名称
 

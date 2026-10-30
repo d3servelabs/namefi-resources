@@ -61,7 +61,7 @@ relatedGlossary:
 2. **確認して登録する。** 「1年間登録して」と指示すると注文が送信され、エージェントは完了するまで状況を確認します。
 3. **デプロイ先へ向ける。** ホスティングプラットフォームが指定するレコード（ルートドメインならAレコード、サブドメインならCNAME）をエージェントに渡すと、レコードを書き込みます。DNSを完全にホストへ任せる場合は、代わりにドメインの委任先となる[ネームサーバー（NSレコード）](/ja/glossary/nameserver/)自体を変更します。
 
-基本的な流れは以上です。各エディターが読み込む設定ファイルや、VercelとCloudflare Pagesが求める具体的なDNS値など、正確な手順は[Namefi MCPクイックスタート：Claude Code、Cursor、Windsurf](/ja/blog/mcp-quickstart/)ですでに段階ごとに説明しているため、ここでは繰り返しません。この三つ以外の環境、たとえばOpenAI Codex、Gemini CLI、Claude Desktop、その他[MCP](https://modelcontextprotocol.io)対応ツールでコーディングしている場合は、[NamefiでAIエージェントを使ってドメインを登録する方法](/ja/blog/ai-agent-register/)に、それぞれ検証済みの設定と、MCPに対応していないツール向けの直接REST経路がまとまっています。
+基本的な流れは以上です。各エディターが読み込む設定ファイルや、[Vercel](/ja/blog/connect-domain-to-vercel/)とCloudflare Pagesが求める具体的なDNS値など、正確な手順は[Namefi MCPクイックスタート：Claude Code、Cursor、Windsurf](/ja/blog/mcp-quickstart/)ですでに段階ごとに説明しているため、ここでは繰り返しません。この三つ以外の環境、たとえばOpenAI Codex、Gemini CLI、Claude Desktop、その他[MCP](https://modelcontextprotocol.io)対応ツールでコーディングしている場合は、[NamefiでAIエージェントを使ってドメインを登録する方法](/ja/blog/ai-agent-register/)に、それぞれ検証済みの設定と、MCPに対応していないツール向けの直接REST経路がまとまっています。
 
 ## 名前のアイデア出しもエージェントに任せる
 

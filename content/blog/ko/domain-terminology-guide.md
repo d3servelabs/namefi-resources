@@ -63,7 +63,7 @@ relatedGlossary:
 ### **애프터마켓**
 이전에 소유된 도메인 이름이 매매되는 시장입니다. 프리미엄 도메인, 오래된 도메인, 더 이상 사용되지 않는 도메인들이 이 시장에서 거래됩니다.
 
-**주요 플랫폼**: Sedo, GoDaddy Auctions, Flippa, NameJet
+**주요 플랫폼**: Sedo, [GoDaddy Auctions](/ko/blog/godaddy-auctions-guide/), Flippa, NameJet
 
 ---
 

@@ -32,7 +32,7 @@ relatedSeries:
 
 Beginnen Sie mit den gewünschten Regeln. Wählen Sie danach einen Resolver und [prüfen Sie die gesamte Verbindung](/de/blog/isp-dns-vs-public-resolver/). Eine einprägsame Adresse allein entscheidet die Auswahl nicht.
 
-Der Standarddienst von Cloudflare eignet sich als Ausgangspunkt für Leser, die einen dokumentierten Dienst ohne Inhaltsfilter suchen. Der sichere Dienst von Quad9 richtet sich an Leser, die Bedrohungen blockieren möchten. Google Public DNS bietet eine weitere dokumentierte Möglichkeit mit DNSSEC-Validierung und verschlüsselten Übertragungsverfahren. Die Auswahl hängt von den Anforderungen ab. Eine allgemeingültige Rangliste ergibt sich daraus nicht.
+Der Standarddienst von Cloudflare eignet sich als Ausgangspunkt für Leser, die einen dokumentierten Dienst ohne Inhaltsfilter suchen. Der [sichere Dienst von Quad9](/de/blog/quad9-dns-setup/) richtet sich an Leser, die Bedrohungen blockieren möchten. Google Public DNS bietet eine weitere dokumentierte Möglichkeit mit DNSSEC-Validierung und verschlüsselten Übertragungsverfahren. Die Auswahl hängt von den Anforderungen ab. Eine allgemeingültige Rangliste ergibt sich daraus nicht.
 
 Ein geeigneter Dienst muss im Alltag funktionieren: im Browser, bei Videokonferenzen, mit dem Firmen-VPN und in einem Netzwerk, das die gewählte verschlüsselte Verbindung blockiert. Der folgende Ablauf vergleicht drei öffentliche Dienste. Der Ablauf zeigt außerdem, wie Sie eine Änderung mit Rückkehrmöglichkeit prüfen. Der Artikel bewertet nicht alle verfügbaren Resolver.
 
@@ -52,7 +52,7 @@ Trennen Sie vor dem Anbietervergleich vier Fragen. Wer erhält die Anfrage? Vers
 
 Verschlüsseltes DNS schützt eine andere Verbindung. DNS over TLS sichert die Verbindung zwischen Client und Resolver. [RFC 7858 legt das Verfahren fest](https://www.rfc-editor.org/rfc/rfc7858.html#section-1). Der Resolver muss die Anfrage weiterhin verarbeiten. Die Verschlüsselung ersetzt deshalb keine Prüfung der Datenschutzregeln des Betreibers.
 
-Auch die Client-Konfiguration zählt. Ein Browser kann einen eigenen verschlüsselten Resolver wählen, während eine andere Anwendung den Resolver des Betriebssystems nutzt. Mozilla dokumentiert die [Schutzstufen und Ersatzverbindungen des Browsers](https://support.mozilla.org/en-US/kb/dns-over-https#w_protection-levels-explained). Ein erfolgreicher Browsertest beweist nicht, dass alle Anwendungen denselben Weg verwenden.
+Auch die Client-Konfiguration zählt. Ein Browser kann einen eigenen verschlüsselten Resolver wählen, während eine andere Anwendung den Resolver des Betriebssystems nutzt. Mozilla dokumentiert die [Schutzstufen und Ersatzverbindungen des Browsers](https://support.mozilla.org/en-US/kb/dns-over-https#w_protection-levels-explained). Ein erfolgreicher [Browsertest](/de/blog/dns-leak-test-guide/) beweist nicht, dass alle Anwendungen denselben Weg verwenden.
 
 Beginnen Sie bei einem verwalteten Arbeitsgerät mit der Konfiguration der Administration. Behandeln Sie die erforderliche Auflösung interner Namen als Vergleichskriterium. Ein öffentlicher DNS-Dienst kann für ein privates Gerät sinnvoll sein. Daraus folgt keine Eignung für jede Arbeitsplatzkonfiguration.
 

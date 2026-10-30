@@ -1,160 +1,141 @@
 ---
-title: 'What Is the .ch Domain? Switzerland''s Open Country-Code TLD'
+title: 'How to Register a .CH Domain: Who Can Buy One and What to Check'
 date: '2026-08-05'
-language: 'en'
+language: en
 priority: P1
-tags: ['tld']
-authors: ['aileen-wright']
-editors: ['victor-zhou']
+tags:
+- tld
+authors:
+- aileen-wright
+editors:
+- victor-zhou
 draft: false
-description: 'Learn what Switzerland’s .ch domain means, who can register, which rules apply, and how registrar pricing, privacy, transfers, and SEO work.'
+description: Register a .ch domain through a listed registrar. Check eligibility, holder duties, naming rules, renewal costs, and DNS before launching.
 ogImage: ../../assets/ch-og.jpg
-keywords: ['ch domain', 'ch domain country', 'ch domain name', 'ch top level domain', 'register ch domain', 'Switzerland domain', 'SWITCH registry', 'ch domain restrictions', 'ch domain price', 'ch domain SEO']
-faqs:
-  - question: 'Can anyone register a .ch domain?'
-    answer: 'Swiss citizenship, residence, and a Swiss business are not general requirements. Holders must provide accurate contact data and follow registry rules. A competent Swiss authority can require a Swiss correspondence address and identity details within 30 days.'
-  - question: 'Does a .ch domain affect SEO?'
-    answer: 'Google uses country-code domains as geographic signals. A .ch domain indicates a Swiss audience, but the extension does not guarantee rankings or prevent visibility elsewhere.'
-  - question: 'Who runs the .ch domain?'
-    answer: 'Switch operates the .ch registry on behalf of OFCOM. Registrars handle customer registration and administration. Switch stopped direct sales on 1 January 2015.'
-  - question: 'Why does Switzerland use the letters CH?'
-    answer: 'CH abbreviates Confoederatio Helvetica, the Latin name for the Swiss Confederation.'
+keywords:
+- ch domain
+- register ch domain
+- buy ch domain
+- Swiss domain
+- Switzerland domain name
 relatedArticles:
-  - /en/blog/what-is-a-tld/
-  - /en/blog/domain-terminology-guide/
-  - /en/blog/domain-hacks-explained/
-  - /en/blog/cctld-market-share-by-registration-volume/
-  - /en/blog/what-is-domain/
+- /en/blog/what-is-a-tld/
+- /en/blog/domain-terminology-guide/
+- /en/blog/domain-hacks-explained/
+- /en/blog/cctld-market-share-by-registration-volume/
+- /en/blog/what-is-domain/
 relatedTopics:
-  - /en/topics/choosing-a-tld/
-  - /en/topics/domain-investing/
+- /en/topics/choosing-a-tld/
+- /en/topics/domain-investing/
 relatedSeries:
-  - /en/series/best-tlds-by-industry/
-  - /en/series/domain-investor-field-guide/
+- /en/series/best-tlds-by-industry/
+- /en/series/domain-investor-field-guide/
 relatedGlossary:
-  - /en/glossary/cctld/
-  - /en/glossary/registrar/
-  - /en/glossary/icann/
-  - /en/glossary/dnssec/
-  - /en/glossary/whois-privacy/
+- /en/glossary/cctld/
+- /en/glossary/registrar/
+- /en/glossary/icann/
+- /en/glossary/dnssec/
+- /en/glossary/whois-privacy/
+updated: '2026-10-30'
+cluster: choosing-a-tld
+format: guide
 ---
 
-The **.ch domain** is Switzerland’s [country-code top-level domain](/en/glossary/cctld/). **Switch** operates the registry on behalf of [OFCOM, the Swiss communications regulator](https://www.bakom.admin.ch/en/ch-internet-domain-names).
+You can register a `.ch` domain without being Swiss, living in Switzerland, or basing your business in Switzerland. Switch’s [registration FAQ states the eligibility rule](#switch-explains-ch-eligibility-and-pricing). Use a registrar from [Switch’s official registrar list](https://www.nic.ch/registrars/) to search the name and complete the purchase.
 
-People and businesses outside Switzerland can register .ch names. However, open eligibility does not remove contact-data duties, reserved-name rules, or third-party rights. This guide explains the country association, registration process, costs, privacy, and search implications.
+Open eligibility does not remove the registry’s naming rules or holder duties. Compare the registrar’s renewal terms, supply accurate contact details, and plan the website and email services separately.
 
-## The .ch domain identifies Switzerland
+## The Swiss registry and the registrar perform different jobs
 
-| Fact | Detail |
+`.ch` is Switzerland’s country-code top-level domain. [IANA’s delegation record identifies Switch as the manager](#iana-identifies-the-swiss-delegation). The registry maintains the registration system, while the registrar handles the customer-facing purchase and administration workflow.
+
+Use [Switch’s registrar directory](#switch-lists-its-registrars) as the official starting point. Check that the chosen provider supports the required services and offers terms the intended holder can maintain.
+
+A registrar that supports another extension does not automatically have the same relationship with `.ch`. Verify support for the exact extension before planning a transfer or purchase.
+
+Our [TLD guide](/en/blog/what-is-a-tld/) explains the country-code category. A country association describes the extension. The association does not certify the nationality, business quality, or security of every site beneath the extension.
+
+![The holder submits registration through a registrar to the Swiss registry.](../../assets/ch-03-registration-roles.jpg)
+
+## Applicants outside Switzerland still have contact duties
+
+Switch says applicants do not need Swiss citizenship, residence, or a Swiss business location. The same FAQ warns that a `.ch` address does not necessarily mean that the operator is Swiss. [Read the registry’s wording](#switch-explains-ch-eligibility-and-pricing) rather than treating the extension as a verified business credential.
+
+The General Terms and Conditions require the holder’s information to remain complete, correct, and current. The holder must report changes through the registrar. [The data-maintenance provisions describe the obligation](#switch-defines-holder-and-naming-duties).
+
+A specific conditional rule also matters for foreign holders. Upon a competent Swiss authority’s request, the registry can require a Swiss correspondence address and identity details within 30 days. The requirement applies to a holder without a valid Swiss correspondence address. The terms describe revocation for noncompliance.
+
+That conditional duty differs from a universal local-address requirement at initial registration. Keep the distinction clear when comparing registrar explanations.
+
+Choose a monitored contact email and maintain access to the registrar account. If the registration supports a business, document which legal entity holds the name. Do not leave that decision to an unrelated checkout default.
+
+![Open general eligibility differs from a conditional Swiss-authority correspondence request.](../../assets/ch-02-eligibility-and-authority.jpg)
+
+## The exact name must satisfy registry conditions
+
+Switch’s terms specify permitted characters, hyphen restrictions, reserved-name conditions, and length limits. Standard names contain between 3 and 63 characters, subject to statutory or approved exceptions. [The grounds-for-refusal section gives the conditions](#switch-defines-holder-and-naming-duties).
+
+Do not assume every short or apparently unused name can be registered. A name can fail because the name is reserved, violates a naming rule, or already has an earlier pending request.
+
+Review accented names against the registry’s permitted-character annexes. Check the spelling in the registrar’s final cart and test the complete address in the applications the project needs.
+
+Availability also does not settle another party’s rights. Switch’s terms say the registry does not judge whether registration or use infringes third-party rights. [The terms separate registration from that rights assessment](#switch-defines-holder-and-naming-duties).
+
+For an organization, review potential name conflicts before committing to signage, email, and application configuration. This is a practical planning step rather than a legal clearance guarantee.
+
+## Registrar prices determine the actual purchase budget
+
+Switch says `.ch` registration costs depend on the registrar. Website and nameserver services can create separate charges. [The FAQ explicitly separates those costs](#switch-explains-ch-eligibility-and-pricing).
+
+Compare the same name and term across the providers you consider:
+
+| Item | Check before purchase |
 | --- | --- |
-| Country | Switzerland |
-| Registry | Switch, under OFCOM oversight |
-| Delegation date | May 20, 1987 |
-| General eligibility | No Swiss citizenship, residence, or business-location requirement |
-| Standard name length | 3–63 characters, subject to statutory or approved exceptions |
-| Accented names | Supported characters appear in the registry’s permitted-character lists |
-| DNSSEC | Supported |
-| Buying a name | Use a registrar rather than buying directly from Switch |
+| Registration | Exact term, currency, taxes, and total charge |
+| Renewal | Renewal amount, term, and billing date |
+| DNS | Included record management and support |
+| Website | Whether hosting exists or requires another product |
+| Email | Mailboxes, sending service, and separate subscription |
+| Transfer | Authorization process and disclosed charges |
 
-[IANA’s .ch record](https://www.iana.org/domains/root/db/ch.html) confirms the delegation and current operator. Switch’s [registration FAQ](https://www.nic.ch/support/general/) and [General Terms and Conditions](https://www.nic.ch/terms/agb/) govern registration questions.
+This article does not quote a universal `.ch` price. The selected registrar’s current checkout and agreement determine the actual amount.
 
-CH abbreviates **Confoederatio Helvetica**, the Latin name for the Swiss Confederation. The [Swiss Federal Archives](https://www.bar.admin.ch/en/the-confederation-before-1798) documents the Latin designation and the CH abbreviation.
+A low initial quote can still accompany a renewal obligation that does not fit the project. Record the ordinary renewal terms before buying. Keep optional services only when the project needs those services.
 
-## The .ch registry has changed since 1987
+## A registration can precede a working website
 
-- **1987:** IANA records .ch’s delegation on May 20.
-- **1990:** Switch dates its registry role to 1990 in its [domain statistics explanation](https://www.nic.ch/statistics/domains/). The delegation date and Switch’s registry history describe different events.
-- **2004:** Switch introduced accented domain names in March, as its [contemporary IDN announcement](https://www.presseportal.ch/fr/pm/100004516/100471895) explains.
-- **2015–2016:** Switch ended direct sales on January 1, 2015. Switch [completed the transfer of customer administration to registrars in May 2016](https://www.nic.ch/transfer/).
-- **2021:** Switch stopped displaying personal holder data in public lookups on January 1. Its [information service](https://www.nic.ch/whois/domaininfo/) explains access exceptions.
+Switch’s FAQ says a domain can be registered without active use. The General Terms and Conditions separately describe the nameserver requirements for using the domain. [Review the registry’s use provisions](#switch-defines-holder-and-naming-duties).
 
-## International applicants must follow .ch registration rules
+After registration, identify the authoritative DNS provider and add the records your host requests. Keep mail and verification records intact when connecting a website.
 
-Switch’s [FAQ confirms that foreign applicants can register](https://www.nic.ch/support/general/#:~:text=Do%20I%20have%20to%20be%20Swiss). A .ch address therefore does not prove Swiss ownership, a Swiss office, or Swiss hosting.
+Our [website launch guide](/en/blog/build-website-with-domain/) explains the sequence. A domain appearing in the registrar account does not prove that the website, HTTPS certificate, or mailbox works.
 
-The [registry terms, sections 2.5–2.6](https://www.nic.ch/terms/agb/), add two important duties. Holders must maintain accurate contact data. On a competent Swiss authority’s request, Switch can require a holder without a valid Swiss correspondence address to provide one and identity details within 30 days. Failure to comply leads to revocation.
+For a hypothetical `www.example.com` website, obtain the actual destination from your host. The hostname illustrates structure only. The example does not represent a purchasable domain or a recommended DNS target.
 
-Sections 3.1.1–3.1.2 set the application and naming rules. Standard names contain 3–63 characters. Statutory or approved exceptions exist, so “all two-letter names are reserved for cantons” overstates the rule. Reserved names and prohibited hyphen positions also limit registration. Swiss municipality names have specific protections, as Switch’s [legal information](https://www.nic.ch/terms/) explains.
+![A domain name identifies the site; hosting provides the files and service.](../../assets/domain-vs-hosting-01-comparison.jpg)
 
-Availability does not establish permission to use a trademark. The holder must check third-party rights before registration. Switch’s [dispute service](https://www.nic.ch/terms/disputes/) provides a separate route for rights disputes. Its [procedure combines conciliation with a possible expert decision](https://www.nic.ch/terms/disputes/proceedings/). Civil proceedings remain possible.
+## You should plan maintenance and transfers before the name becomes critical
 
-## Registrars handle .ch purchases, prices, and transfers
+Save the registrar account details, holder identity, renewal date, and responsible contact. Use the available account authentication and recovery controls.
 
-![The holder sends a registration request through a registrar to the Switch registry](../../assets/ch-01-registry-registrar.jpg)
+Switch’s FAQ says registrar transfers use a transfer code, also called an Auth-Code, obtained from the current registrar and supplied to the new registrar. [The FAQ describes the process](#switch-explains-ch-eligibility-and-pricing). Keep the code private and coordinate the DNS configuration during a move.
 
-Switch lists its [contractual registrars](https://www.nic.ch/registrars/). Switch does not sell names directly to end customers. ICANN accreditation alone does not establish a registrar’s relationship with this country-code registry.
+Choose `.ch` when the address fits the project’s Swiss association and the holder can meet the registration duties. Complete the purchase with a registrar whose renewal and support terms fit the project, then verify the services that use the name.
 
-Switch’s [FAQ states that prices depend on the registrar](https://www.nic.ch/support/general/#:~:text=What%20does%20a%20domain%20name%20cost). Compare the following items before checkout:
+## Sources and further reading
 
-| Cost or term | What to check |
-| --- | --- |
-| Registration | First-year price, currency, and taxes |
-| Renewal | Regular renewal price and billing date |
-| Additional services | Separate hosting, email, or DNS charges |
-| Transfer | Registrar process, possible charges, and service continuity |
-| Aftermarket purchase | Seller’s price, separate from ongoing registrar charges |
+### Switch explains ch eligibility and pricing
 
-The same FAQ explains registrar transfers: obtain an **Auth-Code** from the current registrar and supply the code to the new registrar. Keep the code private.
+[Switch explains ch eligibility and pricing](https://www.nic.ch/support/general/#:~:text=You%20can%20register%20a%20.ch%20domain%20name%20without%20being%20Swiss%20and%20without%20living%20in%20Switzerland%20or%20having%20your), checked 2026-10-30.
 
-For a new registration:
+### IANA identifies the Swiss delegation
 
-1. Search for the exact name with a registrar that supports .ch.
-2. Check naming rules and potential rights conflicts.
-3. Compare renewal fees and included services.
-4. Provide accurate holder details and complete the registrar’s checks.
-5. Configure nameservers, hosting, and email as required.
+[IANA identifies the Swiss delegation](https://www.iana.org/domains/root/db/ch.html#:~:text=Category%20Classification%20based%20on%20purpose%20and%20governing%20global%20allocation%20policy%20Country-code%20top-level%20domain), checked 2026-10-30.
 
-A domain purchase does not automatically include a working website. At Namefi, check current .ch availability and supported services before planning a purchase. The general [domain guide](/en/blog/what-is-domain/) explains the separate parts of a website address.
+### Switch lists its registrars
 
-## A .ch domain gives Google a geographic signal
+[Switch lists its registrars](https://www.nic.ch/registrars/#:~:text=Here%20is%20a%20complete%20list%20of%20Switch%27s%20contractual%20partners%20%28registrars%29.%20These%20companies%20are%20responsible%20for%20registering%20and%20administering), checked 2026-10-30.
 
-Google explains that [country-code domains indicate a target country](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites). Google’s published generic-ccTLD list does not include .ch.
+### Switch defines holder and naming duties
 
-Choose .ch when Switzerland forms an important part of the intended audience or brand. Consider a generic extension such as [.com](/en/tld/com/) when the site needs an address without a country-code association. The geographic signal does not guarantee Swiss rankings or prevent international visibility.
-
-A [domain hack](/en/blog/domain-hacks-explained/) can use “ch” to finish a word across the dot. The naming technique does not change the registry rules or Google’s geographic interpretation. Test pronunciation and spelling before choosing the name.
-
-## The .ch suffix does not certify a business or an email sender
-
-A Swiss country association can fit a Swiss business, institution, or community. The association does not verify business quality or security. Public examples include the [Swiss government portal](https://www.admin.ch/) and [Swiss Radio and Television](https://www.srf.ch/).
-
-For email, evaluate the provider’s authentication setup and sending practices. Do not treat the suffix as an inbox-delivery guarantee. For accented names, Switch’s [IDN guidance](https://www.nic.ch/support/idn/) advises against relying solely on an IDN for important applications.
-
-## Public .ch lookups limit personal information
-
-Switch’s [information service rules](https://www.nic.ch/whois/domaininfo/) distinguish public technical data from personal holder data. An identified requester must demonstrate an overriding legitimate interest to request personal data. A wish to buy the domain is insufficient.
-
-Public lookup privacy does not remove the holder’s obligation to supply accurate information to the registrar and registry.
-
-## These answers explain common .ch questions
-
-### Can anyone register a .ch domain?
-
-Swiss citizenship, residence, and a Swiss business are not general requirements. Holders must provide accurate contact data and follow registry rules. A competent Swiss authority can require a Swiss correspondence address and identity details within 30 days.
-
-### Does a .ch domain affect SEO?
-
-Google uses country-code domains as geographic signals. A .ch domain indicates a Swiss audience, but the extension does not guarantee rankings or prevent visibility elsewhere.
-
-### Who runs the .ch domain?
-
-Switch operates the .ch registry on behalf of OFCOM. Registrars handle customer registration and administration. Switch stopped direct sales on 1 January 2015.
-
-### Why does Switzerland use the letters CH?
-
-CH abbreviates Confoederatio Helvetica, the Latin name for the Swiss Confederation.
-
-## These sources document the .ch rules
-
-Sources fetched on October 21, 2026:
-
-- [IANA .ch delegation record](https://www.iana.org/domains/root/db/ch.html).
-- [Switch registration FAQ](https://www.nic.ch/support/general/).
-- [Switch General Terms and Conditions](https://www.nic.ch/terms/agb/), sections 2.5–2.6 and 3.1.
-- [Switch legal information](https://www.nic.ch/terms/) and [dispute proceedings](https://www.nic.ch/terms/disputes/proceedings/).
-- [Switch registrar list](https://www.nic.ch/registrars/) and [completed customer transfer](https://www.nic.ch/transfer/).
-- [Switch registry history note](https://www.nic.ch/statistics/domains/) and [2004 IDN announcement](https://www.presseportal.ch/fr/pm/100004516/100471895).
-- [Switch IDN guidance](https://www.nic.ch/support/idn/) and [holder information service](https://www.nic.ch/whois/domaininfo/).
-- [OFCOM’s .ch overview](https://www.bakom.admin.ch/en/ch-internet-domain-names).
-- [Google’s guidance for regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites).
-- [Swiss Federal Archives: The Confederation before 1798](https://www.bar.admin.ch/en/the-confederation-before-1798), “From the Switzers to the Swiss.”
+[Switch defines holder and naming duties](https://www.nic.ch/terms/agb/#:~:text=The%20holder%20will%20report%20any%20changes%20to%20the%20registrar%20without%20undue%20delay.), checked 2026-10-30.

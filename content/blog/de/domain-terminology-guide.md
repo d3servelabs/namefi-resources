@@ -61,7 +61,7 @@ Eine Sammlung von Domainnamen, die einer Einzelperson oder einem Unternehmen geh
 ### **Aftermarket (Sekundärmarkt)**
 Der Markt, auf dem zuvor besessene Domainnamen gekauft und verkauft werden. Dazu gehören Premium-Domains, alte Domains und Domains, die nicht mehr genutzt werden.
 
-**Beliebte Plattformen**: Sedo, GoDaddy Auktionen, Flippa, NameJet
+**Beliebte Plattformen**: Sedo, [GoDaddy Auktionen](/de/blog/godaddy-auctions-guide/), Flippa, NameJet
 
 ---
 

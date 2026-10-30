@@ -61,7 +61,7 @@ relatedGlossary:
 ### **域名二级市场 (Aftermarket)**
 买卖已拥有域名的市场。这包括高级域名、老域名和不再使用的域名。
 
-**热门平台**: Sedo、GoDaddy Auctions、Flippa、NameJet
+**热门平台**: Sedo、[GoDaddy Auctions](/zh-CN/blog/godaddy-auctions-guide/)、Flippa、NameJet
 
 ---
 

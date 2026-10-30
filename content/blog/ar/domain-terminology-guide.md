@@ -61,7 +61,7 @@ relatedGlossary:
 ### **سوق ما بعد البيع (Aftermarket)**
 السوق حيث يتم شراء وبيع أسماء النطاقات المملوكة سابقًا. يشمل ذلك النطاقات المميزة والنطاقات القديمة والنطاقات التي لم تعد قيد الاستخدام.
 
-**المنصات الشائعة**: Sedo, GoDaddy Auctions, Flippa, NameJet
+**المنصات الشائعة**: Sedo, [GoDaddy Auctions](/ar/blog/godaddy-auctions-guide/), Flippa, NameJet
 
 ---
 

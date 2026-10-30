@@ -64,7 +64,7 @@ Un nombre de host puede incluir un subdominio. El dominio `example.com` también
 
 El **espacio de nombres de dominio** es la estructura de nombres. La expresión no indica un espacio en blanco dentro del nombre. [RFC 1034 describe un árbol](https://www.rfc-editor.org/rfc/rfc1034.html#section-3.1) con una raíz y etiquetas. Lee `shop.example.com` de derecha a izquierda: raíz, `com`, `example` y `shop`. El dominio de nivel superior es `com`. La etiqueta de segundo nivel es `example`. El nombre `shop.example.com` es un subdominio de `example.com`.
 
-Un nombre de dominio completo incluye toda la ruta hasta la raíz. El formato de presentación del DNS representa la raíz con un punto final: `shop.example.com.`. El texto cotidiano suele omitir el punto final. [RFC 9499 distingue ambos formatos](https://www.rfc-editor.org/rfc/rfc9499.html#section-2).
+Un [nombre de dominio completo](/es/blog/fully-qualified-domain-name/) incluye toda la ruta hasta la raíz. El formato de presentación del DNS representa la raíz con un punto final: `shop.example.com.`. El texto cotidiano suele omitir el punto final. [RFC 9499 distingue ambos formatos](https://www.rfc-editor.org/rfc/rfc9499.html#section-2).
 
 El dominio registrado no siempre corresponde a las dos últimas etiquetas. Algunas estructuras de registro utilizan sufijos con varias etiquetas. Usa la [lista de sufijos públicos](https://publicsuffix.org/list/) cuando un programa necesite identificar un sufijo público. No separes todos los nombres por el segundo punto.
 
@@ -95,7 +95,7 @@ Una colección de nombres de dominio propiedad de un individuo o una empresa. Un
 ### **Mercado Secundario (Aftermarket)**
 El mercado donde se compran y venden nombres de dominio previamente poseídos. Esto incluye dominios premium, dominios antiguos y dominios que ya no están en uso.
 
-**Plataformas Populares**: Sedo, GoDaddy Auctions, Flippa, NameJet
+**Plataformas Populares**: Sedo, [GoDaddy Auctions](/es/blog/godaddy-auctions-guide/), Flippa, NameJet
 
 ---
 

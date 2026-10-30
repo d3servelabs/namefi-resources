@@ -31,7 +31,7 @@ relatedGlossary:
   - /es/glossary/transfer-lock/
 ---
 
-Escribiste una frase en un generador de nombres con IA —«una caja de suscripción para plantas de interior», o cualquiera que fuera tu idea— y, treinta segundos después, tenías una lista corta de [Dominios de marca](/es/glossary/brandable-domain/), un logotipo y quizá un sitio web inicial. Esa parte parecía magia. Luego la magia se acabó y volviste a hacer lo que la gente lleva haciendo desde 1995: hacer clic por una página de pago, escribir el número de tarjeta y esperar acordarte de renovar antes de que caduque.
+Escribiste una frase en un [generador de nombres con IA](/es/blog/domain-name-generator-guide/) —«una caja de suscripción para plantas de interior», o cualquiera que fuera tu idea— y, treinta segundos después, tenías una lista corta de [Dominios de marca](/es/glossary/brandable-domain/), un logotipo y quizá un sitio web inicial. Esa parte parecía magia. Luego la magia se acabó y volviste a hacer lo que la gente lleva haciendo desde 1995: hacer clic por una página de pago, escribir el número de tarjeta y esperar acordarte de renovar antes de que caduque.
 
 Ese hueco —entre «la IA eligió un nombre» y «el nombre ya es un dominio operativo, de tu propiedad y renovado»— es donde la mayoría de las conversaciones sobre IA y dominios se detienen discretamente. Este artículo trata de lo que hay al otro lado: una escalera de capacidades que va desde sugerir un nombre hasta gestionar toda la vida de un dominio, y de por qué las herramientas que todo el mundo ya conoce solo suben los dos primeros peldaños.
 

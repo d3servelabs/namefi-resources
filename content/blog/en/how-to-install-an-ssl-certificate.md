@@ -1,122 +1,150 @@
 ---
-title: 'How to Install an SSL Certificate and Check HTTPS'
+title: How to Install an SSL Certificate Without Breaking HTTPS
 date: '2026-10-22'
-updated: '2026-10-29'
+updated: '2026-10-30'
 language: en
-tags: ['https', 'tls', 'certificates', 'security']
-authors: ['namefiteam']
+tags:
+- https
+- tls
+- certificates
+- security
+authors:
+- namefiteam
 draft: false
 cluster: domain-security
 format: guide
-description: Install an SSL certificate through your host or Certbot, choose domain validation, check HTTPS, and test automatic renewal.
+description: Choose a managed certificate or Certbot workflow, validate the right hostnames, check HTTPS, and test renewal before relying on the installation.
 ogImage: ../../assets/how-to-install-an-ssl-certificate-og.jpg
-keywords: ['install ssl certificate', 'ssl installation', 'enable https', 'nginx ssl', 'certbot nginx', 'https setup', 'domain validation', 'dns validation', 'automatic certificate renewal', 'ssl troubleshooting']
+keywords:
+- install SSL certificate
+- SSL certificate installation
+- HTTPS setup
+- TLS certificate
+- Certbot Nginx
+- ACME client
+- DNS validation
+- HTTP validation
+- certificate renewal
+- wildcard certificate
+- HTTPS verification
 relatedArticles:
-  - /en/blog/what-is-https/
-  - /en/blog/dns-is-the-control-plane/
-  - /en/blog/how-domain-hijacking-actually-happens/
-  - /en/blog/the-myetherwallet-bgp-dns-attack/
-  - /en/blog/dns-over-https-vs-enterprise-split-horizon-dns/
+- /en/blog/what-is-https/
+- /en/blog/dns-is-the-control-plane/
+- /en/blog/how-domain-hijacking-actually-happens/
+- /en/blog/the-myetherwallet-bgp-dns-attack/
+- /en/blog/dns-over-https-vs-enterprise-split-horizon-dns/
 relatedTopics:
-  - /en/topics/domain-security/
-  - /en/topics/domain-basics/
+- /en/topics/domain-security/
+- /en/topics/domain-basics/
 relatedSeries:
-  - /en/series/domain-apocalypse/
-  - /en/series/blockchain-concepts/
+- /en/series/domain-apocalypse/
+- /en/series/blockchain-concepts/
 relatedGlossary:
-  - /en/glossary/dns/
-  - /en/glossary/registrar/
-  - /en/glossary/public-key/
-  - /en/glossary/private-key/
-  - /en/glossary/dnssec/
+- /en/glossary/dns/
+- /en/glossary/registrar/
+- /en/glossary/public-key/
+- /en/glossary/private-key/
+- /en/glossary/dnssec/
 ---
 
-To install an SSL certificate, start with the service that serves your website. Your hosting provider may manage certificates already. A server you administer needs its own certificate workflow.
+Install an SSL certificate through the service that handles HTTPS for your website. A managed host may issue and renew the certificate automatically. A server you administer needs a compatible certificate client and web-server configuration. [Let’s Encrypt distinguishes these two routes](#lets-encrypt-separates-hosted-and-self-managed-certificates).
 
-People commonly call these SSL certificates. Modern HTTPS uses TLS. Our [HTTPS explainer](/en/blog/what-is-https/) covers the underlying concepts. This guide covers installation and the checks that follow.
+Choose the route before buying a certificate or uploading a private key. The useful outcome is a working HTTPS website with a tested renewal process. A certificate file alone does not complete the installation.
 
-## Your hosting arrangement determines the installation method
+## Your hosting arrangement determines who installs the certificate
 
-[Let’s Encrypt asks users to check their hosting provider first](#your-host-can-manage-certificates). A managed provider can operate the ACME client and renew certificates for you. Buying a domain alone does not tell you who manages HTTPS.
+Start in the account that serves the website. Your registrar, authoritative DNS provider, hosting provider, and reverse proxy may all be different services. Our [domain and hosting comparison](/en/blog/domain-vs-hosting/) explains the separate responsibilities.
 
-| Your setup | Your next action |
+| Website arrangement | Installation starting point |
 | --- | --- |
-| Managed website platform or hosting account | Read the provider’s custom-domain and HTTPS instructions |
-| Linux server that you administer | Select an ACME client and the instructions for your web server |
-| Website behind a reverse proxy | Check both the public certificate and the origin connection |
+| Managed website platform | The platform’s custom-domain and HTTPS instructions |
+| Managed shared hosting | The host’s certificate panel or support documentation |
+| Server you administer | An ACME client compatible with the server and operating system |
+| Website behind a proxy | Both the public HTTPS endpoint and the proxy-to-origin configuration |
 
-Sign in with an account authorized to manage the website. Keep private keys and DNS credentials out of support tickets and public repositories.
+[Let’s Encrypt](/en/blog/lets-encrypt-certificate-setup/) says many hosting providers operate an ACME client for customers. The host may enable certificates automatically or expose an option. [Check the host’s documented workflow first](#lets-encrypt-separates-hosted-and-self-managed-certificates).
 
-## Managed hosting users should enable the provider’s certificate service
+For a managed platform, add the exact hostname to the correct site. Complete the platform’s domain verification and DNS instructions. Wait for the platform to confirm certificate issuance, then test the hostname through HTTPS.
 
-1. Add the domain to the correct website in the hosting account.
-2. Configure the DNS records specified by the host.
-3. Enable the host’s HTTPS or automatic certificate option, if required.
-4. Wait for the host to report successful issuance.
-5. Open the HTTPS website and check the hostname.
+Do not upload a private key to an unrelated service or support ticket. Use the authorized account and the intended provider’s certificate controls. Keep a record of who manages renewal.
 
-The provider’s instructions determine the exact controls and DNS values. Do not copy another website’s records. Your [registrar](/en/glossary/registrar/), DNS provider, and web host can be different companies.
+![Managed hosting handles certificate work while self-managed servers use an ACME client.](../../assets/free-ssl-certificate-01-manager.jpg)
 
-## Server administrators can use Certbot with Nginx
+## You should prepare the destination before requesting validation
 
-The following route assumes Linux with snap support, Nginx, an existing HTTP website, and administrator access. Use [Certbot’s selected Nginx instructions](#certbot-configures-nginx) for the complete prerequisites and installation commands. Select another configuration if your operating system or server differs.
+List every public hostname that needs HTTPS. For a hypothetical website, the list might include `example.com` and `www.example.com`. Do not assume a certificate request for one name automatically includes the other name.
 
-Back up the Nginx configuration before allowing Certbot to edit the configuration. Confirm that DNS reaches the intended server. HTTP validation needs public access to TCP port `80`; serving HTTPS needs TCP port `443`.
+Confirm that the host accepts the hostname and that DNS points toward the intended service. Check both IPv4 and IPv6 destinations when you publish both. An old destination can complicate diagnosis even when another destination works.
 
-After installing Certbot through the selected instructions, run `sudo certbot --nginx`. Certbot can obtain the certificate and configure Nginx. Select every hostname the website needs. The command `sudo certbot certonly --nginx` obtains a certificate without installing the certificate into the server configuration.
+Back up the server configuration before permitting an installation tool to edit the configuration. Preserve a working recovery path through your hosting console or authorized server access.
 
-Then run `sudo certbot renew --dry-run`. Certbot’s packages provide a scheduled renewal mechanism. Check the installed timer or cron configuration. A successful test checks the renewal process at that moment. Continue monitoring certificate expiry and renewal failures.
+Choose domain validation according to your environment. [Let’s Encrypt documents the challenge methods](#lets-encrypt-documents-domain-validation). The choice affects how issuance and future renewal will work.
 
-## DNS validation serves wildcard and restricted-server requirements
-
-[HTTP-01 and DNS-01 prove domain control differently](#choose-the-validation-method). HTTP-01 retrieves a challenge file through port `80`. HTTP-01 cannot issue wildcard certificates.
-
-DNS-01 uses a TXT record under `_acme-challenge`. DNS-01 supports wildcard certificates and servers without public HTTP access. Use an ACME client integration that can automate the DNS updates. Manual TXT changes require continued manual work unless another process automates the updates.
-
-Use narrowly scoped DNS credentials where the provider supports scoped credentials. Let’s Encrypt warns that full DNS credentials on a compromised web server increase the damage. Delegating the challenge zone can separate validation from the main DNS zone.
-
-## Reverse proxies require an origin check as well
-
-A working browser connection to a proxy does not establish that the proxy validates the origin certificate. For Cloudflare, [Full (strict) validates the origin connection](#verify-the-origin-connection).
-
-Cloudflare requires an unexpired certificate, an accepted issuer, and a matching hostname. The origin must accept HTTPS on port `443`. Configure the origin before enabling the mode. An invalid origin certificate can produce error `526`.
-
-## You should verify the website after installation
-
-If Chrome reports a secure connection error, use the [Chrome connection diagnosis guide](/en/blog/fix-chrome-secure-connection-error/) to record the exact code and select the relevant checks.
-
-Open each intended hostname with `https://`. Inspect the certificate details for the hostname, issuer, and validity period. Check an important page and a form, rather than only the home page.
-
-Check the browser console for [mixed content](#remove-mixed-content): an HTTPS page can still request resources through HTTP. Update resource URLs and application settings where necessary. Check that HTTP requests redirect to the intended HTTPS address without a loop.
-
-| Symptom | Check first |
+| Validation method | Relevant boundary |
 | --- | --- |
-| Domain validation fails | DNS destination, challenge method, and public challenge access |
-| Browser reports the wrong hostname | Certificate names and the server configuration selected for the request |
-| Some resources fail | HTTP resource requests in the browser console |
-| Cloudflare reports error 526 | Origin certificate validity, issuer, and hostname |
-| Renewal test fails | Client logs, challenge access, and DNS authorization |
+| HTTP-01 | Uses a challenge file and requires port 80 |
+| DNS-01 | Uses a DNS TXT record and supports wildcard names |
+| Provider-managed validation | Follows the provider’s custom-domain workflow |
 
-Installation succeeds when the website serves the correct certificate, application requests work, and the renewal process passes its test. Assign someone to monitor the next renewal.
+These requirements do not justify disabling a firewall or exposing unrelated services. Configure only the documented challenge path and required service access.
 
-## These sources describe the supported installation methods
+## Certbot can configure a supported Nginx server
 
-### Your host can manage certificates
+Use this route only when you administer the server. The following example assumes Nginx on a compatible Linux system with snap support. [EFF’s selected Certbot instructions](#eff-documents-the-nginx-workflow) contain the installation prerequisites and current commands.
 
-Let’s Encrypt — [Getting Started](https://letsencrypt.org/getting-started/#getting-certificates-through-your-hosting-provider), fetched 2026-10-22. The page distinguishes host-managed certificates from running an ACME client yourself.
+Select your actual operating system and web server on Certbot’s instructions page. Do not reuse the Nginx route for an unrelated web server.
 
-### Certbot configures Nginx
+After completing the selected installation instructions, run `sudo certbot --nginx`. EFF documents this command as a way to obtain a certificate and let Certbot edit Nginx configuration. Review the selected hostnames and requested changes.
 
-EFF — [Nginx on Linux with snap](https://certbot.eff.org/instructions?ws=nginx&os=snap), fetched 2026-10-22. The installation, certificate-only option, and renewal test appear in the selected instructions.
+If you intend to manage configuration yourself, EFF documents `sudo certbot certonly --nginx`. That route obtains the certificate without the same automatic installation step. Certificate-only issuance leaves you responsible for completing the server configuration.
 
-### Choose the validation method
+Test the resulting Nginx configuration with the server’s supported validation workflow before relying on a reload. Preserve the previous configuration until the application passes the checks below. Treat these as operational precautions, rather than a replacement for EFF’s installation instructions.
 
-Let’s Encrypt — [Challenge Types](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge), fetched 2026-10-22. The HTTP-01 and DNS-01 sections explain port requirements, wildcard support, automation, and credential scope.
+## DNS validation needs automation and limited credential access
 
-### Verify the origin connection
+DNS-01 publishes a value under `_acme-challenge` for the requested domain. Let’s Encrypt checks the TXT record to validate control. DNS-01 supports wildcard certificates and web servers that do not expose HTTP publicly. [The challenge documentation explains these capabilities](#lets-encrypt-documents-domain-validation).
 
-Cloudflare — [Full (strict)](https://developers.cloudflare.com/ssl/origin-configuration/ssl-modes/full-strict/#required-setup), fetched 2026-10-22. The prerequisites specify origin certificate checks and HTTPS access.
+A manual TXT record can help with a single validation, but repeated manual updates create an ongoing renewal task. Prefer a supported DNS integration when you need unattended renewal.
 
-### Remove mixed content
+Let’s Encrypt warns that full DNS API credentials on a web server increase the impact of a compromise. Use narrowly scoped credentials where supported. The documentation also describes delegating challenge responses through CNAME or NS records.
 
-MDN — [Mixed content](https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Mixed_content), fetched 2026-10-22. The guide explains HTTP resource requests within HTTPS pages.
+Keep the public TXT value separate from the secret used to update DNS. Publish only the challenge value that the client requests. Do not place the provider’s API token in the DNS record.
+
+![A private scoped DNS API credential updates a separate public challenge TXT value.](../../assets/how-to-install-an-ssl-certificate-01-validation-boundaries.jpg)
+
+## You should test the application and renewal after issuance
+
+Open each intended hostname with `https://`. Inspect the certificate details for the hostname and validity. Test an actual content page and an important application action. A working homepage alone does not check every hostname or application path.
+
+Then check the HTTP-to-HTTPS behavior. Confirm the destination address and watch for redirect loops. Review the browser console for failed resources and unexpected HTTP resource URLs.
+
+For a Cloudflare proxy, verify the provider’s [origin-certificate requirements](/en/blog/cloudflare-ssl-setup/) separately. A working visitor-to-proxy connection does not complete your origin configuration review. Follow the proxy’s documented certificate validation mode.
+
+For Certbot, run `sudo certbot renew --dry-run`. [EFF documents this renewal test and the scheduled renewal mechanism](#eff-documents-the-nginx-workflow). Inspect the installed timer or scheduled job, rather than assuming a successful manual issuance proves future renewal.
+
+| Failure | First investigation |
+| --- | --- |
+| Validation fails | DNS destination and the selected challenge method |
+| Browser shows a name mismatch | Requested hostname and selected server certificate |
+| Some resources fail | Resource URLs and browser console errors |
+| Renewal test fails | Client logs, challenge access, and DNS integration permissions |
+
+Do not bypass certificate validation to hide an error. Record the exact error and repair the relevant configuration. Our [Chrome secure connection guide](/en/blog/fix-chrome-secure-connection-error/) provides a diagnosis path.
+
+Assign an owner to certificate monitoring and renewal alerts. Finish the installation record with the hostnames, installation method, renewal mechanism, and last successful test. Those details make the next renewal failure easier to resolve.
+
+![TCP reachability, TLS verification, and an HTTP response require separate checks.](../../assets/what-is-https-04-port-checks.jpg)
+
+## Sources and further reading
+
+### Lets Encrypt separates hosted and self managed certificates
+
+[Lets Encrypt separates hosted and self managed certificates](https://letsencrypt.org/getting-started/#:~:text=For%20many%20people%2C%20their%20hosting%20provider%20will%20get%20and%20manage%20certificates%20from%20Let%E2%80%99s%20Encrypt%20for%20them.), checked 2026-10-30.
+
+### Lets Encrypt documents domain validation
+
+[Lets Encrypt documents domain validation](https://letsencrypt.org/docs/challenge-types/#:~:text=The%20HTTP-01%20challenge%20can%20only%20be%20done%20on%20port%2080.), checked 2026-10-30.
+
+### EFF documents the Nginx workflow
+
+[EFF documents the Nginx workflow](https://certbot.eff.org/instructions?ws=nginx&os=snap#:~:text=get%20a%20certificate%20and%20have%20Certbot%20edit%20your%20nginx%20configuration%20automatically%20to%20serve%20it%2C%20turning%20on%20HTTPS%20access), checked 2026-10-30.

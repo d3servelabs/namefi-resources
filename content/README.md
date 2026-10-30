@@ -14,3 +14,7 @@ content/
 ```
 
 Search writing work also updates English reference pages in `glossary/` and `tld/`. The three earlier search-opportunity articles are English articles. See `blog/en/README.md` for their scope. Publishing and translation follow the root agent guide and `.claude/rules/content.md`.
+
+The October 30 batch delivers 95 complete English manuscripts. The dated
+[editorial ledger](../editorial/2026-10-30-create95/README.md) records the scope,
+source evidence, translation limits, and publication checks.

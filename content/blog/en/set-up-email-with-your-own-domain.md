@@ -1,143 +1,172 @@
 ---
-title: "How to Set Up Email With Your Own Domain"
+title: How to Create a Custom Email Address With Your Own Domain
 date: '2026-10-21'
 language: en
-tags: ['domains', 'guide']
-authors: ['namefiteam']
+tags:
+- domains
+- guide
+authors:
+- namefiteam
 draft: false
 cluster: domain-basics
 ogImage: ../../assets/set-up-email-with-your-own-domain-og.jpg
 format: guide
-description: "Set up email on your domain by choosing an email host, verifying ownership, adding the required DNS records, and testing sending and receiving."
-keywords: ['how to create an email with your own domain', 'custom email domain', 'how to set up email with your own domain', 'domain email setup', 'email hosting', 'MX records', 'SPF', 'DKIM', 'DMARC', 'email domain verification', 'custom domain mailbox']
+description: Create a custom-domain mailbox, verify domain control, set mail routing, configure authentication, and test both directions.
+keywords:
+- custom email domain
+- custom email address
+- email with own domain
+- custom domain email setup
+- domain mailbox setup
+- Google Workspace MX
+- domain verification
+- MX record
+- SPF
+- DKIM
+- DMARC
+- email migration
 relatedArticles:
-  - /en/blog/dns-on-tokenized-domains/
-  - /en/blog/what-is-domain/
-  - /en/blog/domain-vs-hosting/
-  - /en/blog/email-sender-reputation-arms-race/
-  - /en/blog/transfer-domain-to-another-registrar/
+- /en/blog/dns-on-tokenized-domains/
+- /en/blog/what-is-domain/
+- /en/blog/domain-vs-hosting/
+- /en/blog/email-sender-reputation-arms-race/
+- /en/blog/transfer-domain-to-another-registrar/
 relatedTopics:
-  - /en/topics/domain-basics/
-  - /en/topics/domain-security/
+- /en/topics/domain-basics/
+- /en/topics/domain-security/
 relatedSeries:
-  - /en/series/domain-investor-field-guide/
-  - /en/series/domain-apocalypse/
+- /en/series/domain-investor-field-guide/
+- /en/series/domain-apocalypse/
 relatedGlossary:
-  - /en/glossary/dns/
-  - /en/glossary/dns-record-types/
-  - /en/glossary/registrar/
-  - /en/glossary/domain-ownership/
-  - /en/glossary/subdomain/
+- /en/glossary/dns/
+- /en/glossary/dns-record-types/
+- /en/glossary/registrar/
+- /en/glossary/domain-ownership/
+- /en/glossary/subdomain/
+updated: '2026-10-30'
 ---
 
-**To create an address such as `hello@example.com`, you need control of the domain, an email service, and access to the domain's DNS settings.** The practical sequence is to prepare the mailboxes, verify the domain, route incoming mail, configure sending authentication, and test the result. Google's setup checklist explicitly puts user accounts before the MX change that starts directing mail to its service. [See the documented order.](https://knowledge.workspace.google.com/admin/gmail/activate-gmail-with-google-workspace-your-company)
+**To create a [custom email address](/en/blog/email-domain-address-guide/), choose a mail service, create the intended users, verify domain control, and publish the service's DNS records.** Then test receiving, sending, and sender authentication separately. [Google Workspace](/en/blog/gmail-with-custom-domain/)'s setup checklist creates users before changing the MX records that direct incoming mail. [Google documents that order.](#google-creates-users-before-moving-mail)
 
-This guide uses Google Workspace as a worked documentation example while explaining the decisions that apply across providers. Always take record values from your own provider's setup screen.
+Use the values from your own service account. This guide uses Google Workspace as a worked example without requiring Google as the provider. The same preparation questions help when another provider supplies the mailbox.
 
-## Choose a service that supports your sending needs
+An address such as `hello@example.com` is illustrative. IANA reserves example domains for documentation. [Read IANA's example-domain explanation.](#iana-reserves-example-domains-for-documentation)
 
-![A hosted mailbox handles incoming and outgoing mail, while forwarding routes incoming mail to an existing inbox.](../../assets/set-up-email-with-your-own-domain-03-service-choice.jpg)
+## Choose the service and the addresses before editing DNS
 
-A domain purchase and a mail service perform different jobs. Check whether a domain bundle includes mailboxes before buying another service. A website is not a prerequisite for this setup. You need control of the domain and its active DNS zone.
+Decide who needs a separate mailbox and who needs an additional address. Write down personal addresses, shared team addresses, and services that send automatic messages. Include the website contact form and billing tools.
 
-Choose the service before copying DNS records:
+If the requirement is incoming forwarding, evaluate forwarding explicitly. Cloudflare Email Routing can forward messages to destination addresses, while Cloudflare Email Sending supports outbound transactional email. Those are distinct capabilities within the current service. [Cloudflare describes both functions.](#cloudflare-documents-routing-and-outbound-email)
 
-| Your requirement | Service to investigate | Check before changing DNS |
-| --- | --- | --- |
-| Individual inboxes and replies from the domain | A hosted mailbox service, such as Google Workspace or Microsoft 365 | Users, aliases, client access, recovery, and migration |
-| Personal or family addresses in iCloud Mail | Custom Email Domain with iCloud+ | Subscription, Apple Account requirements, and sharing needs |
-| Incoming mail delivered to an existing inbox | A forwarding service | Verified destination and a separate supported method for outgoing replies |
+If employees need ordinary inboxes and replies, evaluate a mailbox product and its actual client workflow. Do not assume that an application sending feature supplies employee inboxes.
 
-Microsoft 365 supports automatic domain verification and record setup through Domain Connect, or manual setup when the registrar lacks support. [Read Microsoft's custom-domain procedure.](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/add-domain?view=o365-worldwide)
+Prepare the account and access record:
 
-Apple requires iCloud+ for its custom-domain feature, plus an Apple Account with two-factor authentication and iCloud Mail enabled. Check the current eligibility before choosing iCloud Mail. [Read Apple's requirements.](https://support.apple.com/en-us/102540)
+- The full domain and the person responsible for registration renewal.
+- The active DNS provider and the authorized DNS administrator.
+- The email provider and the person responsible for user administration.
+- The addresses, aliases, and shared access requirements.
+- The services that send using the domain.
+- The previous provider and the message-retention plan, if migration applies.
 
-Cloudflare distinguishes incoming Email Routing from outbound transactional Email Sending. Treat a routing rule as an incoming route, rather than assuming the rule provides a complete mailbox. [See Cloudflare's service overview.](https://developers.cloudflare.com/email-service/)
+Keep administrative access private. Give account access only to authorized staff. Store recovery information through the organization's approved process.
 
-For plan limits and the separate question of free service, read [free business email options](/en/blog/free-business-email-options/). This guide focuses on the setup sequence after choosing a service.
+For offer selection, read the [domain email offer comparison](/en/blog/domain-with-free-email/). This guide starts after the service decision.
 
-## Prepare the mailbox and DNS access
+![A hosted mailbox differs from incoming forwarding.](../../assets/set-up-email-with-your-own-domain-03-service-choice.jpg)
 
-First decide whether you need a **mailbox** or **forwarding**. A mailbox service gives each user an account and address. Forwarding routes incoming messages to an existing inbox; for example, Cloudflare documents rules that forward mail for a custom address to a verified destination. [Compare Google's user-account setup](https://knowledge.workspace.google.com/admin/gmail/activate-gmail-with-google-workspace-your-company) with [Cloudflare's forwarding workflow](https://developers.cloudflare.com/email-service/get-started/route-emails/). If you want to reply using the custom address, explicitly confirm how your chosen service supports outgoing mail before relying on forwarding alone.
+## Verify domain control with the provider's exact value
 
-Make a short preparation sheet:
+In Google's TXT verification procedure, the administrator copies a unique value from the Admin console and publishes the value in DNS. Google then checks that record. [Follow the current TXT verification instructions.](#google-documents-domain-verification)
 
-- The domain you control and the person authorized to change its DNS.
-- The active DNS provider, which may differ from the registrar.
-- Every address that must receive mail: people, aliases, and shared addresses.
-- Every service that sends as your domain, including forms, newsletters, and billing tools.
-- The existing DNS records and the previous mail provider, if any.
+For Google Workspace, open [Manage domains in the Admin console](https://admin.google.com/ac/domains/manage). Select the domain's verification action and copy the complete supplied value. The Google instructions identify the `google-site-verification=` prefix. [Read the record-copying step.](#google-documents-domain-verification)
 
-Keep the website records in that saved copy too. The [DNS record types reference](/en/glossary/dns-record-types/) helps distinguish mail settings from web settings. If registration and DNS are separate, use the active DNS provider's account; DNSimple's documentation confirms that this arrangement is supported by its service. [See the independent DNS-hosting example.](https://support.dnsimple.com/articles/dnsimple-services/#domain-registration-transfer-and-renewal)
+At the active DNS provider, add the specified record name, type, and value. Check whether the DNS editor automatically appends the domain name. Compare the saved full record name with the provider's instructions.
 
-For an existing mail service, decide how to preserve old messages, recreate aliases, and handle mail arriving during the transition before moving delivery. Treat the old mailbox's contents as a separate migration job. Google's checklist links importing existing mail as an additional setup task. [See the setup checklist.](https://knowledge.workspace.google.com/admin/gmail/activate-gmail-with-google-workspace-your-company)
+Return to the email provider and complete verification. If verification fails, inspect the authoritative record before repeatedly pressing the verification button. Confirm the zone, full name, and exact value.
 
-## Verify the domain before you route incoming mail
+Domain verification and incoming mail routing use different records. Completing verification does not establish that incoming messages reach the new mailbox. [Google documents verification separately from MX setup.](#google-documents-incoming-mail-routing)
 
-![MX records identify the receiving mail host for a custom-domain address.](../../assets/set-up-email-with-your-own-domain-01-routing.jpg)
+## Prepare users before switching incoming delivery
 
-Domain verification proves control to the email provider. In Google's documented TXT method, copy the unique verification value from **Account → Domains → Manage domains**, add it in DNS, and return to the Admin console to verify. Keep the exact record name and value supplied to your account. [Follow Google's TXT-verification procedure.](https://knowledge.workspace.google.com/admin/domains/verify-your-domain-with-a-txt-record)
+Create the required accounts and addresses first. Google's required checklist puts account creation before the MX change. [Follow the documented sequence.](#google-creates-users-before-moving-mail)
 
-Verification does not route mail. When the mailboxes are ready, make the planned **MX-record** change. Preserve unrelated TXT, A, AAAA, and CNAME records.
+For an existing service, schedule the mail migration and decide how to preserve old messages. Google lists importing existing email as a separate setup task. [Its additional setup options explain the distinction.](#google-creates-users-before-moving-mail)
 
-Google Workspace currently specifies `smtp.google.com` with priority `1`, followed by Gmail activation in the Admin console. Working configurations using older `aspmx` targets remain supported and need no change. [See Google's MX instructions and legacy-record note.](https://knowledge.workspace.google.com/admin/domains/set-up-mx-records-for-google-workspace)
+Incoming senders use MX records to locate the receiving mail service. Google currently documents `smtp.google.com` with priority `1`, followed by Gmail activation in the Admin console. Existing working legacy `aspmx` configurations remain supported. [Check Google's MX table and legacy note.](#google-documents-incoming-mail-routing)
 
-Google's normal setup calls for removing other MX records during the switch. Do not combine providers' records expecting each to receive a copy of every message. [Follow the intended MX configuration.](https://knowledge.workspace.google.com/admin/domains/set-up-mx-records-for-google-workspace)
+Do not copy that target into a different provider's setup. Use the values supplied by the chosen provider.
 
-Check public MX answers against the intended values. Google documents Admin Toolbox Dig for this check and allows up to 72 hours for recognition. Fix incorrect records rather than waiting on them. [See its troubleshooting steps.](https://knowledge.workspace.google.com/admin/domains/set-up-mx-records-for-google-workspace)
+Before saving the switch, preserve unrelated website and verification records. Google's standard MX procedure removes other MX records. Follow the intended architecture instead of mixing providers' records without a documented reason. [Google warns about old or incorrect MX records.](#google-documents-incoming-mail-routing)
 
-## Authenticate every service that sends outgoing mail
+After saving, compare public MX answers with the intended configuration. Then activate the domain's mail service through the provider's setup workflow.
 
-![SPF, DKIM, and DMARC address different parts of outgoing email authentication.](../../assets/set-up-email-with-your-own-domain-02-authentication.jpg)
+![MX records identify the receiving mail host.](../../assets/set-up-email-with-your-own-domain-01-routing.jpg)
 
-Receiving a message proves only one direction works. Configure the mechanisms your host supplies for sending, and account for other legitimate senders too.
+## Authenticate every legitimate outgoing service
 
-| Mechanism | What to configure | Mistake to avoid |
-| --- | --- | --- |
-| SPF | A DNS TXT policy authorizing the services that send for the domain | Creating separate SPF policies for different providers at the same name |
-| DKIM | Provider-supplied DNS information used to verify signatures on outgoing mail | Publishing the record but never enabling signing in the mail service |
-| DMARC | A policy and reporting configuration that checks alignment with the visible From domain | Enforcing rejection before legitimate senders authenticate correctly |
+A working inbox establishes only the receiving direction. Prepare outgoing authentication for each legitimate sender.
 
-For **SPF**, inventory all your senders before editing. Google's guidance distinguishes a Workspace-only setup from one that also uses third-party senders. Its troubleshooting guide says to consolidate them into **one SPF record**. That restriction applies to SPF records at the same name, not to every TXT record in the zone. [Read the SPF setup](https://knowledge.workspace.google.com/admin/security/set-up-spf) and [duplicate-SPF guidance](https://knowledge.workspace.google.com/admin/security/troubleshoot-spf-issues#:~:text=Note%20that%20each%20domain).
-
-For **DKIM**, follow the host's sequence for generating or obtaining the record, publishing it, and enabling signing. Google's procedure requires publishing the public key before selecting **Start authentication**; its guide also notes a 24–72-hour wait after turning on Gmail before a DKIM key can be obtained. The private signing key does not belong in public DNS. [See the DKIM steps.](https://knowledge.workspace.google.com/admin/security/set-up-dkim)
-
-For **[DMARC](/en/blog/dmarc-record-setup/)**, a passing message needs SPF with alignment or DKIM with alignment to the visible From domain. Google's rollout guidance starts with `p=none` so you can review reports before moving toward quarantine or rejection. It also asks for SPF and DKIM to authenticate for at least 48 hours before turning on DMARC. [Follow the DMARC setup and rollout guidance.](https://knowledge.workspace.google.com/admin/security/set-up-dmarc#:~:text=When%20you%20start%20using%20DMARC)
-
-If a domain already has an enforced DMARC policy, preserve that policy while planning the migration. Do not automatically replace it with a tutorial example. Check the new host and every other sender against the existing policy first, then make any policy change deliberately.
-
-## Test both directions before you finish the migration
-
-Use external accounts you control or cooperating testers. Send from the new mailbox to an external inbox, reply, and separately send a fresh message into the custom address. Include aliases and the actual website or billing tools on your preparation sheet.
-
-Inspect an outgoing message at the receiving end. In Gmail, **Show original** exposes authentication results. Google's DKIM test specifically calls for a different recipient and checking the received message's `Authentication-Results`; sending a message to yourself is not its verification method. [See “Turn on & verify DKIM.”](https://knowledge.workspace.google.com/admin/security/set-up-dkim)
-
-Use the failure to choose the next check:
-
-| Symptom | Check next |
+| Mechanism | Setup task |
 | --- | --- |
-| Verification fails | The full verification value, correct DNS zone, and record name |
-| Incoming mail goes to the old service | Public MX answers and the intended MX change |
-| Mail reaches one address but not an alias | The address or alias configuration at the new host |
-| Outgoing authentication fails | The actual sender, SPF policy, DKIM signing, and DMARC alignment |
-| Mail works but the website fails | Whether a website record or nameserver was changed accidentally |
+| SPF | Inventory authorized sending systems and publish the appropriate policy |
+| DKIM | Enable signing and publish the provider's public-key information |
+| DMARC | Configure alignment, reporting, and a policy suited to the domain's mail flows |
 
-Keep the previous service available until your migration checks are complete. Save the final record set and provider confirmation with the person responsible for renewals. The finishing condition is concrete: the intended addresses receive mail, the intended services can send it, and the received messages show the expected authentication results.
+Google's SPF guidance requires identifying all sending services, including automatic website messages. [Use that inventory before editing SPF.](#google-inventories-authorized-senders)
 
-For the narrower question of how these records relate to tokenization, see [DNS on a tokenized domain](/en/blog/dns-on-tokenized-domains/).
+DKIM signing and public-key publication are separate tasks. RFC 6376 explains that verifiers obtain a public key and that messages must be signed before leaving the signer's administrative domain. [Read the DKIM architecture.](#rfc-6376-separates-signing-from-verification) Follow your provider's signing activation procedure rather than assuming a DNS record alone completes setup.
 
-## These sources support the setup instructions
+For DMARC, use current [RFC 9989](#rfc-9989-governs-current-dmarc-deployment). Configure aligned authentication and a functioning reporting destination. Review the reports before selecting a stronger handling preference.
 
-- Google Workspace — [Activate Gmail with Google Workspace](https://knowledge.workspace.google.com/admin/gmail/activate-gmail-with-google-workspace-your-company), required checklist and additional migration options. Fetched 2026-10-21.
-- Cloudflare — [Route emails](https://developers.cloudflare.com/email-service/get-started/route-emails/), incoming routing and destination-address workflow. Fetched 2026-10-21.
-- DNSimple — [DNSimple Services](https://support.dnsimple.com/articles/dnsimple-services/#domain-registration-transfer-and-renewal), using hosted DNS with another registrar. Fetched 2026-10-21.
-- Google Workspace — [Verify your domain with a TXT record](https://knowledge.workspace.google.com/admin/domains/verify-your-domain-with-a-txt-record), steps 1–3. Fetched 2026-10-21.
-- Google Workspace — [Set up MX records](https://knowledge.workspace.google.com/admin/domains/set-up-mx-records-for-google-workspace), record table, legacy-record note, Gmail activation, and troubleshooting. Fetched 2026-10-21.
-- Google Workspace — [Set up SPF](https://knowledge.workspace.google.com/admin/security/set-up-spf), “Before you begin” and “Determine your SPF record.” Fetched 2026-10-21.
-- Google Workspace — [Troubleshoot SPF issues](https://knowledge.workspace.google.com/admin/security/troubleshoot-spf-issues#:~:text=Note%20that%20each%20domain), “Make sure you have an SPF record (and only one)” and third-party senders. Fetched 2026-10-21.
-- Google Workspace — [Set up DKIM](https://knowledge.workspace.google.com/admin/security/set-up-dkim), key generation, public-key publication, and “Turn on & verify DKIM.” Fetched 2026-10-21.
-- Google Workspace — [Set up DMARC](https://knowledge.workspace.google.com/admin/security/set-up-dmarc#:~:text=When%20you%20start%20using%20DMARC), recommended starting policy, alignment, and prerequisites to publishing the record. Fetched 2026-10-21.
+Do not automatically apply `p=reject` to an ordinary employee email domain. RFC 9989 warns against that policy for general-purpose email because mailing lists and other indirect flows create interoperability problems. The current standard also removes the old percentage rollout tag. [Read the policy considerations and Appendix A.6.](#rfc-9989-governs-current-dmarc-deployment)
 
-- Microsoft — [Add a custom domain to Microsoft 365](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/add-domain?view=o365-worldwide), automatic and manual domain setup. Fetched 2026-10-21.
-- Apple — [Use Custom Email Domain with iCloud Mail](https://support.apple.com/en-us/102540), subscription and account requirements. Fetched 2026-10-21.
-- Cloudflare — [Email Service](https://developers.cloudflare.com/email-service/), incoming routing and outbound transactional sending. Fetched 2026-10-21.
+If the domain already has a deliberate policy, evaluate the new sender against that policy. Avoid replacing a working configuration with a generic tutorial example.
+
+![SPF, DKIM, and DMARC address separate authentication tasks.](../../assets/set-up-email-with-your-own-domain-02-authentication.jpg)
+
+## Finish with independent delivery and authentication checks
+
+Use an unrelated external account that you control, or a cooperating tester. Send a new incoming message to each important custom address. Send a reply and a separate outgoing message.
+
+Inspect the received message's authentication results. Compare the sender domain, signing identity, and reported results with the intended setup. Test website forms and billing messages through their actual applications.
+
+Use failures to choose the next check. An unknown recipient suggests an address setup problem. Delivery to the old provider suggests a routing question. An authentication failure requires inspection of the actual sending service and identity.
+
+Keep the previous service available until the migration checks succeed. Save the final DNS configuration, responsible administrators, and recovery procedure. The finished result is a usable address with verified delivery in both directions and a documented authentication setup.
+
+## Sources and further reading
+
+### Google creates users before moving mail
+
+[gmail-start official source](https://knowledge.workspace.google.com/admin/gmail/activate-gmail-with-google-workspace-your-company#required_checklist_of_steps) — fetched 2026-10-30 UTC.
+
+### Google documents domain verification
+
+[verify official source](https://knowledge.workspace.google.com/admin/domains/verify-your-domain-with-a-txt-record#copy-txt-record) — fetched 2026-10-30 UTC.
+
+### Google documents incoming mail routing
+
+[mx official source](https://knowledge.workspace.google.com/admin/domains/set-up-mx-records-for-google-workspace#step_1_add_googles_mx_record_to_your_domain) — fetched 2026-10-30 UTC.
+
+### Cloudflare documents routing and outbound email
+
+[cloudmail official source](https://developers.cloudflare.com/email-service/#:~:text=Email%20Sending%20Beta) — fetched 2026-10-30 UTC.
+
+### Google inventories authorized senders
+
+[spf official source](https://knowledge.workspace.google.com/admin/security/set-up-spf#identify-senders) — fetched 2026-10-30 UTC.
+
+### RFC 6376 separates signing from verification
+
+[dkim official source](https://www.rfc-editor.org/rfc/rfc6376.html#section-1.4) — fetched 2026-10-30 UTC.
+
+### RFC 9989 governs current DMARC deployment
+
+[dmarc official source](https://www.rfc-editor.org/rfc/rfc9989.html#section-7.4) — fetched 2026-10-30 UTC.
+
+Checked passages: [Section 7.4: indirect mail and policy choice](https://www.rfc-editor.org/rfc/rfc9989.html#section-7.4), [Section 8: aligned authentication and reporting](https://www.rfc-editor.org/rfc/rfc9989.html#section-8), [Appendix A.6: percentage tag replacement](https://www.rfc-editor.org/rfc/rfc9989.html#appendix-A.6), [Appendix C.5.2: removed tags](https://www.rfc-editor.org/rfc/rfc9989.html#appendix-C.5.2).
+
+### IANA reserves example domains for documentation
+
+[examples official source](https://www.iana.org/help/example-domains) — fetched 2026-10-30 UTC.

@@ -1,0 +1,3902 @@
+[
+  {
+    "position": 1,
+    "query": "443 port",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 8100,
+    "dataforseo_keyword_difficulty": 0,
+    "screening_score": "8100.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is Port 443? Why HTTPS Uses It and When You Should Open It",
+    "path": "content/blog/en/what-is-port-443.md",
+    "existing_revision": false,
+    "writer_group": 1,
+    "reviewed_manuscript_sha256": "f2ef752e012a1c42e25244358a4d6a3520a08aa4655742d5caec5827b18ca26e",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:31:02.877600+00:00",
+        "body_sha256": "933b9eedc09b01676b64f6ac5781ac3b87a92f23ce63b8736e60f12d91984f86"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2",
+        "retrieval_record": "2026-10-30T06:22:14.135528+00:00",
+        "body_sha256": "72a0a022d3285ce73171937d1f4e9039eaf55654df4a01ec113be96402b9c04f"
+      },
+      {
+        "url": "https://curl.se/docs/sslcerts.html#:~:text=curl%20does%20certificate%20verification%20by%20default",
+        "retrieval_record": "2026-10-30T06:22:52.017582+00:00",
+        "body_sha256": "484347d71536f32579ae3cc345c9ebd090611c57d86878bd344c66282ff66187"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/powershell/module/nettcpip/test-netconnection?view=windowsserver2025-ps#description",
+        "retrieval_record": "2026-10-30T06:22:52.516034+00:00",
+        "body_sha256": "a0cd70f4e03a5d388864aaa31f89003ec215d77f3b5a800c055d649ae6b0dc12"
+      },
+      {
+        "url": "https://curl.se/docs/manpage.html#:~:text=Fetch%20the%20headers%20only",
+        "retrieval_record": "2026-10-30T06:22:52.385937+00:00",
+        "body_sha256": "71c7fcad33ff70a7cd6f03e85a879cba985e59f5c6144396ee64636b44b039d5"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9114.html#section-3.1",
+        "retrieval_record": "2026-10-30T06:22:14.020252+00:00",
+        "body_sha256": "e193bb7b32821ddd14f63ab1ff54a210e3615a223a33878758da493f4eff0b66"
+      },
+      {
+        "url": "https://letsencrypt.org/docs/challenge-types/#http-01-challenge",
+        "retrieval_record": "2026-10-30T06:22:14.291210+00:00",
+        "body_sha256": "23fc92421897342220972610b284c65f674198daf2e6c8c10756a1cd2c1ed245"
+      }
+    ]
+  },
+  {
+    "position": 2,
+    "query": "ipconfig flushdns",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 6600,
+    "dataforseo_keyword_difficulty": 0,
+    "screening_score": "6600.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Flush DNS on Windows: The ipconfig Command to Run First",
+    "path": "content/blog/en/flush-dns-cache.md",
+    "existing_revision": true,
+    "writer_group": 1,
+    "reviewed_manuscript_sha256": "ecc7ff827cd935c52e4d80d8c0b7749af4d9c1e5c6323fd92b06f5cd5cae82c0",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5737.html#section-3",
+        "retrieval_record": "2026-10-30T06:31:03.040445+00:00",
+        "body_sha256": "ff10f39180559d1c3693bcc009b88529718ee4e343fa4a4a5c209e92d18e14ad"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:31:02.877600+00:00",
+        "body_sha256": "933b9eedc09b01676b64f6ac5781ac3b87a92f23ce63b8736e60f12d91984f86"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig#parameters",
+        "retrieval_record": "2026-10-30T06:22:14.020713+00:00",
+        "body_sha256": "476c85e7af3c338195f51444d7798130376bf0ad1d70e46e90d785c370765134"
+      },
+      {
+        "url": "https://it.ucsf.edu/how-to/how-flush-dns-cache#:~:text=Windows%208%2C%2010%2C%20and%2011",
+        "retrieval_record": "2026-10-30T06:22:14.142407+00:00",
+        "body_sha256": "f1eaa30b030779052f91b1beff5ebde24d3391668e2fe4594ff4538091045446"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2308.html#section-5",
+        "retrieval_record": "2026-10-30T06:22:53.119388+00:00",
+        "body_sha256": "0f25de55e4113bbeaadb15ea627555f2d6e18040ba1dad7257da2507a1f84ee5"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-2.4",
+        "retrieval_record": "2026-10-30T06:22:13.943286+00:00",
+        "body_sha256": "7ab7947d33fb8ecf803cefe0f4d1fc8b5833d3017ba60e131de44473c2360c87"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup#remarks",
+        "retrieval_record": "2026-10-30T06:22:14.136020+00:00",
+        "body_sha256": "9511a57378a58a8154516cdd59bc4c1e8bd95d27374fb629e43d055cec5dfe8d"
+      },
+      {
+        "url": "https://support.google.com/chrome/answer/10468685?hl=en&co=GENIE.Platform%3DDesktop#:~:text=Select%20your%20current%20service%20provider",
+        "retrieval_record": "2026-10-30T06:27:07.704115+00:00",
+        "body_sha256": "633384584d8d0d61e7a7777f4bf910888a1bff2492d12c160f0fb6d9b2e24730"
+      }
+    ]
+  },
+  {
+    "position": 3,
+    "query": "https",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 301000,
+    "dataforseo_keyword_difficulty": 47,
+    "screening_score": "6270.83",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is HTTPS? Why a Secure Connection Does Not Mean a Safe Website",
+    "path": "content/blog/en/what-is-https.md",
+    "existing_revision": true,
+    "writer_group": 1,
+    "reviewed_manuscript_sha256": "0e5afecfce5a50e568fa96d43ccdcf46ceaac3f39a335d42600c241e40776281",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:31:02.877600+00:00",
+        "body_sha256": "933b9eedc09b01676b64f6ac5781ac3b87a92f23ce63b8736e60f12d91984f86"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2",
+        "retrieval_record": "2026-10-30T06:22:14.135528+00:00",
+        "body_sha256": "72a0a022d3285ce73171937d1f4e9039eaf55654df4a01ec113be96402b9c04f"
+      },
+      {
+        "url": "https://blog.chromium.org/2023/05/an-update-on-lock-icon.html#:~:text=not%20an%20indicator%20of%20website%20safety",
+        "retrieval_record": "2026-10-30T06:22:52.835134+00:00",
+        "body_sha256": "f64e90ea7c04d9dc8fab5ab6b0f602774bfb992baf5796838e9c34b1dc94ed66"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc8446.html#section-1",
+        "retrieval_record": "2026-10-30T06:22:51.476152+00:00",
+        "body_sha256": "6f47cac3faf4a2a8fd402f5b0c3c1678db15ee83a57b1c095ba370950547e570"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-4.3.4",
+        "retrieval_record": "2026-10-30T06:22:14.135528+00:00",
+        "body_sha256": "72a0a022d3285ce73171937d1f4e9039eaf55654df4a01ec113be96402b9c04f"
+      },
+      {
+        "url": "https://curl.se/docs/sslcerts.html#:~:text=curl%20does%20certificate%20verification%20by%20default",
+        "retrieval_record": "2026-10-30T06:22:52.017582+00:00",
+        "body_sha256": "484347d71536f32579ae3cc345c9ebd090611c57d86878bd344c66282ff66187"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc8446.html#section-2",
+        "retrieval_record": "2026-10-30T06:22:51.476152+00:00",
+        "body_sha256": "6f47cac3faf4a2a8fd402f5b0c3c1678db15ee83a57b1c095ba370950547e570"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9114.html#section-2",
+        "retrieval_record": "2026-10-30T06:22:14.020252+00:00",
+        "body_sha256": "e193bb7b32821ddd14f63ab1ff54a210e3615a223a33878758da493f4eff0b66"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-15.5.4",
+        "retrieval_record": "2026-10-30T06:22:14.135528+00:00",
+        "body_sha256": "72a0a022d3285ce73171937d1f4e9039eaf55654df4a01ec113be96402b9c04f"
+      },
+      {
+        "url": "https://letsencrypt.org/docs/challenge-types/#http-01-challenge",
+        "retrieval_record": "2026-10-30T06:22:14.291210+00:00",
+        "body_sha256": "23fc92421897342220972610b284c65f674198daf2e6c8c10756a1cd2c1ed245"
+      }
+    ]
+  },
+  {
+    "position": 4,
+    "query": "flush dns mac os",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 0,
+    "screening_score": "3600.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Flush DNS on a Mac: The Right Command for Your macOS Version",
+    "path": "content/blog/en/flush-dns-mac.md",
+    "existing_revision": false,
+    "writer_group": 1,
+    "reviewed_manuscript_sha256": "2b95f82deec2a71a740d2d535a4d75d490939923b4bd9fd63999943694876c50",
+    "primary_sources": [
+      {
+        "url": "https://it.ucsf.edu/how-to/how-flush-dns-cache#:~:text=For%20macOS%20Sonoma",
+        "retrieval_record": "2026-10-30T06:22:14.142407+00:00",
+        "body_sha256": "f1eaa30b030779052f91b1beff5ebde24d3391668e2fe4594ff4538091045446"
+      },
+      {
+        "url": "https://support.apple.com/en-us/101481#:~:text=This%20article%20has%20been%20archived",
+        "retrieval_record": "2026-10-30T06:22:51.227034+00:00",
+        "body_sha256": "003505bd8fdbdc8b4cc1ea966ca13d5267f99b35f406b781f6e65dcea7f0503e"
+      },
+      {
+        "url": "https://support.apple.com/en-us/109033#:~:text=About%20This%20Mac",
+        "retrieval_record": "2026-10-30T06:40:49.062087+00:00",
+        "body_sha256": "b0c13b56bb6fb96cb6c45b87bd62ba50aa410421aa5c0a1a0be86b82722ca1be"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-2.4",
+        "retrieval_record": "2026-10-30T06:22:13.943286+00:00",
+        "body_sha256": "7ab7947d33fb8ecf803cefe0f4d1fc8b5833d3017ba60e131de44473c2360c87"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2308.html#section-5",
+        "retrieval_record": "2026-10-30T06:22:53.119388+00:00",
+        "body_sha256": "0f25de55e4113bbeaadb15ea627555f2d6e18040ba1dad7257da2507a1f84ee5"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:31:02.877600+00:00",
+        "body_sha256": "933b9eedc09b01676b64f6ac5781ac3b87a92f23ce63b8736e60f12d91984f86"
+      },
+      {
+        "url": "https://support.apple.com/guide/mac-help/change-dns-settings-on-mac-mh14127/mac#:~:text=To%20change%20these%20settings",
+        "retrieval_record": "2026-10-30T06:22:14.714478+00:00",
+        "body_sha256": "b8d9d2e1c21e8799f87dc481f061512878ad68cd88e339a452c2f0af7b3a406d"
+      },
+      {
+        "url": "https://support.google.com/chrome/answer/10468685?hl=en&co=GENIE.Platform%3DDesktop#:~:text=Select%20your%20current%20service%20provider",
+        "retrieval_record": "2026-10-30T06:27:07.704115+00:00",
+        "body_sha256": "633384584d8d0d61e7a7777f4bf910888a1bff2492d12c160f0fb6d9b2e24730"
+      }
+    ]
+  },
+  {
+    "position": 5,
+    "query": "whois",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 246000,
+    "dataforseo_keyword_difficulty": 100,
+    "screening_score": "2435.64",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "WHOIS Lookup: Find a Domain’s Registrar, Dates, and Public Details",
+    "path": "content/blog/en/whois-and-rdap-public-data.md",
+    "existing_revision": true,
+    "writer_group": 1,
+    "reviewed_manuscript_sha256": "22c444858f261bb6ff2521325f3692b96e08ede2a6438eb892f3bcff763e63c7",
+    "primary_sources": [
+      {
+        "url": "https://www.icann.org/en/announcements/details/icann-update-launching-rdap-sunsetting-whois-27-01-2025-en#:~:text=Users%20are%20encouraged",
+        "retrieval_record": "2026-10-30T06:22:14.142648+00:00",
+        "body_sha256": "b9637eb0ee655f09624860ffa9d02c41a73433ea54d9c8e5b3b888f4e3cc1c08"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:31:02.877600+00:00",
+        "body_sha256": "933b9eedc09b01676b64f6ac5781ac3b87a92f23ce63b8736e60f12d91984f86"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9083.html#section-5.3",
+        "retrieval_record": "2026-10-30T06:40:49.346390+00:00",
+        "body_sha256": "710d418ddf5db2fc111bf7b4b4143186dcd8cfba46c8806b050548c83a84a235"
+      },
+      {
+        "url": "https://www.icann.org/en/contracted-parties/registry-operators/registration-data-access-protocol/information-for-rdap-users-31-08-2018-en#:~:text=All%20gTLD%20registries",
+        "retrieval_record": "2026-10-30T06:41:46.717878+00:00",
+        "body_sha256": "cce09d94cd53e7565e2c7ce3c0dc129888f500287559f6ae0e093d9bd936b2ca"
+      },
+      {
+        "url": "https://www.icann.org/en/contracted-parties/consensus-policies/registration-data-policy#:~:text=9.1.%20RDDS%20Publication%20Requirements",
+        "retrieval_record": "2026-10-30T06:41:46.739696+00:00",
+        "body_sha256": "d75d0d3b030bb0ddfbffe52b86f121cb123d4e4715e96a77fb4e484b0e84fa5b"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=Your%20domain%20name%20registration%20is%20not",
+        "retrieval_record": "2026-10-30T06:22:14.571756+00:00",
+        "body_sha256": "50cd8b0956f3a94d877c1faf6af0f451e384a88e822390563fc50c9cee1b03c5"
+      }
+    ]
+  },
+  {
+    "position": 6,
+    "query": "web site hosting",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 135000,
+    "dataforseo_keyword_difficulty": 57,
+    "screening_score": "2327.59",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Website Hosting: How to Pick a Plan That Fits Your Site and Budget",
+    "path": "content/blog/en/website-hosting-guide.md",
+    "existing_revision": false,
+    "writer_group": 1,
+    "reviewed_manuscript_sha256": "d562813952b0b94ed8af6f4217ffe3c43f31b37f5ea9cb8d2fc12bdbaeae8e4e",
+    "primary_sources": [
+      {
+        "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#about-github-pages",
+        "retrieval_record": "2026-10-30T06:22:14.600359+00:00",
+        "body_sha256": "98aac0de22ef7066d12a0e9343ecb5665c4d048e4aedc5f36e68228ac4b9ea01"
+      },
+      {
+        "url": "https://wordpress.org/about/requirements/#:~:text=To%20run%20WordPress",
+        "retrieval_record": "2026-10-30T06:22:14.842196+00:00",
+        "body_sha256": "9c52c0d2ed95d8ba1a31831b4bfa1d56065e105047ef79b0c472d4de302425fe"
+      },
+      {
+        "url": "https://aws.amazon.com/what-is/web-hosting/#:~:text=Shared%20hosting",
+        "retrieval_record": "2026-10-30T06:40:50.797712+00:00",
+        "body_sha256": "18b60d6f402a47cb9165c6504766bfcdbdec927d0d7ccf4a2ca2c8dc67f60d32"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=Your%20domain%20name%20registration%20is%20not",
+        "retrieval_record": "2026-10-30T06:22:14.571756+00:00",
+        "body_sha256": "50cd8b0956f3a94d877c1faf6af0f451e384a88e822390563fc50c9cee1b03c5"
+      },
+      {
+        "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https#enforcing-https-for-your-github-pages-site",
+        "retrieval_record": "2026-10-30T06:41:47.087921+00:00",
+        "body_sha256": "f7342d806a37144405df6f52a3dbb433f7697f9d52936bc9e5dddbd5e5fb243e"
+      },
+      {
+        "url": "https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain",
+        "retrieval_record": "2026-10-30T06:22:14.796800+00:00",
+        "body_sha256": "bfee05b29ce9a37ddccea7f3cb4840500c26f748cb9428b2f7fc8c12600fa090"
+      }
+    ]
+  },
+  {
+    "position": 7,
+    "query": "domain name system",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 110000,
+    "dataforseo_keyword_difficulty": 49,
+    "screening_score": "2200.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is DNS? How Your Browser Finds a Website From Its Name",
+    "path": "content/blog/en/what-is-dns.md",
+    "existing_revision": false,
+    "writer_group": 1,
+    "reviewed_manuscript_sha256": "3dd65b7366f169782bbc29e538f8787607ef2f93df58a0edb5f306ed15040619",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-2.4",
+        "retrieval_record": "2026-10-30T06:22:13.943286+00:00",
+        "body_sha256": "7ab7947d33fb8ecf803cefe0f4d1fc8b5833d3017ba60e131de44473c2360c87"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:31:02.877600+00:00",
+        "body_sha256": "933b9eedc09b01676b64f6ac5781ac3b87a92f23ce63b8736e60f12d91984f86"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.1",
+        "retrieval_record": "2026-10-30T06:22:13.943286+00:00",
+        "body_sha256": "7ab7947d33fb8ecf803cefe0f4d1fc8b5833d3017ba60e131de44473c2360c87"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2.1",
+        "retrieval_record": "2026-10-30T06:22:13.943286+00:00",
+        "body_sha256": "7ab7947d33fb8ecf803cefe0f4d1fc8b5833d3017ba60e131de44473c2360c87"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9499.html#section-6",
+        "retrieval_record": "2026-10-30T06:41:46.952747+00:00",
+        "body_sha256": "562eb3afff2fa226ffad3c0b4fb2ca6a698cf50d2c04d7952cd01df3b90c627b"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-5.3.3",
+        "retrieval_record": "2026-10-30T06:22:13.943286+00:00",
+        "body_sha256": "7ab7947d33fb8ecf803cefe0f4d1fc8b5833d3017ba60e131de44473c2360c87"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.6",
+        "retrieval_record": "2026-10-30T06:22:13.943286+00:00",
+        "body_sha256": "7ab7947d33fb8ecf803cefe0f4d1fc8b5833d3017ba60e131de44473c2360c87"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc3596.html#section-1",
+        "retrieval_record": "2026-10-30T06:41:46.864417+00:00",
+        "body_sha256": "75d1ae0c95a7fc87017a0c18a1663e502c41d8a1bc611c1f64a0f884c2374790"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.6",
+        "retrieval_record": "2026-10-30T06:22:13.943286+00:00",
+        "body_sha256": "7ab7947d33fb8ecf803cefe0f4d1fc8b5833d3017ba60e131de44473c2360c87"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2308.html#section-5",
+        "retrieval_record": "2026-10-30T06:22:53.119388+00:00",
+        "body_sha256": "0f25de55e4113bbeaadb15ea627555f2d6e18040ba1dad7257da2507a1f84ee5"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=Your%20domain%20name%20registration%20is%20not",
+        "retrieval_record": "2026-10-30T06:22:14.571756+00:00",
+        "body_sha256": "50cd8b0956f3a94d877c1faf6af0f451e384a88e822390563fc50c9cee1b03c5"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2",
+        "retrieval_record": "2026-10-30T06:22:14.135528+00:00",
+        "body_sha256": "72a0a022d3285ce73171937d1f4e9039eaf55654df4a01ec113be96402b9c04f"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup#remarks",
+        "retrieval_record": "2026-10-30T06:22:14.136020+00:00",
+        "body_sha256": "9511a57378a58a8154516cdd59bc4c1e8bd95d27374fb629e43d055cec5dfe8d"
+      }
+    ]
+  },
+  {
+    "position": 8,
+    "query": "dns server",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 135000,
+    "dataforseo_keyword_difficulty": 63,
+    "screening_score": "2109.38",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is a DNS Server? The Setting That Can Break Your Browsing",
+    "path": "content/blog/en/what-is-a-dns-server.md",
+    "existing_revision": false,
+    "writer_group": 1,
+    "reviewed_manuscript_sha256": "5092bc1ba738933f58e0c0b53e1dfe20383f1ba90eb00802deebad93302daff6",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9499.html#section-6",
+        "retrieval_record": "2026-10-30T06:41:46.952747+00:00",
+        "body_sha256": "562eb3afff2fa226ffad3c0b4fb2ca6a698cf50d2c04d7952cd01df3b90c627b"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9499.html#section-6",
+        "retrieval_record": "2026-10-30T06:41:46.952747+00:00",
+        "body_sha256": "562eb3afff2fa226ffad3c0b4fb2ca6a698cf50d2c04d7952cd01df3b90c627b"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9499.html#section-6",
+        "retrieval_record": "2026-10-30T06:41:46.952747+00:00",
+        "body_sha256": "562eb3afff2fa226ffad3c0b4fb2ca6a698cf50d2c04d7952cd01df3b90c627b"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.6",
+        "retrieval_record": "2026-10-30T06:22:13.943286+00:00",
+        "body_sha256": "7ab7947d33fb8ecf803cefe0f4d1fc8b5833d3017ba60e131de44473c2360c87"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig#parameters",
+        "retrieval_record": "2026-10-30T06:22:14.020713+00:00",
+        "body_sha256": "476c85e7af3c338195f51444d7798130376bf0ad1d70e46e90d785c370765134"
+      },
+      {
+        "url": "https://support.apple.com/guide/mac-help/change-dns-settings-on-mac-mh14127/mac#:~:text=To%20change%20these%20settings",
+        "retrieval_record": "2026-10-30T06:22:14.714478+00:00",
+        "body_sha256": "b8d9d2e1c21e8799f87dc481f061512878ad68cd88e339a452c2f0af7b3a406d"
+      },
+      {
+        "url": "https://developers.google.com/speed/public-dns/docs/using#important_before_you_start",
+        "retrieval_record": "2026-10-30T06:22:53.781049+00:00",
+        "body_sha256": "44d2b7c6711b9a0fde0d78b5a73e5be9d27540db269f1570d116ecc85be6d7d0"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9499.html#section-6",
+        "retrieval_record": "2026-10-30T06:41:46.952747+00:00",
+        "body_sha256": "562eb3afff2fa226ffad3c0b4fb2ca6a698cf50d2c04d7952cd01df3b90c627b"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:31:02.877600+00:00",
+        "body_sha256": "933b9eedc09b01676b64f6ac5781ac3b87a92f23ce63b8736e60f12d91984f86"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup#remarks",
+        "retrieval_record": "2026-10-30T06:22:14.136020+00:00",
+        "body_sha256": "9511a57378a58a8154516cdd59bc4c1e8bd95d27374fb629e43d055cec5dfe8d"
+      },
+      {
+        "url": "https://support.google.com/chrome/answer/10468685?hl=en&co=GENIE.Platform%3DDesktop#:~:text=Select%20your%20current%20service%20provider",
+        "retrieval_record": "2026-10-30T06:27:07.704115+00:00",
+        "body_sha256": "633384584d8d0d61e7a7777f4bf910888a1bff2492d12c160f0fb6d9b2e24730"
+      }
+    ]
+  },
+  {
+    "position": 9,
+    "query": "domain",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 135000,
+    "dataforseo_keyword_difficulty": 79,
+    "screening_score": "1687.50",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Domain Names Explained: Find a Name You Can Actually Use",
+    "path": "content/blog/en/what-is-domain.md",
+    "existing_revision": true,
+    "writer_group": 1,
+    "reviewed_manuscript_sha256": "502713ca6208acd1497e3c28a6581d4f1cf6b8c382f75602338d47be4657e8ae",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.1",
+        "retrieval_record": "2026-10-30T06:22:13.943286+00:00",
+        "body_sha256": "7ab7947d33fb8ecf803cefe0f4d1fc8b5833d3017ba60e131de44473c2360c87"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/domain-name-registration-process-2023-11-02-en#:~:text=The%20person%20or%20entity%20that%20holds",
+        "retrieval_record": "2026-10-30T06:22:14.380136+00:00",
+        "body_sha256": "906ebc5e4338c7a53e41928d319b0975dadce250cfa7235a645c3f560a9ddd9a"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:31:02.877600+00:00",
+        "body_sha256": "933b9eedc09b01676b64f6ac5781ac3b87a92f23ce63b8736e60f12d91984f86"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-2.4",
+        "retrieval_record": "2026-10-30T06:22:13.943286+00:00",
+        "body_sha256": "7ab7947d33fb8ecf803cefe0f4d1fc8b5833d3017ba60e131de44473c2360c87"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9499.html#section-9",
+        "retrieval_record": "2026-10-30T06:41:46.952747+00:00",
+        "body_sha256": "562eb3afff2fa226ffad3c0b4fb2ca6a698cf50d2c04d7952cd01df3b90c627b"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2",
+        "retrieval_record": "2026-10-30T06:22:14.135528+00:00",
+        "body_sha256": "72a0a022d3285ce73171937d1f4e9039eaf55654df4a01ec113be96402b9c04f"
+      },
+      {
+        "url": "https://www.icann.org/en/announcements/details/icann-update-launching-rdap-sunsetting-whois-27-01-2025-en#:~:text=Users%20are%20encouraged",
+        "retrieval_record": "2026-10-30T06:22:14.142648+00:00",
+        "body_sha256": "b9637eb0ee655f09624860ffa9d02c41a73433ea54d9c8e5b3b888f4e3cc1c08"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=Your%20domain%20name%20registration%20is%20not",
+        "retrieval_record": "2026-10-30T06:22:14.571756+00:00",
+        "body_sha256": "50cd8b0956f3a94d877c1faf6af0f451e384a88e822390563fc50c9cee1b03c5"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=If%20you%20have%20outsourced",
+        "retrieval_record": "2026-10-30T06:22:14.571756+00:00",
+        "body_sha256": "50cd8b0956f3a94d877c1faf6af0f451e384a88e822390563fc50c9cee1b03c5"
+      }
+    ]
+  },
+  {
+    "position": 10,
+    "query": "domain registration",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 165000,
+    "dataforseo_keyword_difficulty": 100,
+    "screening_score": "1633.66",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Register a Domain Name Without Losing Control of It",
+    "path": "content/blog/en/register-domain-name.md",
+    "existing_revision": true,
+    "writer_group": 1,
+    "reviewed_manuscript_sha256": "2c352109abe7f2cf047183f14a4c63b31c5dfb2edd6ac8f137b5a80b1b0df777",
+    "primary_sources": [
+      {
+        "url": "https://www.icann.org/resources/pages/domain-name-registration-process-2023-11-02-en#:~:text=ICANN-accredited%20registrars",
+        "retrieval_record": "2026-10-30T06:22:14.380136+00:00",
+        "body_sha256": "906ebc5e4338c7a53e41928d319b0975dadce250cfa7235a645c3f560a9ddd9a"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=Your%20domain%20name%20registration%20is%20not",
+        "retrieval_record": "2026-10-30T06:22:14.571756+00:00",
+        "body_sha256": "50cd8b0956f3a94d877c1faf6af0f451e384a88e822390563fc50c9cee1b03c5"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/faqs-84-2012-02-25-en#:~:text=Read%20and%20understand%20the%20terms",
+        "retrieval_record": "2026-10-30T06:22:14.571756+00:00",
+        "body_sha256": "50cd8b0956f3a94d877c1faf6af0f451e384a88e822390563fc50c9cee1b03c5"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/benefits-2013-09-16-en#:~:text=pricing%20information",
+        "retrieval_record": "2026-10-30T06:41:47.014524+00:00",
+        "body_sha256": "8fa0befffca67560a0fce9b418929ed5dc917655a78222d7853c9937780ff529"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/contact-verification-2013-05-03-en#:~:text=Registrars%20must%20suspend%20or%20delete",
+        "retrieval_record": "2026-10-30T06:41:47.320852+00:00",
+        "body_sha256": "b592629c4a3fed84ab61ab09ce8d4ee91fa782457847d0408efef451e722b2fa"
+      },
+      {
+        "url": "https://www.icann.org/en/announcements/details/icann-update-launching-rdap-sunsetting-whois-27-01-2025-en#:~:text=Users%20are%20encouraged",
+        "retrieval_record": "2026-10-30T06:22:14.142648+00:00",
+        "body_sha256": "b9637eb0ee655f09624860ffa9d02c41a73433ea54d9c8e5b3b888f4e3cc1c08"
+      },
+      {
+        "url": "https://www.icann.org/en/contracted-parties/consensus-policies/registration-data-policy#:~:text=9.2.%20Redaction%20Requirements",
+        "retrieval_record": "2026-10-30T06:41:46.739696+00:00",
+        "body_sha256": "d75d0d3b030bb0ddfbffe52b86f121cb123d4e4715e96a77fb4e484b0e84fa5b"
+      },
+      {
+        "url": "https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#about-custom-domain-configuration",
+        "retrieval_record": "2026-10-30T06:22:14.796800+00:00",
+        "body_sha256": "bfee05b29ce9a37ddccea7f3cb4840500c26f748cb9428b2f7fc8c12600fa090"
+      }
+    ]
+  },
+  {
+    "position": 11,
+    "query": "https 403",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 27100,
+    "dataforseo_keyword_difficulty": 16,
+    "screening_score": "1594.12",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "403 Forbidden: Why You Are Blocked and What to Check First",
+    "path": "content/blog/en/fix-http-403.md",
+    "existing_revision": false,
+    "writer_group": 1,
+    "reviewed_manuscript_sha256": "36b635a5927bf2a3ab493985b514aaed3b85a09c5ba50ac56f550ca46dc85ac8",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-15.5.4",
+        "retrieval_record": "2026-10-30T06:22:14.135528+00:00",
+        "body_sha256": "72a0a022d3285ce73171937d1f4e9039eaf55654df4a01ec113be96402b9c04f"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-4.2.2",
+        "retrieval_record": "2026-10-30T06:22:14.135528+00:00",
+        "body_sha256": "72a0a022d3285ce73171937d1f4e9039eaf55654df4a01ec113be96402b9c04f"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-15.5.2",
+        "retrieval_record": "2026-10-30T06:22:14.135528+00:00",
+        "body_sha256": "72a0a022d3285ce73171937d1f4e9039eaf55654df4a01ec113be96402b9c04f"
+      },
+      {
+        "url": "https://developers.cloudflare.com/support/troubleshooting/http-status-codes/4xx-client-error/error-403/#common-use-cases",
+        "retrieval_record": "2026-10-30T06:22:14.403814+00:00",
+        "body_sha256": "d8d993e98db1b98ca1a68379255ea21987098500807467e602dc0f742a84ad17"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:31:02.877600+00:00",
+        "body_sha256": "933b9eedc09b01676b64f6ac5781ac3b87a92f23ce63b8736e60f12d91984f86"
+      },
+      {
+        "url": "https://curl.se/docs/manpage.html#:~:text=Show%20response%20headers%20in%20the%20output",
+        "retrieval_record": "2026-10-30T06:22:52.385937+00:00",
+        "body_sha256": "71c7fcad33ff70a7cd6f03e85a879cba985e59f5c6144396ee64636b44b039d5"
+      },
+      {
+        "url": "https://curl.se/docs/sslcerts.html#:~:text=curl%20does%20certificate%20verification%20by%20default",
+        "retrieval_record": "2026-10-30T06:22:52.017582+00:00",
+        "body_sha256": "484347d71536f32579ae3cc345c9ebd090611c57d86878bd344c66282ff66187"
+      }
+    ]
+  },
+  {
+    "position": 12,
+    "query": "ssl certificate",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 135000,
+    "dataforseo_keyword_difficulty": 100,
+    "screening_score": "1336.63",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is an SSL Certificate? What Your Website Actually Needs",
+    "path": "content/blog/en/ssl-certificate-types.md",
+    "existing_revision": true,
+    "writer_group": 1,
+    "reviewed_manuscript_sha256": "b2e492a70db09eb5cf463506758632886c08b7cd609b26532d29747e055f39ad",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9525.html#section-1.1",
+        "retrieval_record": "2026-10-30T06:22:53.959185+00:00",
+        "body_sha256": "a3b6844a74ccebf14b3adc9b976b656e552e1f5d620b1843edbf95859967a7bf"
+      },
+      {
+        "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https#about-https-and-github-pages",
+        "retrieval_record": "2026-10-30T06:41:47.087921+00:00",
+        "body_sha256": "f7342d806a37144405df6f52a3dbb433f7697f9d52936bc9e5dddbd5e5fb243e"
+      },
+      {
+        "url": "https://docs.digicert.com/en/certcentral/get-started/understand-how-certcentral-works/understand-certificate-validation/validation-levels-in-certcentral/domain-validation--dv-.html#:~:text=DigiCert%20confirms%20that%20the%20requester",
+        "retrieval_record": "2026-10-30T06:41:46.809780+00:00",
+        "body_sha256": "8e334c1349d2ec43d89a3e435e9d4a444faa1319def90731138363802ff57f03"
+      },
+      {
+        "url": "https://docs.digicert.com/en/certcentral/get-started/understand-how-certcentral-works/understand-certificate-validation/validation-levels-in-certcentral/organization-validation--ov-.html#:~:text=DigiCert%20confirms%20domain%20control",
+        "retrieval_record": "2026-10-30T06:41:46.761748+00:00",
+        "body_sha256": "1ef0d01859c7b68c929c33a8d844b5dec107d1763e0e8808e185850ad5a875e7"
+      },
+      {
+        "url": "https://docs.digicert.com/en/certcentral/get-started/understand-how-certcentral-works/understand-certificate-validation/validation-levels-in-certcentral/extended-validation--ev-.html#:~:text=DigiCert%20performs%20the%20most%20thorough",
+        "retrieval_record": "2026-10-30T06:41:46.773033+00:00",
+        "body_sha256": "c67f2371e6f1d01019c8279c0bfe640abee9484f5b9f08ef9e4a8c76c861b836"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc8446.html#section-4.1.2",
+        "retrieval_record": "2026-10-30T06:22:51.476152+00:00",
+        "body_sha256": "6f47cac3faf4a2a8fd402f5b0c3c1678db15ee83a57b1c095ba370950547e570"
+      },
+      {
+        "url": "https://letsencrypt.org/docs/faq/#what-services-does-let-s-encrypt-offer",
+        "retrieval_record": "2026-10-30T06:41:46.691208+00:00",
+        "body_sha256": "a005dbaaee491144c7bf2566c22dcd7db3377ecfa6956113c5b98e8997c74270"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:31:02.877600+00:00",
+        "body_sha256": "933b9eedc09b01676b64f6ac5781ac3b87a92f23ce63b8736e60f12d91984f86"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9525.html#section-6.3",
+        "retrieval_record": "2026-10-30T06:22:53.959185+00:00",
+        "body_sha256": "a3b6844a74ccebf14b3adc9b976b656e552e1f5d620b1843edbf95859967a7bf"
+      },
+      {
+        "url": "https://letsencrypt.org/docs/challenge-types/#dns-01-challenge",
+        "retrieval_record": "2026-10-30T06:22:14.291210+00:00",
+        "body_sha256": "23fc92421897342220972610b284c65f674198daf2e6c8c10756a1cd2c1ed245"
+      },
+      {
+        "url": "https://curl.se/docs/sslcerts.html#:~:text=curl%20does%20certificate%20verification%20by%20default",
+        "retrieval_record": "2026-10-30T06:22:52.017582+00:00",
+        "body_sha256": "484347d71536f32579ae3cc345c9ebd090611c57d86878bd344c66282ff66187"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc8446.html#section-4.4.3",
+        "retrieval_record": "2026-10-30T06:22:51.476152+00:00",
+        "body_sha256": "6f47cac3faf4a2a8fd402f5b0c3c1678db15ee83a57b1c095ba370950547e570"
+      },
+      {
+        "url": "https://blog.chromium.org/2023/05/an-update-on-lock-icon.html#:~:text=not%20an%20indicator%20of%20website%20safety",
+        "retrieval_record": "2026-10-30T06:22:52.835134+00:00",
+        "body_sha256": "f64e90ea7c04d9dc8fab5ab6b0f602774bfb992baf5796838e9c34b1dc94ed66"
+      }
+    ]
+  },
+  {
+    "position": 13,
+    "query": "dns registrar",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 90500,
+    "dataforseo_keyword_difficulty": 72,
+    "screening_score": "1239.73",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Who Controls Your Domain? How to Find Its Registrar and DNS Host",
+    "path": "content/blog/en/find-domain-registrar-dns-host.md",
+    "existing_revision": false,
+    "writer_group": 2,
+    "reviewed_manuscript_sha256": "f38de855d8435639019bb707ca44cffa1e38b3f3faea5ffada9577ca26857828",
+    "primary_sources": [
+      {
+        "url": "https://www.icann.org/en/contracted-parties/registry-operators/registration-data-access-protocol/information-for-rdap-users-31-08-2018-en#:~:text=ICANN%20org%20maintains%20a%20publicly%20available%20RDAP%20client",
+        "retrieval_record": "2026-10-30T06:41:49.705280+00:00",
+        "body_sha256": "830e55ef9473ee8b9150fc4b75c60c17a5d3743475ce24e3ddc7b683ddc77313"
+      },
+      {
+        "url": "https://developers.cloudflare.com/dns/nameservers/#:~:text=Nameservers%20are%20DNS%20servers",
+        "retrieval_record": "2026-10-30T06:22:29.368206+00:00",
+        "body_sha256": "1932d8e4e9d6d13dc834877feeda7f2d7697dab909f39f3f2b84c826af9da16e"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup#remarks",
+        "retrieval_record": "2026-10-30T06:22:29.368439+00:00",
+        "body_sha256": "9511a57378a58a8154516cdd59bc4c1e8bd95d27374fb629e43d055cec5dfe8d"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2",
+        "retrieval_record": "2026-10-30T06:22:29.609083+00:00",
+        "body_sha256": "d6b10a71441df879cc2817d23f2dad120c8a5f87e74eba1e4ed4b743a76a891a"
+      },
+      {
+        "url": "https://developers.cloudflare.com/dns/proxy-status/#example",
+        "retrieval_record": "2026-10-30T06:22:29.368279+00:00",
+        "body_sha256": "2fb1d15b8fc19d1fe17c79f1a4ccb038c75e2e1f5d1f6f209274c38d38f312df"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:32:53.992676+00:00",
+        "body_sha256": "b6869c8984701701bc2e6973b6ffc750d497f845cc1a65a106e9301590a13ab0"
+      }
+    ]
+  },
+  {
+    "position": 14,
+    "query": "dns not responding",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 4400,
+    "dataforseo_keyword_difficulty": 3,
+    "screening_score": "1100.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "DNS Server Not Responding? Find the Cause Before Resetting Everything",
+    "path": "content/blog/en/fix-dns-server-not-responding.md",
+    "existing_revision": true,
+    "writer_group": 2,
+    "reviewed_manuscript_sha256": "ed7c6a95c3786e9e24092c4646a7ffcd4b88a057131ff7f7f9ecc701928df7e0",
+    "primary_sources": [
+      {
+        "url": "https://learn.microsoft.com/en-us/troubleshoot/windows-client/networking/troubleshoot-dns-client-resolution-issues#troubleshoot-dns-client-name-resolution-issues",
+        "retrieval_record": "2026-10-30T06:22:29.368371+00:00",
+        "body_sha256": "d0091cd7c3436bbc5211132e353768986d51c83c17c18dea268d7e230f71fd82"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig#parameters",
+        "retrieval_record": "2026-10-30T06:22:29.368492+00:00",
+        "body_sha256": "476c85e7af3c338195f51444d7798130376bf0ad1d70e46e90d785c370765134"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup#remarks",
+        "retrieval_record": "2026-10-30T06:22:29.368439+00:00",
+        "body_sha256": "9511a57378a58a8154516cdd59bc4c1e8bd95d27374fb629e43d055cec5dfe8d"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:32:53.992676+00:00",
+        "body_sha256": "b6869c8984701701bc2e6973b6ffc750d497f845cc1a65a106e9301590a13ab0"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5737.html#section-3",
+        "retrieval_record": "2026-10-30T06:32:53.993068+00:00",
+        "body_sha256": "9d16217614a74a9b064eff900e5cd07a525793cf8227dca1267100e880f0c410"
+      }
+    ]
+  },
+  {
+    "position": 15,
+    "query": "this site can t provide secure connection",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 4400,
+    "dataforseo_keyword_difficulty": 3,
+    "screening_score": "1100.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "This Site Cannot Provide a Secure Connection: Fix the Error Behind the Message",
+    "path": "content/blog/en/fix-chrome-secure-connection-error.md",
+    "existing_revision": true,
+    "writer_group": 2,
+    "reviewed_manuscript_sha256": "ef54583f3690f91608aa0308b00618a553b428677f53dff7aad7ba4a1d78fb50",
+    "primary_sources": [
+      {
+        "url": "https://support.google.com/chrome/answer/95669?hl=en#:~:text=Secure%20connection%20errors",
+        "retrieval_record": "2026-10-30T06:23:22.643380+00:00",
+        "body_sha256": "c22a11b5680526ce5d4e6fcb2e3f5a060aa1d9fbad48c989c0c47964093a5cfa"
+      },
+      {
+        "url": "https://support.google.com/chrome/answer/6098869?hl=en#:~:text=Step%201%3A%20Check%20website%20URL%20and%20reload%20page",
+        "retrieval_record": "2026-10-30T06:22:29.491299+00:00",
+        "body_sha256": "577d1b4ed0e9a0810691b54f9e4d07fedfc8731d9c03759b38d6af60538a19b4"
+      },
+      {
+        "url": "https://developers.cloudflare.com/dns/proxy-status/#example",
+        "retrieval_record": "2026-10-30T06:22:29.368279+00:00",
+        "body_sha256": "2fb1d15b8fc19d1fe17c79f1a4ccb038c75e2e1f5d1f6f209274c38d38f312df"
+      },
+      {
+        "url": "https://curl.se/docs/sslcerts.html#verification",
+        "retrieval_record": "2026-10-30T06:22:29.502981+00:00",
+        "body_sha256": "484347d71536f32579ae3cc345c9ebd090611c57d86878bd344c66282ff66187"
+      },
+      {
+        "url": "https://curl.se/docs/manpage.html#--resolve",
+        "retrieval_record": "2026-10-30T06:23:22.644398+00:00",
+        "body_sha256": "71c7fcad33ff70a7cd6f03e85a879cba985e59f5c6144396ee64636b44b039d5"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:32:53.992676+00:00",
+        "body_sha256": "b6869c8984701701bc2e6973b6ffc750d497f845cc1a65a106e9301590a13ab0"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5737.html#section-3",
+        "retrieval_record": "2026-10-30T06:32:53.993068+00:00",
+        "body_sha256": "9d16217614a74a9b064eff900e5cd07a525793cf8227dca1267100e880f0c410"
+      }
+    ]
+  },
+  {
+    "position": 16,
+    "query": "icann lookup",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 22200,
+    "dataforseo_keyword_difficulty": 25,
+    "screening_score": "853.85",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "ICANN Lookup: Find a Domain’s Registrar and Registration Details",
+    "path": "content/blog/en/icann-domain-lookup.md",
+    "existing_revision": true,
+    "writer_group": 2,
+    "reviewed_manuscript_sha256": "d67aace91c354cf0af65069c3e7cfce8cdbd9eeb2711e6dc0e11a0f202340b7e",
+    "primary_sources": [
+      {
+        "url": "https://www.icann.org/en/contracted-parties/registry-operators/registration-data-access-protocol/information-for-rdap-users-31-08-2018-en#:~:text=ICANN%20org%20maintains%20a%20publicly%20available%20RDAP%20client",
+        "retrieval_record": "2026-10-30T06:41:49.735968+00:00",
+        "body_sha256": "830e55ef9473ee8b9150fc4b75c60c17a5d3743475ce24e3ddc7b683ddc77313"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9083.html#section-5.3",
+        "retrieval_record": "2026-10-30T06:28:32.912903+00:00",
+        "body_sha256": "a21092594836495e1f37bcf6d383bf8aa2a9ad29e2efd7852a73a92915b79eb9"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en#:~:text=clientTransferProhibited",
+        "retrieval_record": "2026-10-30T06:22:29.368127+00:00",
+        "body_sha256": "2082f08228ebb0f6bbbb07120992bc41fbb969c412bccbc44617d448936e843a"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9083.html#section-13",
+        "retrieval_record": "2026-10-30T06:28:32.912903+00:00",
+        "body_sha256": "a21092594836495e1f37bcf6d383bf8aa2a9ad29e2efd7852a73a92915b79eb9"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:32:53.992676+00:00",
+        "body_sha256": "b6869c8984701701bc2e6973b6ffc750d497f845cc1a65a106e9301590a13ab0"
+      }
+    ]
+  },
+  {
+    "position": 17,
+    "query": "domain email address",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 12100,
+    "dataforseo_keyword_difficulty": 14,
+    "screening_score": "806.67",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is an Email Domain? What Your Business Address Really Needs",
+    "path": "content/blog/en/email-domain-address-guide.md",
+    "existing_revision": false,
+    "writer_group": 2,
+    "reviewed_manuscript_sha256": "cc0430127407c0a26596cedfeca3c9cea9b1a630a5fe38909f8b4fee3818d3f9",
+    "primary_sources": [
+      {
+        "url": "https://support.google.com/a/answer/16004259?hl=en#:~:text=Step%201%3A%20Add%20Google%27s%20MX%20record%20to%20your%20domain",
+        "retrieval_record": "2026-10-30T06:22:29.525875+00:00",
+        "body_sha256": "e732d06653846906f23a10f34ea316f73693aa7959955b97e15158eef0082437"
+      },
+      {
+        "url": "https://support.google.com/a/answer/33786?hl=en#:~:text=Step%201%3A%20Identify%20all%20your%20email%20senders",
+        "retrieval_record": "2026-10-30T06:22:29.531739+00:00",
+        "body_sha256": "7062909e5cfa5f7c25496acfa80c836cfbcdcd6dbb759b6ffcc609747c074b86"
+      },
+      {
+        "url": "https://support.google.com/a/answer/174124?hl=en#:~:text=How%20does%20DKIM%20work%3F",
+        "retrieval_record": "2026-10-30T06:22:29.569601+00:00",
+        "body_sha256": "58dfbaefc6588b393d5ecd6b375e07cb45c52a92284694e0664f47c922ae9c40"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9989.html#section-7.4",
+        "retrieval_record": "2026-10-30T06:28:32.912411+00:00",
+        "body_sha256": "cdd78e2918a210ca0f1bcd167dfd9e5555a9331506bcea988432793b71fd0c1e"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:32:53.992676+00:00",
+        "body_sha256": "b6869c8984701701bc2e6973b6ffc750d497f845cc1a65a106e9301590a13ab0"
+      }
+    ]
+  },
+  {
+    "position": 18,
+    "query": "nslookup",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 22200,
+    "dataforseo_keyword_difficulty": 28,
+    "screening_score": "765.52",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Use nslookup: DNS Commands That Help You Find the Problem",
+    "path": "content/blog/en/nslookup-specific-dns-server.md",
+    "existing_revision": true,
+    "writer_group": 2,
+    "reviewed_manuscript_sha256": "e07ff38807dc7cbedce954dace78426c15bb1b2e3e3d907c35890dd8be917d91",
+    "primary_sources": [
+      {
+        "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup#remarks",
+        "retrieval_record": "2026-10-30T06:22:29.368439+00:00",
+        "body_sha256": "9511a57378a58a8154516cdd59bc4c1e8bd95d27374fb629e43d055cec5dfe8d"
+      },
+      {
+        "url": "https://bind9.readthedocs.io/en/latest/manpages.html#nslookup-query-internet-name-servers-interactively",
+        "retrieval_record": "2026-10-30T06:22:29.913333+00:00",
+        "body_sha256": "f02fe8e5778df7f23c407e9dee416ef1724187a7aff5cff9936dd430aa800068"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/troubleshoot/windows-client/networking/troubleshoot-dns-client-resolution-issues#scenario-4-several-dns-servers-are-configured-on-the-nic-some-of-which-arent-reachable",
+        "retrieval_record": "2026-10-30T06:22:29.368371+00:00",
+        "body_sha256": "d0091cd7c3436bbc5211132e353768986d51c83c17c18dea268d7e230f71fd82"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-4.3.1",
+        "retrieval_record": "2026-10-30T06:22:29.609083+00:00",
+        "body_sha256": "d6b10a71441df879cc2817d23f2dad120c8a5f87e74eba1e4ed4b743a76a891a"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:32:53.992676+00:00",
+        "body_sha256": "b6869c8984701701bc2e6973b6ffc750d497f845cc1a65a106e9301590a13ab0"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5737.html#section-3",
+        "retrieval_record": "2026-10-30T06:32:53.993068+00:00",
+        "body_sha256": "9d16217614a74a9b064eff900e5cd07a525793cf8227dca1267100e880f0c410"
+      }
+    ]
+  },
+  {
+    "position": 19,
+    "query": "dns lookup",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 33100,
+    "dataforseo_keyword_difficulty": 43,
+    "screening_score": "752.27",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "DNS Lookup: Check Which Records Your Domain Is Really Serving",
+    "path": "content/blog/en/dns-lookup-guide.md",
+    "existing_revision": false,
+    "writer_group": 2,
+    "reviewed_manuscript_sha256": "57ff56db9f747ad0cdc99a7b5f5ff048a78fc8d6350300f8408b9a99b4c0adb0",
+    "primary_sources": [
+      {
+        "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup#remarks",
+        "retrieval_record": "2026-10-30T06:22:29.368439+00:00",
+        "body_sha256": "9511a57378a58a8154516cdd59bc4c1e8bd95d27374fb629e43d055cec5dfe8d"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1035.html#section-3.2.1",
+        "retrieval_record": "2026-10-30T06:22:29.652415+00:00",
+        "body_sha256": "d14ae809fc9b41bbcae26bb38c937c9515808b944f3252b00de9fe0e95f4fdfb"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.6",
+        "retrieval_record": "2026-10-30T06:22:29.609083+00:00",
+        "body_sha256": "d6b10a71441df879cc2817d23f2dad120c8a5f87e74eba1e4ed4b743a76a891a"
+      },
+      {
+        "url": "https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility",
+        "retrieval_record": "2026-10-30T06:22:29.913333+00:00",
+        "body_sha256": "f02fe8e5778df7f23c407e9dee416ef1724187a7aff5cff9936dd430aa800068"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc7505.html#section-3",
+        "retrieval_record": "2026-10-30T06:22:29.837208+00:00",
+        "body_sha256": "c746618ea6f26fab7828075696be275d42f4aa134a3e9853cbc6f7ed4d859eb9"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:32:53.992676+00:00",
+        "body_sha256": "b6869c8984701701bc2e6973b6ffc750d497f845cc1a65a106e9301590a13ab0"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5737.html#section-3",
+        "retrieval_record": "2026-10-30T06:32:53.993068+00:00",
+        "body_sha256": "9d16217614a74a9b064eff900e5cd07a525793cf8227dca1267100e880f0c410"
+      },
+      {
+        "url": "https://toolbox.googleapps.com/apps/dig/#:~:text=To%20make%20a%20DNS%20lookup",
+        "retrieval_record": "2026-10-30T06:44:39.962016+00:00",
+        "body_sha256": "76699e176671e53f14e2edd45e76722b3592c4fb68c93e004b13f07fb07c76c3"
+      }
+    ]
+  },
+  {
+    "position": 20,
+    "query": "dnsleaktest",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 33100,
+    "dataforseo_keyword_difficulty": 46,
+    "screening_score": "704.26",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Is Your VPN Leaking DNS? How to Run a DNS Leak Test",
+    "path": "content/blog/en/dns-leak-test-guide.md",
+    "existing_revision": false,
+    "writer_group": 2,
+    "reviewed_manuscript_sha256": "c23d0e00ba484044b3be311efc6263944728191d3d4f3f890a8c1e717b15fa07",
+    "primary_sources": [
+      {
+        "url": "https://browserleaks.com/dns#:~:text=The%20DNS%20Leak%20Test%20is%20a%20tool",
+        "retrieval_record": "2026-10-30T06:22:29.981069+00:00",
+        "body_sha256": "311581b64979a01d2b681ee9089d4d55fbfe6e322fe37bd1a5b572d925eed03a"
+      },
+      {
+        "url": "https://support.mozilla.org/en-US/kb/dns-over-https-doh-faqs#:~:text=Yes%2C%20they%20can%20disable%20DoH%2C%20select%20their%20own%20DoH%20provider",
+        "retrieval_record": "2026-10-30T06:41:49.767547+00:00",
+        "body_sha256": "830e55ef9473ee8b9150fc4b75c60c17a5d3743475ce24e3ddc7b683ddc77313"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup#remarks",
+        "retrieval_record": "2026-10-30T06:22:29.368439+00:00",
+        "body_sha256": "9511a57378a58a8154516cdd59bc4c1e8bd95d27374fb629e43d055cec5dfe8d"
+      },
+      {
+        "url": "https://developers.cloudflare.com/1.1.1.1/ip-addresses/#1111",
+        "retrieval_record": "2026-10-30T06:22:30.307682+00:00",
+        "body_sha256": "7cfefea07eb2f26cfcb14b0418dabdaebef805f0c1455ee4258391b581514d05"
+      }
+    ]
+  },
+  {
+    "position": 21,
+    "query": "web hosting shared hosting",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 27100,
+    "dataforseo_keyword_difficulty": 38,
+    "screening_score": "694.87",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Shared Hosting Explained: Is a Budget Plan Enough for Your Website?",
+    "path": "content/blog/en/shared-hosting-guide.md",
+    "existing_revision": false,
+    "writer_group": 2,
+    "reviewed_manuscript_sha256": "f8627466658e2eb8096ca4a96c70941d98926f3c9350b3020db9ede1b97b31d4",
+    "primary_sources": [
+      {
+        "url": "https://aws.amazon.com/what-is/web-hosting/#:~:text=Shared%20hosting%20service%20providers%20give%20you",
+        "retrieval_record": "2026-10-30T06:22:30.102404+00:00",
+        "body_sha256": "18b60d6f402a47cb9165c6504766bfcdbdec927d0d7ccf4a2ca2c8dc67f60d32"
+      },
+      {
+        "url": "https://help.dreamhost.com/hc/en-us/articles/215560437-Shared-hosting-overview#:~:text=Shared%20Hosting%20plans",
+        "retrieval_record": "2026-10-30T06:22:30.306918+00:00",
+        "body_sha256": "302cbd65bfaae4d3f7852febdd02911ab53a7603a0af26351dad6e770639c770"
+      }
+    ]
+  },
+  {
+    "position": 22,
+    "query": "best dns nameservers",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 6600,
+    "dataforseo_keyword_difficulty": 10,
+    "screening_score": "600.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Best DNS Servers: Which Resolver Should You Actually Use?",
+    "path": "content/blog/en/choose-public-dns-resolver.md",
+    "existing_revision": true,
+    "writer_group": 2,
+    "reviewed_manuscript_sha256": "f52470d708ea1399bac8c50574f32688d7903c7ab9bf01b4df96f09bfc45e0a3",
+    "primary_sources": [
+      {
+        "url": "https://developers.cloudflare.com/1.1.1.1/ip-addresses/#1111",
+        "retrieval_record": "2026-10-30T06:22:30.307682+00:00",
+        "body_sha256": "7cfefea07eb2f26cfcb14b0418dabdaebef805f0c1455ee4258391b581514d05"
+      },
+      {
+        "url": "https://docs.quad9.net/services/#9999-secure",
+        "retrieval_record": "2026-10-30T06:22:30.363142+00:00",
+        "body_sha256": "f255527f1dd31b83291c36877b775fe99b7d162b3d375c1484db812938ec52c6"
+      },
+      {
+        "url": "https://developers.google.com/speed/public-dns/docs/using#addresses",
+        "retrieval_record": "2026-10-30T06:22:30.362788+00:00",
+        "body_sha256": "44d2b7c6711b9a0fde0d78b5a73e5be9d27540db269f1570d116ecc85be6d7d0"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-2.4",
+        "retrieval_record": "2026-10-30T06:22:29.609083+00:00",
+        "body_sha256": "d6b10a71441df879cc2817d23f2dad120c8a5f87e74eba1e4ed4b743a76a891a"
+      },
+      {
+        "url": "https://support.mozilla.org/en-US/kb/dns-over-https-doh-faqs#:~:text=Yes%2C%20they%20can%20disable%20DoH%2C%20select%20their%20own%20DoH%20provider",
+        "retrieval_record": "2026-10-30T06:41:49.798162+00:00",
+        "body_sha256": "830e55ef9473ee8b9150fc4b75c60c17a5d3743475ce24e3ddc7b683ddc77313"
+      }
+    ]
+  },
+  {
+    "position": 23,
+    "query": "cloudflare domain name",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 27100,
+    "dataforseo_keyword_difficulty": 45,
+    "screening_score": "589.13",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Should You Buy Your Domain Through Cloudflare? The Trade-Offs to Check",
+    "path": "content/blog/en/cloudflare-domain-buying-guide.md",
+    "existing_revision": false,
+    "writer_group": 2,
+    "reviewed_manuscript_sha256": "867b320cf11057022a25221361c8b7b0cea06a6d8e1fb09f6c0f06084ef84077",
+    "primary_sources": [
+      {
+        "url": "https://developers.cloudflare.com/registrar/get-started/register-domain/#prerequisites-and-restrictions",
+        "retrieval_record": "2026-10-30T06:22:30.420598+00:00",
+        "body_sha256": "2ff9f15c7e21eab92b19f247e201e4985e2fccd71dbefee077f0b31915335a52"
+      },
+      {
+        "url": "https://developers.cloudflare.com/dns/proxy-status/#dns-only-records",
+        "retrieval_record": "2026-10-30T06:22:29.368279+00:00",
+        "body_sha256": "2fb1d15b8fc19d1fe17c79f1a4ccb038c75e2e1f5d1f6f209274c38d38f312df"
+      },
+      {
+        "url": "https://developers.cloudflare.com/registrar/faq/#:~:text=Cloudflare%20Registrar%20sells%20domains%20at%20cost",
+        "retrieval_record": "2026-10-30T06:22:30.458407+00:00",
+        "body_sha256": "d9fc49499c758da4c56bd8c08778e3b09426b9ef97edc23742b6347927ac0a55"
+      },
+      {
+        "url": "https://developers.cloudflare.com/registrar/get-started/transfer-domain-to-cloudflare/#1-add-your-domain-to-cloudflare",
+        "retrieval_record": "2026-10-30T06:22:30.486248+00:00",
+        "body_sha256": "1a8ef9dc5f89bd22aabec3c12cfee8b4005eb05011cb7ce4d06ab6b3053ba628"
+      }
+    ]
+  },
+  {
+    "position": 24,
+    "query": "fully qualified domain name",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 9900,
+    "dataforseo_keyword_difficulty": 16,
+    "screening_score": "582.35",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is an FQDN? The Tiny Naming Detail That Can Break DNS",
+    "path": "content/blog/en/fully-qualified-domain-name.md",
+    "existing_revision": true,
+    "writer_group": 2,
+    "reviewed_manuscript_sha256": "4976e4265b4aa0635a6692fc00ea5bbe913afaaf114e109727fb87d7c1b9dbfb",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9499.html#section-2",
+        "retrieval_record": "2026-10-30T06:22:29.732699+00:00",
+        "body_sha256": "270b62df854911dddd246f6c081952106897983a5e02dfe8b3819d72843d9ab1"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.1",
+        "retrieval_record": "2026-10-30T06:22:29.609083+00:00",
+        "body_sha256": "d6b10a71441df879cc2817d23f2dad120c8a5f87e74eba1e4ed4b743a76a891a"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup#remarks",
+        "retrieval_record": "2026-10-30T06:22:29.368439+00:00",
+        "body_sha256": "9511a57378a58a8154516cdd59bc4c1e8bd95d27374fb629e43d055cec5dfe8d"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1035.html#section-5.1",
+        "retrieval_record": "2026-10-30T06:22:29.652415+00:00",
+        "body_sha256": "d14ae809fc9b41bbcae26bb38c937c9515808b944f3252b00de9fe0e95f4fdfb"
+      },
+      {
+        "url": "https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility",
+        "retrieval_record": "2026-10-30T06:22:29.913333+00:00",
+        "body_sha256": "f02fe8e5778df7f23c407e9dee416ef1724187a7aff5cff9936dd430aa800068"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:32:53.992676+00:00",
+        "body_sha256": "b6869c8984701701bc2e6973b6ffc750d497f845cc1a65a106e9301590a13ab0"
+      }
+    ]
+  },
+  {
+    "position": 25,
+    "query": "godaddy domain appraisal",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 6,
+    "screening_score": "514.29",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "GoDaddy Domain Appraisal: What Is Your Domain Really Worth?",
+    "path": "content/blog/en/domain-appraisal-tools-compared.md",
+    "existing_revision": true,
+    "writer_group": 3,
+    "reviewed_manuscript_sha256": "d67f0c79789feb257a954392bd5cdee75e48ab681ffdf000fd9a107d7c06ddf5",
+    "primary_sources": [
+      {
+        "url": "https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=algorithm%20uses%20proprietary%20machine%20learning",
+        "retrieval_record": "2026-10-30T06:22:17.977443+00:00",
+        "body_sha256": "e026608630544b1a59a0c717221871e4e279c1b081b32738d69569414a99491d"
+      },
+      {
+        "url": "https://www.estibot.com/methodology#:~:text=EstiBot%20relies%20on%20a%20statistically%20derived%20model",
+        "retrieval_record": "2026-10-30T06:22:17.978056+00:00",
+        "body_sha256": "e5e44ec4ae0d8a0a086f64d80bb880a18ba902deb11a1ca303a68f021b66b086"
+      }
+    ]
+  },
+  {
+    "position": 26,
+    "query": "cloudflare nameserver",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 22200,
+    "dataforseo_keyword_difficulty": 44,
+    "screening_score": "493.33",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Find Your Cloudflare Nameservers and Update Your Registrar",
+    "path": "content/blog/en/change-domain-nameservers.md",
+    "existing_revision": true,
+    "writer_group": 3,
+    "reviewed_manuscript_sha256": "48e8c204d6c476c03ef99dbddf545c2261ec92585072c1f77165c0e73b90cb91",
+    "primary_sources": [
+      {
+        "url": "https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/#3-change-your-nameservers",
+        "retrieval_record": "2026-10-30T06:22:17.978137+00:00",
+        "body_sha256": "b2ff69bfd10899bc4cae25e4a07dc5222de2a16c48cb0313f1670b52004d4b0f"
+      }
+    ]
+  },
+  {
+    "position": 27,
+    "query": "sender policy framework",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 22200,
+    "dataforseo_keyword_difficulty": 48,
+    "screening_score": "453.06",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is SPF? How Email Servers Check Who Can Send for Your Domain",
+    "path": "content/blog/en/txt-records-spf-dkim-verification.md",
+    "existing_revision": true,
+    "writer_group": 3,
+    "reviewed_manuscript_sha256": "b2636380c862832728fe6b5a7f3445c00ab648503303934c7d361d67c117e4f8",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc7208.html#section-2",
+        "retrieval_record": "2026-10-30T06:22:17.978202+00:00",
+        "body_sha256": "03cdbd633165ea16dde941d114b6fbcc9cf3e85cd7b664de1484ec9c884b37e6"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9989.html#section-4.4.2",
+        "retrieval_record": "2026-10-30T06:28:21.022707+00:00",
+        "body_sha256": "5118e299aea2bdbd8e288e200cb462a8c9ee9ba7d68efb98d4bdff1130ffb2f2"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5737.html#:~:text=The%20blocks%20192.0.2.0%2F24%20%28TEST-NET-1%29%2C%20198.51.100.0%2F24%20%28TEST-NET-2%29%2C%0A%20%20%20and%20203.0.113.0%2F24%20%28TEST-NET-",
+        "retrieval_record": "2026-10-30T06:37:18.195554+00:00",
+        "body_sha256": "349e55c220858f1c0c65133095d0f23e999d41d0b9f625e8de28be75f18c6034"
+      }
+    ]
+  },
+  {
+    "position": 28,
+    "query": "web hosting wordpress",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 22200,
+    "dataforseo_keyword_difficulty": 52,
+    "screening_score": "418.87",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Best WordPress Hosting: Which Features Are Worth Paying For?",
+    "path": "content/blog/en/wordpress-hosting-guide.md",
+    "existing_revision": false,
+    "writer_group": 3,
+    "reviewed_manuscript_sha256": "3677338455e95261ae4be809f696d566c62a27a665a8157b7e22dccba68bbd79",
+    "primary_sources": [
+      {
+        "url": "https://wordpress.org/about/requirements/#:~:text=To%20run%20WordPress",
+        "retrieval_record": "2026-10-30T06:22:17.978315+00:00",
+        "body_sha256": "4e24b4987caeb52bf7de9d84c92b2de31d36928ef7aca8b50e9fbd4f1820179c"
+      },
+      {
+        "url": "https://wordpress.org/documentation/article/wordpress-backups/#:~:text=Your%20WordPress%20site%20consists",
+        "retrieval_record": "2026-10-30T06:22:17.978361+00:00",
+        "body_sha256": "e903fb54d17b29e08bde5c0d8c6e510dd9a7284a81c70f842c445ca9f0dd07bd"
+      },
+      {
+        "url": "https://wordpress.com/support/export/#:~:text=Your%20export%20file%20will%20include",
+        "retrieval_record": "2026-10-30T06:22:17.978421+00:00",
+        "body_sha256": "77dcf7efddc86859a17f9c4ee0e5de66a1e4d465ee14951a2b138406239c000f"
+      }
+    ]
+  },
+  {
+    "position": 29,
+    "query": "cloudflare dns",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 40500,
+    "dataforseo_keyword_difficulty": 100,
+    "screening_score": "400.99",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Cloudflare DNS Settings: Set Up 1.1.1.1 on Your Device",
+    "path": "content/blog/en/cloudflare-dns-setup.md",
+    "existing_revision": false,
+    "writer_group": 3,
+    "reviewed_manuscript_sha256": "1ffa4bed6c5ef21877942aa343f2b81bed3da62d5fefb4e135d308e8958516d7",
+    "primary_sources": [
+      {
+        "url": "https://developers.cloudflare.com/1.1.1.1/ip-addresses/#1111",
+        "retrieval_record": "2026-10-30T06:22:17.978465+00:00",
+        "body_sha256": "71544b17059f2aaa88548499922b136b34d961bc0e7bb9842b86686af5d84802"
+      },
+      {
+        "url": "https://developers.cloudflare.com/1.1.1.1/setup/windows/#windows-11",
+        "retrieval_record": "2026-10-30T06:22:17.978508+00:00",
+        "body_sha256": "82935809fa5e77f34d8c66ff71023a21d0618f847864959d97eae207390643af"
+      },
+      {
+        "url": "https://developers.cloudflare.com/1.1.1.1/setup/macos/#:~:text=These%20steps%20configure",
+        "retrieval_record": "2026-10-30T06:22:17.978559+00:00",
+        "body_sha256": "1361c9402c19809e8aa135a748bf2d3af768a4e7b9c2b035b80df80866f54b61"
+      },
+      {
+        "url": "https://developers.cloudflare.com/1.1.1.1/setup/android/#android-9-and-later",
+        "retrieval_record": "2026-10-30T06:28:21.828907+00:00",
+        "body_sha256": "ab59d2b486579d5932464b3dbccfd1a558b7ab59ce2272042340d521ad890744"
+      },
+      {
+        "url": "https://developers.cloudflare.com/1.1.1.1/check/#:~:text=After%20setting%20up",
+        "retrieval_record": "2026-10-30T06:28:21.931085+00:00",
+        "body_sha256": "eca20eda496dfba76afb3f57f2a2f55146f19356e431e3241dcf0e31344b1ef9"
+      }
+    ]
+  },
+  {
+    "position": 30,
+    "query": "domain name search",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 40500,
+    "dataforseo_keyword_difficulty": 100,
+    "screening_score": "400.99",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Domain Name Search: Is the Name You Want Still Available?",
+    "path": "content/blog/en/domain-name-search.md",
+    "existing_revision": false,
+    "writer_group": 3,
+    "reviewed_manuscript_sha256": "bac3f1681989981f393e62ee665c5823d0aa09222978e749352e6a3fe5e25afd",
+    "primary_sources": [
+      {
+        "url": "https://www.cloudflare.com/domains/#:~:text=Enter%20a%20name",
+        "retrieval_record": "2026-10-30T04:13:26.705432+00:00",
+        "body_sha256": "924df39d094daa44a5a595e0c1ce672e7f1f5c01824f760e3033ecefafd86c62"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/domain-name-registration-process-2023-11-02-en#:~:text=The%20terms%20of%20your%20domain%20name%20registration",
+        "retrieval_record": "2026-10-30T06:22:18.115839+00:00",
+        "body_sha256": "f23b281992506ba0e17bb5463dda13b8c191bb163ca995f8d4414e19f0e173fc"
+      },
+      {
+        "url": "https://www.icann.org/rdap#:~:text=RDAP%20enables%20users",
+        "retrieval_record": "2026-10-30T06:22:18.123990+00:00",
+        "body_sha256": "16cbee362a5f30f39265ebfc177766068b000c34fb2a53817d5e732862427735"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#:~:text=example.com%0A%20%20%20%20%20%20%20%20example.net%0A%20%20%20%20%20%20%20%20example.org",
+        "retrieval_record": "2026-10-30T06:37:18.398213+00:00",
+        "body_sha256": "8510d0ab1df1bfba37698e323955d8c81ca6c86988fa6247636848eb13427166"
+      }
+    ]
+  },
+  {
+    "position": 31,
+    "query": "go daddy auction",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 4400,
+    "dataforseo_keyword_difficulty": 10,
+    "screening_score": "400.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "GoDaddy Auctions: Where to Find Listings and How Bidding Works",
+    "path": "content/blog/en/godaddy-auctions-guide.md",
+    "existing_revision": false,
+    "writer_group": 3,
+    "reviewed_manuscript_sha256": "f397d63e2fb9c74cc50697b6bfd31d901b32a50d4dce1d84d0b088e52d240e1c",
+    "primary_sources": [
+      {
+        "url": "https://www.godaddy.com/help/what-is-godaddy-auctions-890#:~:text=Can%20I%20cancel%20my%20bid",
+        "retrieval_record": "2026-10-30T06:22:18.147493+00:00",
+        "body_sha256": "7bdaecbf9b3458d2141474c4a5af557cd7f96e34679c11daec31b050fb963d10"
+      },
+      {
+        "url": "https://www.godaddy.com/help/bidding-on-godaddy-auctions-domains-893#:~:text=Our%20Proxy%20Bidding%20Service",
+        "retrieval_record": "2026-10-30T06:22:18.169921+00:00",
+        "body_sha256": "c1f04f70a01d494781ea7867f6a4cd46814f26d84313d187280e9aa50725c5ae"
+      }
+    ]
+  },
+  {
+    "position": 32,
+    "query": "quad 9 dns",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 4400,
+    "dataforseo_keyword_difficulty": 10,
+    "screening_score": "400.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Quad9 DNS: Which Addresses to Use and How to Set Them Up",
+    "path": "content/blog/en/quad9-dns-setup.md",
+    "existing_revision": false,
+    "writer_group": 3,
+    "reviewed_manuscript_sha256": "e567ae27352c77867d841f0d05013198bd339a4958d5b070f00b76a7f94cd29d",
+    "primary_sources": [
+      {
+        "url": "https://docs.quad9.net/services/#9999-secure",
+        "retrieval_record": "2026-10-30T06:22:18.211808+00:00",
+        "body_sha256": "383cbae15af2f273eb503e0a3511eac17aae2f53fb6fa203b9c6e58eaa338613"
+      },
+      {
+        "url": "https://docs.quad9.net/Setup_Guides/Windows/Windows_11_(Encrypted)/#instructions",
+        "retrieval_record": "2026-10-30T06:28:21.245792+00:00",
+        "body_sha256": "f35d4797d04a86007752ebfa8025443c76e5a417ca383745322bb26430f6e9cb"
+      },
+      {
+        "url": "https://docs.quad9.net/Setup_Guides/Android/Android_9%2B_(Encrypted)/#instructions",
+        "retrieval_record": "2026-10-30T06:28:21.431514+00:00",
+        "body_sha256": "835c941e45662afcc9400e6fe8abf6021c9d65415786153ca7190b04e085a977"
+      }
+    ]
+  },
+  {
+    "position": 33,
+    "query": "ai domain name",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 5400,
+    "dataforseo_keyword_difficulty": 13,
+    "screening_score": "385.71",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": ".AI Domains Explained: Should You Buy One for Your Project?",
+    "path": "content/tld/en/ai.md",
+    "existing_revision": true,
+    "writer_group": 3,
+    "reviewed_manuscript_sha256": "dd0e2334facea1b98ac722281c3517dcc763007902d0ba3fc71e4089b81e1b36",
+    "primary_sources": [
+      {
+        "url": "https://www.iana.org/domains/root/db/ai.html#:~:text=Country-code%20top-level%20domain",
+        "retrieval_record": "2026-10-30T06:22:18.268728+00:00",
+        "body_sha256": "18e814a713139b9c90aaec635823589fe20d7a485cfec496d2fa43b458f28b10"
+      },
+      {
+        "url": "https://www.nic.ai/faq#:~:text=What%20are%20the%20rules%20for%20using",
+        "retrieval_record": "2026-10-30T06:22:18.350841+00:00",
+        "body_sha256": "7e1f39c14705daa88c1a5e972cd929c44f066c71c2ba09d6a34432e860d519af"
+      },
+      {
+        "url": "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites#generic-country-code-top-level-domains-cctlds",
+        "retrieval_record": "2026-10-30T06:22:18.369020+00:00",
+        "body_sha256": "fb0547a8290644e1ecfd8a0f1afb3d33589bd62d7d559b8fc751e8125e52eaca"
+      },
+      {
+        "url": "https://www.cloudflare.com/domains/#:~:text=niche%20TLDs%20like%20.ai",
+        "retrieval_record": "2026-10-30T04:13:26.705432+00:00",
+        "body_sha256": "924df39d094daa44a5a595e0c1ce672e7f1f5c01824f760e3033ecefafd86c62"
+      }
+    ]
+  },
+  {
+    "position": 34,
+    "query": "business email free",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 9900,
+    "dataforseo_keyword_difficulty": 25,
+    "screening_score": "380.77",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Free Business Email: Can You Really Use Your Own Domain for Free?",
+    "path": "content/blog/en/free-business-email-options.md",
+    "existing_revision": true,
+    "writer_group": 3,
+    "reviewed_manuscript_sha256": "1a0d15d572f47dda134e58a94883abe2837d77b615ebb972364ed69536c24d90",
+    "primary_sources": [
+      {
+        "url": "https://www.zoho.com/mail/zohomail-pricing.html#:~:text=Forever%20Free%20Plan",
+        "retrieval_record": "2026-10-30T06:22:18.381286+00:00",
+        "body_sha256": "2c38e25c57d2d5c0ace38a77359dff3c3bc27223ffd5a5c40f9f63b90c4ef0e8"
+      },
+      {
+        "url": "https://developers.cloudflare.com/email-routing/#:~:text=Arbitrary-recipient%20sending%20requires",
+        "retrieval_record": "2026-10-30T06:22:18.435796+00:00",
+        "body_sha256": "27b0e5eb51c69cca1db3d499557fb30a8ae26ba44124d252c1a04f4d7a9cc913"
+      },
+      {
+        "url": "https://developers.cloudflare.com/email-routing/get-started/enable-email-routing/#:~:text=Before%20you%20can%20create%20a%20routing%20rule",
+        "retrieval_record": "2026-10-30T06:22:18.394242+00:00",
+        "body_sha256": "3b974f85400c760dba691d01d173973bf07cd7c6b6f410f1e84a4e7cba81dbf4"
+      }
+    ]
+  },
+  {
+    "position": 35,
+    "query": "domain validation ssl certificate",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 6600,
+    "dataforseo_keyword_difficulty": 18,
+    "screening_score": "347.37",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "DV SSL Certificates: Do You Need Anything More for Your Website?",
+    "path": "content/blog/en/domain-validation-ssl-certificate.md",
+    "existing_revision": false,
+    "writer_group": 3,
+    "reviewed_manuscript_sha256": "0323d0cb528cf0414e3ca03f89ab1787714ae84765f7e7a9ad3b11289e0fa413",
+    "primary_sources": [
+      {
+        "url": "https://letsencrypt.org/docs/faq/#:~:text=Domain%20Validation",
+        "retrieval_record": "2026-10-30T06:22:18.441967+00:00",
+        "body_sha256": "61eebd162c246408c70a0b564232f3a3c7d46f24a42bab7beaac62dc3b6aaed0"
+      },
+      {
+        "url": "https://letsencrypt.org/docs/challenge-types/#dns-01-challenge",
+        "retrieval_record": "2026-10-30T06:22:18.496983+00:00",
+        "body_sha256": "7ee762be70bb9dec7173e1aafdc066281e5ab86e4274a302c18198705d26ecfe"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9525.html#section-6.3",
+        "retrieval_record": "2026-10-30T06:37:17.956044+00:00",
+        "body_sha256": "464a1efb81f2c8536a59f5e5ed3bc17c84481cd1d5265ddad41ba3bdfcfea0bd"
+      }
+    ]
+  },
+  {
+    "position": 36,
+    "query": "mx check",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 9900,
+    "dataforseo_keyword_difficulty": 28,
+    "screening_score": "341.38",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "MX Lookup: Find Where Your Domain’s Email Is Supposed to Go",
+    "path": "content/blog/en/mx-record-check.md",
+    "existing_revision": false,
+    "writer_group": 3,
+    "reviewed_manuscript_sha256": "7b71035297ffc4eb8d24582cb98a0eaa487bcf849688690960c95ccd50001910",
+    "primary_sources": [
+      {
+        "url": "https://www.zoho.com/toolkit/mx-lookup.html#:~:text=What%20does%20the%20priority%20denote",
+        "retrieval_record": "2026-10-30T06:22:18.505821+00:00",
+        "body_sha256": "a219ece1b11d35f169d076870ea8a26bbad4e5fb916feab9f86e661774356702"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5321.html#section-5.1",
+        "retrieval_record": "2026-10-30T04:24:12.374737+00:00",
+        "body_sha256": "fdd3307d6e2473afe142f821674fee34c0857b31121be020dac7d4d874b2ceca"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc7505.html#section-3",
+        "retrieval_record": "2026-10-30T04:24:12.392477+00:00",
+        "body_sha256": "3d5304dc66ea9ea9a9e0ef66bc9d220b6c806efd2cff6e62fe8d9032dd0aabf8"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1035.html#section-4.1.1",
+        "retrieval_record": "2026-10-30T06:42:03.076358+00:00",
+        "body_sha256": "be52ba5cd1b81c655131d8731fc2c5497bb94a38da0cb1c111370743d420fe40"
+      }
+    ]
+  },
+  {
+    "position": 37,
+    "query": "google public dns",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 12100,
+    "dataforseo_keyword_difficulty": 35,
+    "screening_score": "336.11",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Google Public DNS: Set Up 8.8.8.8 and Know What Changes",
+    "path": "content/blog/en/google-public-dns-setup.md",
+    "existing_revision": false,
+    "writer_group": 4,
+    "reviewed_manuscript_sha256": "fd84486d2c25203997a1f6da8bc0d9f21a3ea70f8e83166d11c8f3226a7f2231",
+    "primary_sources": [
+      {
+        "url": "https://developers.google.com/speed/public-dns/docs/using",
+        "retrieval_record": "2026-10-30T06:22:33.344950+00:00",
+        "body_sha256": "824f54a5d4323063fc9d7245ed2a98808454ace75a3e1d455f24330283d9cb4c"
+      },
+      {
+        "url": "https://developers.google.com/speed/public-dns/faq",
+        "retrieval_record": "2026-10-30T06:22:33.345768+00:00",
+        "body_sha256": "3d069f6582bf1a00247bc9f622058272fe2ab49c95ce2338c8cfbee9e28712dc"
+      },
+      {
+        "url": "https://developers.google.com/speed/public-dns/privacy",
+        "retrieval_record": "2026-10-30T06:22:33.345416+00:00",
+        "body_sha256": "32e13b7caea637c6ed004924a231b185bd4baadf5694a9ba2d4dde9d409e45e2"
+      }
+    ]
+  },
+  {
+    "position": 38,
+    "query": "ssl certificate installation",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 9900,
+    "dataforseo_keyword_difficulty": 30,
+    "screening_score": "319.35",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Install an SSL Certificate Without Breaking HTTPS",
+    "path": "content/blog/en/how-to-install-an-ssl-certificate.md",
+    "existing_revision": true,
+    "writer_group": 4,
+    "reviewed_manuscript_sha256": "cc3d76809b1d720542b10699e12b35a81678e8413552dfc20dd384c5b9a9643a",
+    "primary_sources": [
+      {
+        "url": "https://letsencrypt.org/getting-started/",
+        "retrieval_record": "2026-10-30T06:22:33.345863+00:00",
+        "body_sha256": "7f199d385447b5c49d37294bd06e92fdc0ee889416bd7cc8495ac1211cc45600"
+      },
+      {
+        "url": "https://letsencrypt.org/docs/challenge-types/",
+        "retrieval_record": "2026-10-30T06:22:33.345947+00:00",
+        "body_sha256": "23fc92421897342220972610b284c65f674198daf2e6c8c10756a1cd2c1ed245"
+      },
+      {
+        "url": "https://certbot.eff.org/instructions?ws=nginx&os=snap",
+        "retrieval_record": "2026-10-30T06:22:33.346005+00:00",
+        "body_sha256": "24f127a7f85aae19cbf2fb8e7dfe4f6272c315f1297f7e1771a4ca19233beec3"
+      }
+    ]
+  },
+  {
+    "position": 39,
+    "query": "tld",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 12100,
+    "dataforseo_keyword_difficulty": 37,
+    "screening_score": "318.42",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is a TLD? Choose the Right Ending for Your Domain Name",
+    "path": "content/blog/en/what-is-a-tld.md",
+    "existing_revision": true,
+    "writer_group": 4,
+    "reviewed_manuscript_sha256": "8799de7376fc11f56490941eaa3e759bad4a11e58217d7fe1873d56235021329",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9499.html",
+        "retrieval_record": "2026-10-30T06:22:34.512169+00:00",
+        "body_sha256": "562eb3afff2fa226ffad3c0b4fb2ca6a698cf50d2c04d7952cd01df3b90c627b"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db",
+        "retrieval_record": "2026-10-30T06:22:33.484432+00:00",
+        "body_sha256": "3c186ff7c94a034e35a2fe34ff4fa2f8f1c08d96eb9cb0a09f0a08e8582e20cc"
+      },
+      {
+        "url": "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites",
+        "retrieval_record": "2026-10-30T06:22:33.753749+00:00",
+        "body_sha256": "5144c9161f126748941eb5002ce485651e4ef1f834c4603516639c973eff8f16"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/about-domain-names-2018-08-30-en",
+        "retrieval_record": "2026-10-30T06:22:34.006635+00:00",
+        "body_sha256": "c3fea4a8c0c49e6ae8633f90bf94ab9a93d15880219ff5a0b86178cb6c587d29"
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL",
+        "retrieval_record": "2026-10-30T06:43:38.882010+00:00",
+        "body_sha256": "3eeb7a04f028421620c2aeb02af0c29f038f097184e3de12791edda914e1564b"
+      }
+    ]
+  },
+  {
+    "position": 40,
+    "query": "business email through gmail",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 8100,
+    "dataforseo_keyword_difficulty": 26,
+    "screening_score": "300.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Set Up Gmail With Your Own Business Domain",
+    "path": "content/blog/en/gmail-with-custom-domain.md",
+    "existing_revision": false,
+    "writer_group": 4,
+    "reviewed_manuscript_sha256": "f377abfa144e4531afc723377dcce22927457327345d20711dc014b544bd3db0",
+    "primary_sources": [
+      {
+        "url": "https://workspace.google.com/products/gmail/",
+        "retrieval_record": "2026-10-30T06:22:35.326005+00:00",
+        "body_sha256": "d11123d79add673ae720b23be33573715c6cb609158c8141c3e10b101efb5249"
+      },
+      {
+        "url": "https://knowledge.workspace.google.com/admin/domains/verify-your-domain-with-a-txt-record",
+        "retrieval_record": "2026-10-30T06:28:02.210272+00:00",
+        "body_sha256": "44749820d5ff7d5294c845f0aad68c9a34dbc0fdc6936d8e65dee3240f3a2ad4"
+      },
+      {
+        "url": "https://support.google.com/a/answer/16004259?hl=en",
+        "retrieval_record": "2026-10-30T06:22:34.392470+00:00",
+        "body_sha256": "e732d06653846906f23a10f34ea316f73693aa7959955b97e15158eef0082437"
+      },
+      {
+        "url": "https://support.google.com/a/answer/10685031?hl=en",
+        "retrieval_record": "2026-10-30T06:22:34.325211+00:00",
+        "body_sha256": "7062909e5cfa5f7c25496acfa80c836cfbcdcd6dbb759b6ffcc609747c074b86"
+      },
+      {
+        "url": "https://support.google.com/a/answer/174124?hl=en",
+        "retrieval_record": "2026-10-30T06:22:35.368845+00:00",
+        "body_sha256": "58dfbaefc6588b393d5ecd6b375e07cb45c52a92284694e0664f47c922ae9c40"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9989.html",
+        "retrieval_record": "2026-10-30T06:28:02.845598+00:00",
+        "body_sha256": "e904cd1773abbcb466e08d96c630e93e53df076983834fa1fcda217b926d49f4"
+      }
+    ]
+  },
+  {
+    "position": 41,
+    "query": "io domain name",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 4400,
+    "dataforseo_keyword_difficulty": 17,
+    "screening_score": "244.44",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Buying a .IO Domain? Check the Price, Renewal, and Trade-Offs First",
+    "path": "content/tld/en/io.md",
+    "existing_revision": true,
+    "writer_group": 4,
+    "reviewed_manuscript_sha256": "2d2bcf3a9e819c346554fbd905ac585c89dcb22264aa170506e2a85100a3a731",
+    "primary_sources": [
+      {
+        "url": "https://nic.io/rules.htm",
+        "retrieval_record": "2026-10-30T06:22:33.558063+00:00",
+        "body_sha256": "15d835a4c1b74539d7a303dc8e39305a7e20bb24cca71d0bccc8d95a765a3960"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db/io.html",
+        "retrieval_record": "2026-10-30T06:22:33.492839+00:00",
+        "body_sha256": "e144675e46bbf3ef29b0ea5a0a66dd3360268598bf4de6dab6e9bcb13d2b2ae0"
+      },
+      {
+        "url": "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites",
+        "retrieval_record": "2026-10-30T06:22:33.753749+00:00",
+        "body_sha256": "5144c9161f126748941eb5002ce485651e4ef1f834c4603516639c973eff8f16"
+      },
+      {
+        "url": "https://www.iana.org/help/cctld-retirement",
+        "retrieval_record": "2026-10-30T06:22:33.746216+00:00",
+        "body_sha256": "cd559ea7e820a51c59551fc1185954c0c96d92afacf69b364e8c06dc3ffe11db"
+      }
+    ]
+  },
+  {
+    "position": 42,
+    "query": "website and domain",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 12100,
+    "dataforseo_keyword_difficulty": 49,
+    "screening_score": "242.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Buy a Domain and Launch a Website Without Buying the Wrong Bundle",
+    "path": "content/blog/en/build-website-with-domain.md",
+    "existing_revision": false,
+    "writer_group": 4,
+    "reviewed_manuscript_sha256": "44e3d8c1e4e64ce58cff784ef83dba6895e6da95f55d3d99fb23c450125ca01f",
+    "primary_sources": [
+      {
+        "url": "https://www.icann.org/resources/pages/about-domain-names-2018-08-30-en",
+        "retrieval_record": "2026-10-30T06:22:34.006635+00:00",
+        "body_sha256": "c3fea4a8c0c49e6ae8633f90bf94ab9a93d15880219ff5a0b86178cb6c587d29"
+      },
+      {
+        "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages",
+        "retrieval_record": "2026-10-30T06:22:34.037739+00:00",
+        "body_sha256": "855ad923b2733a000d0f877e6f02bc1cc8cc0b8db1a2cb41e878bfe86342b910"
+      },
+      {
+        "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits",
+        "retrieval_record": "2026-10-30T06:22:34.051459+00:00",
+        "body_sha256": "6978c83459501516b4c3d09fdec6150e076bc9b378c00d420b9d9d68abc3c73f"
+      },
+      {
+        "url": "https://developers.cloudflare.com/pages/configuration/custom-domains/",
+        "retrieval_record": "2026-10-30T06:22:34.262783+00:00",
+        "body_sha256": "c26fba21d51bce508a675c9ff82c93b1374eaeb112ea5d1373c9de7e9ac131a3"
+      },
+      {
+        "url": "https://letsencrypt.org/getting-started/",
+        "retrieval_record": "2026-10-30T06:22:33.345863+00:00",
+        "body_sha256": "7f199d385447b5c49d37294bd06e92fdc0ee889416bd7cc8495ac1211cc45600"
+      }
+    ]
+  },
+  {
+    "position": 43,
+    "query": "domain extensions list",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 14,
+    "screening_score": "240.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Domain Extensions List: Find the Right Ending Beyond .COM",
+    "path": "content/blog/en/domain-extensions-list.md",
+    "existing_revision": false,
+    "writer_group": 4,
+    "reviewed_manuscript_sha256": "741305ce0e74f8275c4226aea39183a92aecb38b7ed297ccf52088902a9cf843",
+    "primary_sources": [
+      {
+        "url": "https://www.iana.org/domains/root/db",
+        "retrieval_record": "2026-10-30T06:22:33.484432+00:00",
+        "body_sha256": "3c186ff7c94a034e35a2fe34ff4fa2f8f1c08d96eb9cb0a09f0a08e8582e20cc"
+      },
+      {
+        "url": "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites",
+        "retrieval_record": "2026-10-30T06:22:33.753749+00:00",
+        "body_sha256": "5144c9161f126748941eb5002ce485651e4ef1f834c4603516639c973eff8f16"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/about-domain-names-2018-08-30-en",
+        "retrieval_record": "2026-10-30T06:22:34.006635+00:00",
+        "body_sha256": "c3fea4a8c0c49e6ae8633f90bf94ab9a93d15880219ff5a0b86178cb6c587d29"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db/ch.html",
+        "retrieval_record": "2026-10-30T06:28:03.774534+00:00",
+        "body_sha256": "167d3878491ecd6f37eafe44b1b4fed4d1a7771aefb0ea17fc4e1810e617493e"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db/uk.html",
+        "retrieval_record": "2026-10-30T06:43:38.688915+00:00",
+        "body_sha256": "ba7cfa00099739bd06c5378c44e090cc3c080e9cfc1259124d5f96ed3a44a10c"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db/de.html",
+        "retrieval_record": "2026-10-30T06:43:38.689341+00:00",
+        "body_sha256": "97eedcca192bf47c2792ccd950e5a1f8436970b667ca597f3e2cff54b76f7b6f"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db/fr.html",
+        "retrieval_record": "2026-10-30T06:43:38.689662+00:00",
+        "body_sha256": "896726452ef2a730ed7744bd24a5962c1c366f782b9df54e71ba090e869d27c3"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db/ca.html",
+        "retrieval_record": "2026-10-30T06:43:38.689756+00:00",
+        "body_sha256": "f9e40f6796819826741da3ac9f8de158081e09451230bc4e331488a1a535ce92"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db/us.html",
+        "retrieval_record": "2026-10-30T06:43:38.689880+00:00",
+        "body_sha256": "90a1cbfd15c90695aad4995959614582a6d2cb076e1541355d0fdf156901a15b"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db/au.html",
+        "retrieval_record": "2026-10-30T06:43:38.780204+00:00",
+        "body_sha256": "9b1e6c1e1af6e3d2e221cb0bfb0608af40b757583f41ba85e754f18450f41eda"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db/jp.html",
+        "retrieval_record": "2026-10-30T06:43:38.820745+00:00",
+        "body_sha256": "14b88a63241e823ef839a0a6e0aad1b491a6102283d5a69f531da63af50060a4"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db/ai.html",
+        "retrieval_record": "2026-10-30T06:43:38.837467+00:00",
+        "body_sha256": "0846f0be8adc120555596a4d049c8fb6fd685fd75cb3fd8ba655d3b6e681b2fd"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db/io.html",
+        "retrieval_record": "2026-10-30T06:22:33.492839+00:00",
+        "body_sha256": "e144675e46bbf3ef29b0ea5a0a66dd3360268598bf4de6dab6e9bcb13d2b2ae0"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db/co.html",
+        "retrieval_record": "2026-10-30T06:43:38.852182+00:00",
+        "body_sha256": "02478fff8ca5b99665099bc1ff688a69a6ef14d74615a7f4862151695a1a9db7"
+      }
+    ]
+  },
+  {
+    "position": 44,
+    "query": "squarespace register domain",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 6600,
+    "dataforseo_keyword_difficulty": 27,
+    "screening_score": "235.71",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Buy a Domain on Squarespace: The Steps and Costs to Check",
+    "path": "content/blog/en/register-domain-squarespace.md",
+    "existing_revision": false,
+    "writer_group": 4,
+    "reviewed_manuscript_sha256": "0f7db6c4eaf6c6690bf2beacd388c9e391e4a9f1dd71df30ce564f4c9db31837",
+    "primary_sources": [
+      {
+        "url": "https://support.squarespace.com/hc/en-us/articles/205812318-Register-a-domain-for-an-existing-site",
+        "retrieval_record": "2026-10-30T06:28:03.063445+00:00",
+        "body_sha256": "2bd1d565be0f25c6c1e183c19cfd0e147aea16d4e5a56040e257365baa9b494b"
+      },
+      {
+        "url": "https://support.squarespace.com/hc/en-us/articles/217963508-Register-a-domain-without-a-site",
+        "retrieval_record": "2026-10-30T06:33:10.036414+00:00",
+        "body_sha256": "d30c38003436f663a3e6a05436589ab48fedd31fb0df92da4df83d72e8e7bdc2"
+      },
+      {
+        "url": "https://support.squarespace.com/hc/en-us/articles/205812198-Registering-Squarespace-domains",
+        "retrieval_record": "2026-10-30T06:22:35.144044+00:00",
+        "body_sha256": "ae24631dfbb12dd41d58c4c480f98e3d7be86db500707cd575e939e2fe6bc654"
+      }
+    ]
+  },
+  {
+    "position": 45,
+    "query": "free web hosting website",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 12100,
+    "dataforseo_keyword_difficulty": 51,
+    "screening_score": "232.69",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Best Free Web Hosting: Which Options Are Usable for a Real Website?",
+    "path": "content/blog/en/free-web-hosting-guide.md",
+    "existing_revision": false,
+    "writer_group": 4,
+    "reviewed_manuscript_sha256": "315b2b9ed390bcf56830bc30ae137ead7445a90bfff7f6cf99ba3931fc6b0c71",
+    "primary_sources": [
+      {
+        "url": "https://wordpress.com/free/",
+        "retrieval_record": "2026-10-30T06:33:09.051276+00:00",
+        "body_sha256": "8596fa8ef45ef6827f35e38bf943239d08c8a92ebd7aeb65ac78a35ab32d29af"
+      },
+      {
+        "url": "https://wordpress.com/pricing/",
+        "retrieval_record": "2026-10-30T06:33:09.362585+00:00",
+        "body_sha256": "3ec0d3c9dccac6216d017111dfd83ff742bf6e1c2461a28457836cde933ba059"
+      },
+      {
+        "url": "https://wordpress.com/support/export/",
+        "retrieval_record": "2026-10-30T06:33:09.691489+00:00",
+        "body_sha256": "1ff6550785b11b9f53de3b9ba7dbde44e3567d8495be1e2c3c556ed7e570b1af"
+      },
+      {
+        "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages",
+        "retrieval_record": "2026-10-30T06:22:34.037739+00:00",
+        "body_sha256": "855ad923b2733a000d0f877e6f02bc1cc8cc0b8db1a2cb41e878bfe86342b910"
+      },
+      {
+        "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits",
+        "retrieval_record": "2026-10-30T06:22:34.051459+00:00",
+        "body_sha256": "6978c83459501516b4c3d09fdec6150e076bc9b378c00d420b9d9d68abc3c73f"
+      },
+      {
+        "url": "https://developers.cloudflare.com/pages/framework-guides/deploy-anything/",
+        "retrieval_record": "2026-10-30T06:22:34.092229+00:00",
+        "body_sha256": "7c48143c6a0064d6547732b4554b030bc41e4325314fef8b9f80de3c0f603e36"
+      },
+      {
+        "url": "https://developers.cloudflare.com/pages/platform/limits/",
+        "retrieval_record": "2026-10-30T06:22:34.229449+00:00",
+        "body_sha256": "d5f2bf9c14750d6a4fff165ce6be60354c15377cf27a4f64880f957433e0f7f2"
+      },
+      {
+        "url": "https://developers.cloudflare.com/pages/configuration/custom-domains/",
+        "retrieval_record": "2026-10-30T06:22:34.262783+00:00",
+        "body_sha256": "c26fba21d51bce508a675c9ff82c93b1374eaeb112ea5d1373c9de7e9ac131a3"
+      }
+    ]
+  },
+  {
+    "position": 46,
+    "query": "ch domain name",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 2900,
+    "dataforseo_keyword_difficulty": 12,
+    "screening_score": "223.08",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Register a .CH Domain: Who Can Buy One and What to Check",
+    "path": "content/tld/en/ch.md",
+    "existing_revision": true,
+    "writer_group": 4,
+    "reviewed_manuscript_sha256": "14fba95b1e47203996fc3ae83100b41a4193b91ae730a1f86a9e86dbaa719c00",
+    "primary_sources": [
+      {
+        "url": "https://www.nic.ch/support/general/",
+        "retrieval_record": "2026-10-30T06:22:34.447601+00:00",
+        "body_sha256": "4fa5eb5c3718565a30527f2ea230edf75ec61a0048bdf3525f924fca0cb58491"
+      },
+      {
+        "url": "https://www.iana.org/domains/root/db/ch.html",
+        "retrieval_record": "2026-10-30T06:28:03.774534+00:00",
+        "body_sha256": "167d3878491ecd6f37eafe44b1b4fed4d1a7771aefb0ea17fc4e1810e617493e"
+      },
+      {
+        "url": "https://www.nic.ch/registrars/",
+        "retrieval_record": "2026-10-30T06:22:34.483334+00:00",
+        "body_sha256": "614f1daaec99093e8af0acf0bce99c170c5e5f9f301acc2f10665094a865d0e6"
+      },
+      {
+        "url": "https://www.nic.ch/terms/agb/",
+        "retrieval_record": "2026-10-30T06:22:34.467667+00:00",
+        "body_sha256": "bf15ba8f4ec1225088e9b3d774eb47278c40a380274a73916afec976d7d080e8"
+      }
+    ]
+  },
+  {
+    "position": 47,
+    "query": "subdomain example",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 6600,
+    "dataforseo_keyword_difficulty": 29,
+    "screening_score": "220.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is a Subdomain? Examples You Can Use for Your Own Site",
+    "path": "content/blog/en/subdomain-examples.md",
+    "existing_revision": true,
+    "writer_group": 4,
+    "reviewed_manuscript_sha256": "420e4ecd177a2bb46740e00303a7345a72d64773c1b2ff65492b772d7252acde",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9499.html#:~:text=Note%20that%20the%20comparisons%20here%20are%20done%20on%20whole%20labels",
+        "retrieval_record": "2026-10-30T06:22:34.512169+00:00",
+        "body_sha256": "562eb3afff2fa226ffad3c0b4fb2ca6a698cf50d2c04d7952cd01df3b90c627b"
+      },
+      {
+        "url": "https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-subdomain/",
+        "retrieval_record": "2026-10-30T06:22:34.735648+00:00",
+        "body_sha256": "010998e97f1c1bbd04fc95bf4a059b172d68b7e39517b391822030f8516eecf6"
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies",
+        "retrieval_record": "2026-10-30T06:22:34.879495+00:00",
+        "body_sha256": "381fd54ceb15a4ae892e13f866b58d981332341336b3dc373af3aaa2322a461a"
+      },
+      {
+        "url": "https://letsencrypt.org/docs/challenge-types/",
+        "retrieval_record": "2026-10-30T06:22:33.345947+00:00",
+        "body_sha256": "23fc92421897342220972610b284c65f674198daf2e6c8c10756a1cd2c1ed245"
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL",
+        "retrieval_record": "2026-10-30T06:43:38.882010+00:00",
+        "body_sha256": "3eeb7a04f028421620c2aeb02af0c29f038f097184e3de12791edda914e1564b"
+      }
+    ]
+  },
+  {
+    "position": 48,
+    "query": "cheap web hosting",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 6600,
+    "dataforseo_keyword_difficulty": 30,
+    "screening_score": "212.90",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Best Cheap Web Hosting: What Will You Pay After the First Term?",
+    "path": "content/blog/en/cheap-web-hosting-guide.md",
+    "existing_revision": false,
+    "writer_group": 4,
+    "reviewed_manuscript_sha256": "ce1984367a876a852ff109c20ca7dd8edf0c1ac27acc813994f40268448ec26c",
+    "primary_sources": [
+      {
+        "url": "https://www.hostinger.com/tutorials/what-is-shared-hosting",
+        "retrieval_record": "2026-10-30T06:28:04.009321+00:00",
+        "body_sha256": "f26d4f3a58c5e1f35ae933136e86f1bd3b6c15a46c11493c09c216891f37d3f0"
+      },
+      {
+        "url": "https://www.namecheap.com/hosting/shared/",
+        "retrieval_record": "2026-10-30T04:14:46.901024+00:00",
+        "body_sha256": "ff0dec303217816a9745d88a05a9d8c7ddcb54c7557d3ac13fd6fb3ac53c4d1d"
+      },
+      {
+        "url": "https://wordpress.com/pricing/",
+        "retrieval_record": "2026-10-30T06:33:09.362585+00:00",
+        "body_sha256": "3ec0d3c9dccac6216d017111dfd83ff742bf6e1c2461a28457836cde933ba059"
+      },
+      {
+        "url": "https://www.namecheap.com/hosting/shared/#:~:text=For%20Stellar%20customers%2C%20internal%20backups",
+        "retrieval_record": "2026-10-30T04:14:46.901024+00:00",
+        "body_sha256": "ff0dec303217816a9745d88a05a9d8c7ddcb54c7557d3ac13fd6fb3ac53c4d1d"
+      },
+      {
+        "url": "https://wordpress.com/support/export/",
+        "retrieval_record": "2026-10-30T06:33:09.691489+00:00",
+        "body_sha256": "1ff6550785b11b9f53de3b9ba7dbde44e3567d8495be1e2c3c556ed7e570b1af"
+      }
+    ]
+  },
+  {
+    "position": 49,
+    "query": "cname",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 5400,
+    "dataforseo_keyword_difficulty": 25,
+    "screening_score": "207.69",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is a CNAME Record? How to Point One DNS Name to Another",
+    "path": "content/blog/en/cname-vs-a-record.md",
+    "existing_revision": true,
+    "writer_group": 5,
+    "reviewed_manuscript_sha256": "75cb1c4bc79ba6e6b6e086b5e33146f284ec00fbd3e5edf07e460c90ac7cc500",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.6.2",
+        "retrieval_record": "2026-10-30T06:40:54.938152+00:00",
+        "body_sha256": "d75b1a5ee05918567e581c483be5447d3bdf1fe180fc2fde7046359ced5f0f81"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1035.html#section-3.4.1",
+        "retrieval_record": "2026-10-30T06:40:54.938510+00:00",
+        "body_sha256": "d75b1a5ee05918567e581c483be5447d3bdf1fe180fc2fde7046359ced5f0f81"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-4.2.1",
+        "retrieval_record": "2026-10-30T06:40:54.938378+00:00",
+        "body_sha256": "8d30513d7991050e7ce8172260e87d5d1c40cb78c0932aca52d601ecccc51fcf"
+      },
+      {
+        "url": "https://developers.cloudflare.com/dns/cname-flattening/#how-it-works",
+        "retrieval_record": "2026-10-30T06:40:54.938639+00:00",
+        "body_sha256": "8d30513d7991050e7ce8172260e87d5d1c40cb78c0932aca52d601ecccc51fcf"
+      },
+      {
+        "url": "https://toolbox.googleapps.com/apps/dig/",
+        "retrieval_record": "2026-10-30T06:40:54.939395+00:00",
+        "body_sha256": "7adc3fa7abfdf1cf93ef3af2dea92eec3c2d784e5282c72e3184df628f9f1b2b"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.6",
+        "retrieval_record": "2026-10-30T06:40:54.938757+00:00",
+        "body_sha256": "d75b1a5ee05918567e581c483be5447d3bdf1fe180fc2fde7046359ced5f0f81"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:40:54.980665+00:00",
+        "body_sha256": "68b5dd7f1be368c2e8276b8ab72064a4e8c02a04a7c239e73e7c8c0df1b32cd7"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5737.html#section-3",
+        "retrieval_record": "2026-10-30T06:40:54.942296+00:00",
+        "body_sha256": "f147d102630efa75f4a1f5cd6bcdda3b15a85895b5be857d729514b7af20bf15"
+      }
+    ]
+  },
+  {
+    "position": 50,
+    "query": "cheap domain",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 9900,
+    "dataforseo_keyword_difficulty": 47,
+    "screening_score": "206.25",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Cheap Domain Names: Compare the Price You Will Actually Renew At",
+    "path": "content/blog/en/how-much-is-a-domain-understanding-holding-cost.md",
+    "existing_revision": true,
+    "writer_group": 5,
+    "reviewed_manuscript_sha256": "ef449dbc832a6c9e6088a8966b760ab47f7578ce741630a41d56db9c677aefa9",
+    "primary_sources": [
+      {
+        "url": "https://porkbun.com/products/domains#:~:text=Registration%20and%20renewal%20prices",
+        "retrieval_record": "2026-10-30T06:40:54.940478+00:00",
+        "body_sha256": "ff0b0b0afcd90f12e58121ba54d7a7f336722b693c43bed7dbd9d03be773466d"
+      },
+      {
+        "url": "https://www.cloudflare.com/domains/",
+        "retrieval_record": "2026-10-30T04:13:26.705432+00:00",
+        "body_sha256": "f928afd3808ea376040492f34a95c8881ca7b52647942845c5c46cf62598737e"
+      },
+      {
+        "url": "https://developers.cloudflare.com/registrar/get-started/register-domain/#prerequisites-and-restrictions",
+        "retrieval_record": "2026-10-30T06:40:54.940951+00:00",
+        "body_sha256": "ff0b0b0afcd90f12e58121ba54d7a7f336722b693c43bed7dbd9d03be773466d"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/about-domain-names-2018-08-30-en#:~:text=You%20must%20purchase",
+        "retrieval_record": "2026-10-30T06:40:54.941330+00:00",
+        "body_sha256": "676344a17705fb3c54ea3db1c64138aba2e31e448c0c524700c3aa267b977e94"
+      }
+    ]
+  },
+  {
+    "position": 51,
+    "query": "reverse dns lookup",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 6600,
+    "dataforseo_keyword_difficulty": 35,
+    "screening_score": "183.33",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Reverse DNS Lookup: Find the Hostname Behind an IP Address",
+    "path": "content/blog/en/reverse-dns-lookup.md",
+    "existing_revision": false,
+    "writer_group": 5,
+    "reviewed_manuscript_sha256": "3aa9cb8ff68ce50d3d953d3d1ded243c7ce8abd03f37153e33549c764354b96f",
+    "primary_sources": [
+      {
+        "url": "https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility",
+        "retrieval_record": "2026-10-30T06:40:54.939268+00:00",
+        "body_sha256": "d75b1a5ee05918567e581c483be5447d3bdf1fe180fc2fde7046359ced5f0f81"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1035.html#section-3.5",
+        "retrieval_record": "2026-10-30T06:40:54.939143+00:00",
+        "body_sha256": "d75b1a5ee05918567e581c483be5447d3bdf1fe180fc2fde7046359ced5f0f81"
+      },
+      {
+        "url": "https://toolbox.googleapps.com/apps/dig/",
+        "retrieval_record": "2026-10-30T06:40:54.939395+00:00",
+        "body_sha256": "7adc3fa7abfdf1cf93ef3af2dea92eec3c2d784e5282c72e3184df628f9f1b2b"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:40:54.980665+00:00",
+        "body_sha256": "68b5dd7f1be368c2e8276b8ab72064a4e8c02a04a7c239e73e7c8c0df1b32cd7"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5737.html#section-3",
+        "retrieval_record": "2026-10-30T06:40:54.942296+00:00",
+        "body_sha256": "f147d102630efa75f4a1f5cd6bcdda3b15a85895b5be857d729514b7af20bf15"
+      }
+    ]
+  },
+  {
+    "position": 52,
+    "query": "godaddy to godaddy domain transfer",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 2900,
+    "dataforseo_keyword_difficulty": 15,
+    "screening_score": "181.25",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Transfer a GoDaddy Domain to Another GoDaddy Account",
+    "path": "content/blog/en/godaddy-account-domain-transfer.md",
+    "existing_revision": false,
+    "writer_group": 5,
+    "reviewed_manuscript_sha256": "de635d54d1c32911fe04a4922089c546cf220b4bb970e8e023739e604615e04f",
+    "primary_sources": [
+      {
+        "url": "https://www.godaddy.com/help/transfer-my-domain-to-another-godaddy-account-822#:~:text=Domains%20transferred%20to%20another%20account",
+        "retrieval_record": "2026-10-30T06:40:54.939531+00:00",
+        "body_sha256": "ff0b0b0afcd90f12e58121ba54d7a7f336722b693c43bed7dbd9d03be773466d"
+      },
+      {
+        "url": "https://www.godaddy.com/help/transfer-my-domain-to-another-godaddy-account-822#:~:text=accepts%20the%20domain%20transfer",
+        "retrieval_record": "2026-10-30T06:40:54.939806+00:00",
+        "body_sha256": "676344a17705fb3c54ea3db1c64138aba2e31e448c0c524700c3aa267b977e94"
+      },
+      {
+        "url": "https://www.godaddy.com/help/accept-a-domain-account-transfer-1670#:~:text=Transfers%20In",
+        "retrieval_record": "2026-10-30T06:40:54.939670+00:00",
+        "body_sha256": "257967600ddb2c90d58f971d5244a0c6d523b30fe5301187947de9ace5b1ae4d"
+      }
+    ]
+  },
+  {
+    "position": 53,
+    "query": "godaddy transfer domain",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 2900,
+    "dataforseo_keyword_difficulty": 15,
+    "screening_score": "181.25",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Transfer a Domain to GoDaddy Without Breaking Your Website",
+    "path": "content/blog/en/transfer-domain-to-godaddy.md",
+    "existing_revision": false,
+    "writer_group": 5,
+    "reviewed_manuscript_sha256": "3d5557b018376b5fe6f091034cf657143c346a871f6c2dedc694090304144979",
+    "primary_sources": [
+      {
+        "url": "https://www.godaddy.com/help/transfer-my-domain-to-godaddy-1592",
+        "retrieval_record": "2026-10-30T04:24:12.145692+00:00",
+        "body_sha256": "f1c02c625ac8ded89418a5c05418a8f62c5b4ac6663b6cb100a04397d8c783f1"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en#:~:text=An%20Auth-Code",
+        "retrieval_record": "2026-10-30T06:40:54.940354+00:00",
+        "body_sha256": "ff0b0b0afcd90f12e58121ba54d7a7f336722b693c43bed7dbd9d03be773466d"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:40:54.980665+00:00",
+        "body_sha256": "68b5dd7f1be368c2e8276b8ab72064a4e8c02a04a7c239e73e7c8c0df1b32cd7"
+      }
+    ]
+  },
+  {
+    "position": 54,
+    "query": "domain value",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 19,
+    "screening_score": "180.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is Your Domain Worth? How to Get Past the Automated Estimate",
+    "path": "content/blog/en/how-to-value-a-domain-name.md",
+    "existing_revision": true,
+    "writer_group": 5,
+    "reviewed_manuscript_sha256": "d746338267ded483323369ad710f20b3815e7af278b0fcedf3976a4eb695d46e",
+    "primary_sources": [
+      {
+        "url": "https://www.godaddy.com/domain-value-appraisal#:~:text=Does%20GoDaddy%20appraise%20domains",
+        "retrieval_record": "2026-10-30T06:40:54.941070+00:00",
+        "body_sha256": "ff0b0b0afcd90f12e58121ba54d7a7f336722b693c43bed7dbd9d03be773466d"
+      },
+      {
+        "url": "https://www.godaddy.com/domain-value-appraisal#:~:text=Does%20GoDaddy%20provide%20domain%20appraisals",
+        "retrieval_record": "2026-10-30T06:40:54.941196+00:00",
+        "body_sha256": "676344a17705fb3c54ea3db1c64138aba2e31e448c0c524700c3aa267b977e94"
+      }
+    ]
+  },
+  {
+    "position": 55,
+    "query": "best domain name registrar",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 20,
+    "screening_score": "171.43",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Best Domain Registrars: Who Stays Cheap After Renewal?",
+    "path": "content/blog/en/choose-domain-registrar.md",
+    "existing_revision": true,
+    "writer_group": 5,
+    "reviewed_manuscript_sha256": "2dd0d8771e42dc69d1936650ab7b15221197cc5da7bceb969ac801282fcdf99b",
+    "primary_sources": [
+      {
+        "url": "https://www.cloudflare.com/domains/",
+        "retrieval_record": "2026-10-30T04:13:26.705432+00:00",
+        "body_sha256": "f928afd3808ea376040492f34a95c8881ca7b52647942845c5c46cf62598737e"
+      },
+      {
+        "url": "https://porkbun.com/products/domains#:~:text=Registration%20and%20renewal%20prices",
+        "retrieval_record": "2026-10-30T06:40:54.940478+00:00",
+        "body_sha256": "ff0b0b0afcd90f12e58121ba54d7a7f336722b693c43bed7dbd9d03be773466d"
+      },
+      {
+        "url": "https://www.namecheap.com/domains/#:~:text=Renew",
+        "retrieval_record": "2026-10-30T06:40:54.941956+00:00",
+        "body_sha256": "f147d102630efa75f4a1f5cd6bcdda3b15a85895b5be857d729514b7af20bf15"
+      },
+      {
+        "url": "https://developers.cloudflare.com/registrar/get-started/register-domain/#prerequisites-and-restrictions",
+        "retrieval_record": "2026-10-30T06:40:54.940951+00:00",
+        "body_sha256": "ff0b0b0afcd90f12e58121ba54d7a7f336722b693c43bed7dbd9d03be773466d"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/about-domain-names-2018-08-30-en#:~:text=You%20must%20purchase",
+        "retrieval_record": "2026-10-30T06:40:54.941330+00:00",
+        "body_sha256": "676344a17705fb3c54ea3db1c64138aba2e31e448c0c524700c3aa267b977e94"
+      },
+      {
+        "url": "https://www.icann.org/en/contracted-parties/accredited-registrars/list-of-accredited-registrars#:~:text=These%20companies",
+        "retrieval_record": "2026-10-30T06:40:54.942074+00:00",
+        "body_sha256": "f147d102630efa75f4a1f5cd6bcdda3b15a85895b5be857d729514b7af20bf15"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en#:~:text=An%20Auth-Code",
+        "retrieval_record": "2026-10-30T06:40:54.940354+00:00",
+        "body_sha256": "ff0b0b0afcd90f12e58121ba54d7a7f336722b693c43bed7dbd9d03be773466d"
+      }
+    ]
+  },
+  {
+    "position": 56,
+    "query": "let's encrypt ssl certificate",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 6600,
+    "dataforseo_keyword_difficulty": 38,
+    "screening_score": "169.23",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Get a Free SSL Certificate With Let’s Encrypt",
+    "path": "content/blog/en/lets-encrypt-certificate-setup.md",
+    "existing_revision": false,
+    "writer_group": 5,
+    "reviewed_manuscript_sha256": "3fe1dd0d263e2f7ed4c2418aa9b5bc132766cace6081e46edd2a305469a10025",
+    "primary_sources": [
+      {
+        "url": "https://letsencrypt.org/getting-started/#selecting-and-operating-an-acme-client-yourself",
+        "retrieval_record": "2026-10-30T06:40:54.941449+00:00",
+        "body_sha256": "ff0b0b0afcd90f12e58121ba54d7a7f336722b693c43bed7dbd9d03be773466d"
+      },
+      {
+        "url": "https://letsencrypt.org/docs/faq/#what-does-it-cost-to-use-lets-encrypt-is-it-really-free",
+        "retrieval_record": "2026-10-30T06:40:54.941698+00:00",
+        "body_sha256": "676344a17705fb3c54ea3db1c64138aba2e31e448c0c524700c3aa267b977e94"
+      },
+      {
+        "url": "https://letsencrypt.org/docs/challenge-types/#dns-01-challenge",
+        "retrieval_record": "2026-10-30T06:40:54.941572+00:00",
+        "body_sha256": "676344a17705fb3c54ea3db1c64138aba2e31e448c0c524700c3aa267b977e94"
+      },
+      {
+        "url": "https://certbot.eff.org/instructions?ws=nginx&os=snap#:~:text=Test%20automatic%20renewal",
+        "retrieval_record": "2026-10-30T06:40:54.941826+00:00",
+        "body_sha256": "8d30513d7991050e7ce8172260e87d5d1c40cb78c0932aca52d601ecccc51fcf"
+      }
+    ]
+  },
+  {
+    "position": 57,
+    "query": "domain and hosting",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 4400,
+    "dataforseo_keyword_difficulty": 25,
+    "screening_score": "169.23",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Domain and Hosting: What You Need to Buy and What You Can Skip",
+    "path": "content/blog/en/domain-vs-hosting.md",
+    "existing_revision": true,
+    "writer_group": 5,
+    "reviewed_manuscript_sha256": "7a7fa1e22d89463d4662474f2cadb21a040eac58185cb762b8c1af9a0d931297",
+    "primary_sources": [
+      {
+        "url": "https://www.icann.org/resources/pages/about-domain-names-2018-08-30-en#:~:text=You%20must%20purchase",
+        "retrieval_record": "2026-10-30T06:40:54.941330+00:00",
+        "body_sha256": "676344a17705fb3c54ea3db1c64138aba2e31e448c0c524700c3aa267b977e94"
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_web_server#summary",
+        "retrieval_record": "2026-10-30T06:40:54.942187+00:00",
+        "body_sha256": "f147d102630efa75f4a1f5cd6bcdda3b15a85895b5be857d729514b7af20bf15"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1035.html#section-3.4.1",
+        "retrieval_record": "2026-10-30T06:40:54.938510+00:00",
+        "body_sha256": "d75b1a5ee05918567e581c483be5447d3bdf1fe180fc2fde7046359ced5f0f81"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.6.2",
+        "retrieval_record": "2026-10-30T06:40:54.938152+00:00",
+        "body_sha256": "d75b1a5ee05918567e581c483be5447d3bdf1fe180fc2fde7046359ced5f0f81"
+      }
+    ]
+  },
+  {
+    "position": 58,
+    "query": "vercel domains",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 4400,
+    "dataforseo_keyword_difficulty": 25,
+    "screening_score": "169.23",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Connect Your Domain to Vercel Without Getting Stuck on DNS",
+    "path": "content/blog/en/connect-domain-to-vercel.md",
+    "existing_revision": false,
+    "writer_group": 5,
+    "reviewed_manuscript_sha256": "dcda0aae4f2a3796a363c0886c1ac2ba8ba6b3de4668f949d8518168e58fe1ba",
+    "primary_sources": [
+      {
+        "url": "https://vercel.com/docs/domains/working-with-domains/add-a-domain#configure-the-domain",
+        "retrieval_record": "2026-10-30T04:24:12.145781+00:00",
+        "body_sha256": "c5a39351a5c835090d2a4888f5476f5a524ca1fd38a1532da3137a89810e36e7"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1035.html#section-3.4.1",
+        "retrieval_record": "2026-10-30T06:40:54.938510+00:00",
+        "body_sha256": "d75b1a5ee05918567e581c483be5447d3bdf1fe180fc2fde7046359ced5f0f81"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.6.2",
+        "retrieval_record": "2026-10-30T06:40:54.938152+00:00",
+        "body_sha256": "d75b1a5ee05918567e581c483be5447d3bdf1fe180fc2fde7046359ced5f0f81"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:40:54.980665+00:00",
+        "body_sha256": "68b5dd7f1be368c2e8276b8ab72064a4e8c02a04a7c239e73e7c8c0df1b32cd7"
+      }
+    ]
+  },
+  {
+    "position": 59,
+    "query": "dns propagation",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 5400,
+    "dataforseo_keyword_difficulty": 32,
+    "screening_score": "163.64",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How Long Does DNS Propagation Take? What You Are Actually Waiting For",
+    "path": "content/blog/en/ttl-and-dns-propagation.md",
+    "existing_revision": true,
+    "writer_group": 5,
+    "reviewed_manuscript_sha256": "0d8b40b9fb0484fab9f7f17c66483697a5a481b129a14907e128aa9ee2bb910c",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.6",
+        "retrieval_record": "2026-10-30T06:40:54.938757+00:00",
+        "body_sha256": "d75b1a5ee05918567e581c483be5447d3bdf1fe180fc2fde7046359ced5f0f81"
+      },
+      {
+        "url": "https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility",
+        "retrieval_record": "2026-10-30T06:40:54.942422+00:00",
+        "body_sha256": "1e87973c3462136e4048b19d7790cbf15b434302cc7153a5c026ec5172367770"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2308.html#section-5",
+        "retrieval_record": "2026-10-30T06:40:54.938880+00:00",
+        "body_sha256": "d75b1a5ee05918567e581c483be5447d3bdf1fe180fc2fde7046359ced5f0f81"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc8767.html#section-1",
+        "retrieval_record": "2026-10-30T06:40:54.939023+00:00",
+        "body_sha256": "7adc3fa7abfdf1cf93ef3af2dea92eec3c2d784e5282c72e3184df628f9f1b2b"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:40:54.980665+00:00",
+        "body_sha256": "68b5dd7f1be368c2e8276b8ab72064a4e8c02a04a7c239e73e7c8c0df1b32cd7"
+      }
+    ]
+  },
+  {
+    "position": 60,
+    "query": "mail exchange record",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 22,
+    "screening_score": "156.52",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is an MX Record? How Your Domain Tells Email Where to Go",
+    "path": "content/blog/en/mx-records-guide.md",
+    "existing_revision": false,
+    "writer_group": 5,
+    "reviewed_manuscript_sha256": "53bdfb148d7c193b980b79976558f5d087c61685b015d2299aca6940cdb6b490",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5321.html#section-5.1",
+        "retrieval_record": "2026-10-30T04:24:12.374737+00:00",
+        "body_sha256": "07bacaaa0a38ba645029a10e4cca039216a2a728ac94b5cccc0853fbdc7e55e3"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc7505.html#section-3",
+        "retrieval_record": "2026-10-30T04:24:12.392477+00:00",
+        "body_sha256": "569209190c0ccebc497493f868a702ae1d3145b4a6a65b8151b37af1af3f8407"
+      },
+      {
+        "url": "https://toolbox.googleapps.com/apps/dig/",
+        "retrieval_record": "2026-10-30T06:40:54.939395+00:00",
+        "body_sha256": "7adc3fa7abfdf1cf93ef3af2dea92eec3c2d784e5282c72e3184df628f9f1b2b"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1034.html#section-3.6",
+        "retrieval_record": "2026-10-30T06:40:54.938757+00:00",
+        "body_sha256": "d75b1a5ee05918567e581c483be5447d3bdf1fe180fc2fde7046359ced5f0f81"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2606.html#section-3",
+        "retrieval_record": "2026-10-30T06:40:54.980665+00:00",
+        "body_sha256": "68b5dd7f1be368c2e8276b8ab72064a4e8c02a04a7c239e73e7c8c0df1b32cd7"
+      }
+    ]
+  },
+  {
+    "position": 61,
+    "query": "free domain",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 6600,
+    "dataforseo_keyword_difficulty": 42,
+    "screening_score": "153.49",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Can You Really Get a Free Domain Name? What the Offer Leaves Out",
+    "path": "content/blog/en/free-domain-offers.md",
+    "existing_revision": true,
+    "writer_group": 6,
+    "reviewed_manuscript_sha256": "e902cad12ad8310e15fce7ce8f12b89b1824ee99b1313ae8de9091497153fc6b",
+    "primary_sources": [
+      {
+        "url": "https://support.wix.com/en/article/using-your-free-1-year-domain-voucher#using-your-voucher",
+        "retrieval_record": "2026-10-30T06:22:42.234686+00:00",
+        "body_sha256": "4759d0ecb05795960b87f441e0a9d3c332baaba5e1da26e19732b13fa3ec46b8"
+      },
+      {
+        "url": "https://domains.squarespace.com/free-domain-and-website#:~:text=All%20Squarespace%20website%20plans",
+        "retrieval_record": "2026-10-30T04:13:23.502694+00:00",
+        "body_sha256": "e87743ef66e27624c3e989139db27be0cb6eb0417a70b275dc151567527d2229"
+      },
+      {
+        "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#types-of-github-pages-sites",
+        "retrieval_record": "2026-10-30T06:22:41.575632+00:00",
+        "body_sha256": "89d97d1952baa2ec72a2beed2d33366dc2ad5d96a6baa11b000cdead1d7ba969"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en#:~:text=60%20days",
+        "retrieval_record": "2026-10-30T06:22:42.051336+00:00",
+        "body_sha256": "a8920a7211db78bb3b5e776727f3fa80325ecaa9ac93b96b4ac66c7db2fc491b"
+      },
+      {
+        "url": "https://www.iana.org/help/example-domains#:~:text=for%20documentation%20purposes",
+        "retrieval_record": "2026-10-30T06:33:01.280478+00:00",
+        "body_sha256": "f02ec0c8c7c061dd672a2aeec8c562fb4d0a1003a6a50667fea1ebf345d7d443"
+      }
+    ]
+  },
+  {
+    "position": 62,
+    "query": "free domain name and website",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 24,
+    "screening_score": "144.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Free Website and Domain: Which Offers Are Actually Free?",
+    "path": "content/blog/en/free-website-and-domain.md",
+    "existing_revision": false,
+    "writer_group": 6,
+    "reviewed_manuscript_sha256": "bfdc1ee8c2fe59656c5a4eaac0a63e7cd9cd3a5017b3eb9b2447329fa0b52ca1",
+    "primary_sources": [
+      {
+        "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#types-of-github-pages-sites",
+        "retrieval_record": "2026-10-30T06:22:41.575632+00:00",
+        "body_sha256": "89d97d1952baa2ec72a2beed2d33366dc2ad5d96a6baa11b000cdead1d7ba969"
+      },
+      {
+        "url": "https://domains.squarespace.com/free-domain-and-website#:~:text=All%20Squarespace%20website%20plans",
+        "retrieval_record": "2026-10-30T04:13:23.502694+00:00",
+        "body_sha256": "e87743ef66e27624c3e989139db27be0cb6eb0417a70b275dc151567527d2229"
+      },
+      {
+        "url": "https://support.wix.com/en/article/using-your-free-1-year-domain-voucher#using-your-voucher",
+        "retrieval_record": "2026-10-30T06:22:42.234686+00:00",
+        "body_sha256": "4759d0ecb05795960b87f441e0a9d3c332baaba5e1da26e19732b13fa3ec46b8"
+      },
+      {
+        "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits#:~:text=GitHub%20Pages%20is%20not%20intended",
+        "retrieval_record": "2026-10-30T06:52:01.650291+00:00",
+        "body_sha256": "50d70a27e11a01d746d79cf88a1941502f0fb0536cbb9781bea8b2392cd2ad63"
+      }
+    ]
+  },
+  {
+    "position": 63,
+    "query": "check an spf record",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 8100,
+    "dataforseo_keyword_difficulty": 57,
+    "screening_score": "139.66",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "SPF Record Checker: Find the Mistakes That Can Break Your Email",
+    "path": "content/blog/en/spf-record-check.md",
+    "existing_revision": false,
+    "writer_group": 6,
+    "reviewed_manuscript_sha256": "80ce6fab658306e02f116ce851e47c4cfcac334f65a681c6d4318fbf554a158b",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc7208.html#section-4.5",
+        "retrieval_record": "2026-10-30T06:22:41.421461+00:00",
+        "body_sha256": "3cca3f2551f50d24a7b6423a7451d285df077863dab4bb261080ee87844f2d5b"
+      },
+      {
+        "url": "https://toolbox.googleapps.com/apps/dig/#TXT/",
+        "retrieval_record": "2026-10-30T06:22:41.653155+00:00",
+        "body_sha256": "bb2452359b987ee05c9414730e4dd00e946791c061e39c7ea0c727b05ffc036d"
+      },
+      {
+        "url": "https://support.google.com/a/answer/81126?hl=en#:~:text=Email%20authentication%20requirements",
+        "retrieval_record": "2026-10-30T06:22:42.611344+00:00",
+        "body_sha256": "8f0dae3ef8949773cbb089d0cb89556b5b83914f1a8988ad74f812ca9b5a658a"
+      },
+      {
+        "url": "https://www.iana.org/help/example-domains#:~:text=for%20documentation%20purposes",
+        "retrieval_record": "2026-10-30T06:33:01.280478+00:00",
+        "body_sha256": "f02ec0c8c7c061dd672a2aeec8c562fb4d0a1003a6a50667fea1ebf345d7d443"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5737.html#section-3",
+        "retrieval_record": "2026-10-30T06:33:01.385070+00:00",
+        "body_sha256": "9d16217614a74a9b064eff900e5cd07a525793cf8227dca1267100e880f0c410"
+      }
+    ]
+  },
+  {
+    "position": 64,
+    "query": "com domains",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 5400,
+    "dataforseo_keyword_difficulty": 38,
+    "screening_score": "138.46",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Where to Buy a .COM Domain: Compare Registration and Renewal Prices",
+    "path": "content/tld/en/com.md",
+    "existing_revision": true,
+    "writer_group": 6,
+    "reviewed_manuscript_sha256": "7773ed2e24c4bd27655c48e35d4f104adc9cf9de438b92b3f5cbdc654d29a09d",
+    "primary_sources": [
+      {
+        "url": "https://www.iana.org/domains/root/db/com.html#:~:text=VeriSign%20Global%20Registry%20Services",
+        "retrieval_record": "2026-10-30T06:22:41.734006+00:00",
+        "body_sha256": "98243a3370bf43d239be71c804690eea9aa909c57b38592fdc0f1a9a20124bb2"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/registrars/registrars-en#:~:text=An%20accredited%20registrar",
+        "retrieval_record": "2026-10-30T06:22:41.958014+00:00",
+        "body_sha256": "c7214b41d3834ebe55817195c62233db764d57cd597f3f387c32f17227671ea1"
+      },
+      {
+        "url": "https://developers.cloudflare.com/registrar/get-started/register-domain/#prerequisites-and-restrictions",
+        "retrieval_record": "2026-10-30T06:28:36.060616+00:00",
+        "body_sha256": "9993e2c866fada3623ddb76b53594499ae687b27fa173362b779a0485d23936f"
+      },
+      {
+        "url": "https://www.cloudflare.com/products/registrar/#:~:text=registries%20and%20ICANN",
+        "retrieval_record": "2026-10-30T06:28:36.381158+00:00",
+        "body_sha256": "22a879ff9c4cadf1f8eadc30b7b9d7c146c716c9ae094b8000157c05091e74e3"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/name-holder-faqs-2017-10-10-en#:~:text=60%20days",
+        "retrieval_record": "2026-10-30T06:22:42.051336+00:00",
+        "body_sha256": "a8920a7211db78bb3b5e776727f3fa80325ecaa9ac93b96b4ac66c7db2fc491b"
+      }
+    ]
+  },
+  {
+    "position": 65,
+    "query": "dmarc",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 9900,
+    "dataforseo_keyword_difficulty": 72,
+    "screening_score": "135.62",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is DMARC? How It Helps Stop People From Spoofing Your Domain",
+    "path": "content/blog/en/dmarc-record-setup.md",
+    "existing_revision": true,
+    "writer_group": 6,
+    "reviewed_manuscript_sha256": "ba7bfb3e7bc0568485b1f35947a7a6d8e1ddccdb4ddc01089572eae96b02770d",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9989.html#section-4",
+        "retrieval_record": "2026-10-30T06:22:41.455804+00:00",
+        "body_sha256": "cdd78e2918a210ca0f1bcd167dfd9e5555a9331506bcea988432793b71fd0c1e"
+      },
+      {
+        "url": "https://support.google.com/a/answer/81126?hl=en#:~:text=Email%20authentication%20requirements",
+        "retrieval_record": "2026-10-30T06:22:42.611344+00:00",
+        "body_sha256": "8f0dae3ef8949773cbb089d0cb89556b5b83914f1a8988ad74f812ca9b5a658a"
+      },
+      {
+        "url": "https://www.iana.org/help/example-domains#:~:text=for%20documentation%20purposes",
+        "retrieval_record": "2026-10-30T06:33:01.280478+00:00",
+        "body_sha256": "f02ec0c8c7c061dd672a2aeec8c562fb4d0a1003a6a50667fea1ebf345d7d443"
+      }
+    ]
+  },
+  {
+    "position": 66,
+    "query": "dns propagation checker",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 5400,
+    "dataforseo_keyword_difficulty": 39,
+    "screening_score": "135.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "DNS Propagation Checker: Is Your New Record Showing Up Yet?",
+    "path": "content/blog/en/dns-propagation-checker-guide.md",
+    "existing_revision": false,
+    "writer_group": 6,
+    "reviewed_manuscript_sha256": "3dcda927d72171bf5220faae7327b4d5bd6d082918da69f15d40e63354ea978a",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1035.html#section-4.1.3",
+        "retrieval_record": "2026-10-30T06:22:41.402561+00:00",
+        "body_sha256": "d14ae809fc9b41bbcae26bb38c937c9515808b944f3252b00de9fe0e95f4fdfb"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc2308.html#section-5",
+        "retrieval_record": "2026-10-30T06:22:41.395543+00:00",
+        "body_sha256": "7fdfca474a92f7dfee13e70998c40c263104087da46cac91944f643562ce3fba"
+      },
+      {
+        "url": "https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility",
+        "retrieval_record": "2026-10-30T06:28:36.169156+00:00",
+        "body_sha256": "8579a617bb0ea7dc0d8a6a3f8670374bb8f09ae5698b0c065b94d53424bb9ce0"
+      },
+      {
+        "url": "https://developers.cloudflare.com/dns/manage-dns-records/reference/ttl/#proxied-records",
+        "retrieval_record": "2026-10-30T06:28:36.169407+00:00",
+        "body_sha256": "e15c1cac07814b38d32ada5e07b146bf5ec4c52384b821881a157cfb8d940954"
+      },
+      {
+        "url": "https://www.iana.org/help/example-domains#:~:text=for%20documentation%20purposes",
+        "retrieval_record": "2026-10-30T06:33:01.280478+00:00",
+        "body_sha256": "f02ec0c8c7c061dd672a2aeec8c562fb4d0a1003a6a50667fea1ebf345d7d443"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5737.html#section-3",
+        "retrieval_record": "2026-10-30T06:33:01.385070+00:00",
+        "body_sha256": "9d16217614a74a9b064eff900e5cd07a525793cf8227dca1267100e880f0c410"
+      },
+      {
+        "url": "https://developers.google.com/speed/public-dns/docs/using#:~:text=The%20Google%20Public%20DNS%20IP%20addresses",
+        "retrieval_record": "2026-10-30T06:22:41.806405+00:00",
+        "body_sha256": "a23ddfa3cdcc21719289db7b07e9e556fc2fd4208d738fb479af3166c32df3ef"
+      }
+    ]
+  },
+  {
+    "position": 67,
+    "query": "reverse dns",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 6600,
+    "dataforseo_keyword_difficulty": 48,
+    "screening_score": "134.69",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is Reverse DNS? Why Your IP Address Can Have a Hostname",
+    "path": "content/blog/en/reverse-dns-ptr-records.md",
+    "existing_revision": true,
+    "writer_group": 6,
+    "reviewed_manuscript_sha256": "9630d8768c03e784aa562d121b2b368f4aa09b5e1e118c6c8931b521a076ddc5",
+    "primary_sources": [
+      {
+        "url": "https://www.arin.net/resources/manage/reverse/#who-can-manage-dns-delegations",
+        "retrieval_record": "2026-10-30T06:28:36.244845+00:00",
+        "body_sha256": "deb72140fbb5ad5a7d340c043d2e40ce4c2a81aa2b37a7738df53ed9d33eb571"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1035.html#section-3.5",
+        "retrieval_record": "2026-10-30T06:22:41.402561+00:00",
+        "body_sha256": "d14ae809fc9b41bbcae26bb38c937c9515808b944f3252b00de9fe0e95f4fdfb"
+      },
+      {
+        "url": "https://support.google.com/a/answer/81126?hl=en#:~:text=The%20public%20IP%20address%20of%20a%20sending%20SMTP%20server",
+        "retrieval_record": "2026-10-30T06:22:42.611344+00:00",
+        "body_sha256": "8f0dae3ef8949773cbb089d0cb89556b5b83914f1a8988ad74f812ca9b5a658a"
+      },
+      {
+        "url": "https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility",
+        "retrieval_record": "2026-10-30T06:28:36.169156+00:00",
+        "body_sha256": "8579a617bb0ea7dc0d8a6a3f8670374bb8f09ae5698b0c065b94d53424bb9ce0"
+      },
+      {
+        "url": "https://www.iana.org/help/example-domains#:~:text=for%20documentation%20purposes",
+        "retrieval_record": "2026-10-30T06:33:01.280478+00:00",
+        "body_sha256": "f02ec0c8c7c061dd672a2aeec8c562fb4d0a1003a6a50667fea1ebf345d7d443"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5737.html#section-3",
+        "retrieval_record": "2026-10-30T06:33:01.385070+00:00",
+        "body_sha256": "9d16217614a74a9b064eff900e5cd07a525793cf8227dca1267100e880f0c410"
+      }
+    ]
+  },
+  {
+    "position": 68,
+    "query": "dns adguard",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 4400,
+    "dataforseo_keyword_difficulty": 32,
+    "screening_score": "133.33",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "AdGuard DNS Setup: Block Ads Across Your Devices With DNS",
+    "path": "content/blog/en/adguard-dns-setup.md",
+    "existing_revision": false,
+    "writer_group": 6,
+    "reviewed_manuscript_sha256": "4dd991624724ea8320f0e6acb89bd424e022d0dddc62156e289956407fbccaeb",
+    "primary_sources": [
+      {
+        "url": "https://adguard-dns.io/en/public-dns.html#:~:text=Private%20DNS%20provider%20hostname",
+        "retrieval_record": "2026-10-30T06:22:42.455771+00:00",
+        "body_sha256": "0a9078adfbb157bf524f94ad253748ac4dc34139c392979738bbc8335d304b3f"
+      },
+      {
+        "url": "https://adguard-dns.io/kb/general/dns-filtering/#dns-filtering-vs-network-filtering",
+        "retrieval_record": "2026-10-30T06:33:01.464260+00:00",
+        "body_sha256": "05f1a1720f84f29c85a4a39664909c57a201f4bd5d707047a3b966e3d69b3898"
+      },
+      {
+        "url": "https://adguard-dns.io/kb/public-dns/choosing-a-protocol/#dns-over-tls-dot",
+        "retrieval_record": "2026-10-30T06:33:01.458587+00:00",
+        "body_sha256": "4ae8c5f08001b6e417af31e2479f08ecfdb0cf9b178aaed69b1e244cb2094104"
+      }
+    ]
+  },
+  {
+    "position": 69,
+    "query": "freedns",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 4400,
+    "dataforseo_keyword_difficulty": 33,
+    "screening_score": "129.41",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "FreeDNS: How to Get a Free Subdomain and Point It to Your Server",
+    "path": "content/blog/en/freedns-setup.md",
+    "existing_revision": false,
+    "writer_group": 6,
+    "reviewed_manuscript_sha256": "58a0db5220379eeb023aa6aeb834dbdc2ee1e16d99e4cb66212e1d9f30c96f1e",
+    "primary_sources": [
+      {
+        "url": "https://freedns.afraid.org/#:~:text=Free%20DNS%20Hosting",
+        "retrieval_record": "2026-10-30T06:28:36.388062+00:00",
+        "body_sha256": "5f3dfcb973213118b123d1fb40e50a9fd97c1f159ab20f339dc47326fbd612fa"
+      },
+      {
+        "url": "https://freedns.afraid.org/faq/#3",
+        "retrieval_record": "2026-10-30T06:22:41.703087+00:00",
+        "body_sha256": "45ca170b9bf8fd9c4917cbf935db43153a0bedefbcdee7502bf3b7fd5c298c48"
+      },
+      {
+        "url": "https://www.noip.com/faqs#:~:text=What%20is%20CGNAT",
+        "retrieval_record": "2026-10-30T06:33:01.735368+00:00",
+        "body_sha256": "5f3c2ae2c3e0047d4f650ef11e16b5237cf35422c56fe809b50b2f750a52968b"
+      },
+      {
+        "url": "https://freedns.afraid.org/faq/#14",
+        "retrieval_record": "2026-10-30T06:22:41.703087+00:00",
+        "body_sha256": "45ca170b9bf8fd9c4917cbf935db43153a0bedefbcdee7502bf3b7fd5c298c48"
+      }
+    ]
+  },
+  {
+    "position": 70,
+    "query": "dmarc check",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 6600,
+    "dataforseo_keyword_difficulty": 52,
+    "screening_score": "124.53",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "DMARC Checker: Is Your Domain Really Protected Against Spoofing?",
+    "path": "content/blog/en/dmarc-record-check.md",
+    "existing_revision": false,
+    "writer_group": 6,
+    "reviewed_manuscript_sha256": "7eba488c8554481193613ef4f40c9f7b3efcd157b560617e5b712437147ec3bb",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9989.html#section-4.10.1",
+        "retrieval_record": "2026-10-30T06:22:41.455804+00:00",
+        "body_sha256": "cdd78e2918a210ca0f1bcd167dfd9e5555a9331506bcea988432793b71fd0c1e"
+      },
+      {
+        "url": "https://support.google.com/a/answer/81126?hl=en#:~:text=Email%20authentication%20requirements",
+        "retrieval_record": "2026-10-30T06:22:42.611344+00:00",
+        "body_sha256": "8f0dae3ef8949773cbb089d0cb89556b5b83914f1a8988ad74f812ca9b5a658a"
+      },
+      {
+        "url": "https://toolbox.googleapps.com/apps/dig/",
+        "retrieval_record": "2026-10-30T06:22:41.653155+00:00",
+        "body_sha256": "bb2452359b987ee05c9414730e4dd00e946791c061e39c7ea0c727b05ffc036d"
+      },
+      {
+        "url": "https://www.iana.org/help/example-domains#:~:text=for%20documentation%20purposes",
+        "retrieval_record": "2026-10-30T06:33:01.280478+00:00",
+        "body_sha256": "f02ec0c8c7c061dd672a2aeec8c562fb4d0a1003a6a50667fea1ebf345d7d443"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9989.html#section-4.7",
+        "retrieval_record": "2026-10-30T06:22:41.455804+00:00",
+        "body_sha256": "cdd78e2918a210ca0f1bcd167dfd9e5555a9331506bcea988432793b71fd0c1e"
+      }
+    ]
+  },
+  {
+    "position": 71,
+    "query": "ddns",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 30,
+    "screening_score": "116.13",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is DDNS? Keep a Domain Working When Your IP Address Changes",
+    "path": "content/blog/en/dynamic-dns-setup.md",
+    "existing_revision": true,
+    "writer_group": 6,
+    "reviewed_manuscript_sha256": "89831b1ea5df00eb39db0f4c97cae0d12284bfb191cd40330df820e4db2f16ab",
+    "primary_sources": [
+      {
+        "url": "https://developers.cloudflare.com/dns/manage-dns-records/how-to/managing-dynamic-ip-addresses/#overview",
+        "retrieval_record": "2026-10-30T06:22:41.515293+00:00",
+        "body_sha256": "a1fe70ecf27a2ffaa8dd46b5a409b4220445e23fa9f074b2394695c4b674e17b"
+      },
+      {
+        "url": "https://www.noip.com/faqs#:~:text=How%20does%20Dynamic%20DNS%20work",
+        "retrieval_record": "2026-10-30T06:33:01.735368+00:00",
+        "body_sha256": "5f3c2ae2c3e0047d4f650ef11e16b5237cf35422c56fe809b50b2f750a52968b"
+      },
+      {
+        "url": "https://www.iana.org/help/example-domains#:~:text=for%20documentation%20purposes",
+        "retrieval_record": "2026-10-30T06:33:01.280478+00:00",
+        "body_sha256": "f02ec0c8c7c061dd672a2aeec8c562fb4d0a1003a6a50667fea1ebf345d7d443"
+      }
+    ]
+  },
+  {
+    "position": 72,
+    "query": "dns a record",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 4400,
+    "dataforseo_keyword_difficulty": 38,
+    "screening_score": "112.82",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "DNS A Records Explained: Point Your Domain to the Right IPv4 Address",
+    "path": "content/blog/en/dns-a-record-guide.md",
+    "existing_revision": false,
+    "writer_group": 6,
+    "reviewed_manuscript_sha256": "93288f1f8b6300d1c919b0d453c01720860ada3f2a66187c800328f107100fb6",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1035.html#section-3.4.1",
+        "retrieval_record": "2026-10-30T06:22:41.402561+00:00",
+        "body_sha256": "d14ae809fc9b41bbcae26bb38c937c9515808b944f3252b00de9fe0e95f4fdfb"
+      },
+      {
+        "url": "https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/#create-dns-records",
+        "retrieval_record": "2026-10-30T06:28:36.060896+00:00",
+        "body_sha256": "bd6c6d5479b258e9e123cb3083fa852f0c2887be6ad2528d665d3936daf288bd"
+      },
+      {
+        "url": "https://www.cloudflare.com/learning/dns/dns-records/dns-cname-record/#:~:text=All%20CNAME%20records",
+        "retrieval_record": "2026-10-30T04:13:26.757762+00:00",
+        "body_sha256": "aa861bdfc12b942e2408f6180a9ad3af70e84935d05b252278da2f25817c764b"
+      },
+      {
+        "url": "https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility",
+        "retrieval_record": "2026-10-30T06:28:36.169156+00:00",
+        "body_sha256": "8579a617bb0ea7dc0d8a6a3f8670374bb8f09ae5698b0c065b94d53424bb9ce0"
+      },
+      {
+        "url": "https://www.iana.org/help/example-domains#:~:text=for%20documentation%20purposes",
+        "retrieval_record": "2026-10-30T06:33:01.280478+00:00",
+        "body_sha256": "f02ec0c8c7c061dd672a2aeec8c562fb4d0a1003a6a50667fea1ebf345d7d443"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5737.html#section-3",
+        "retrieval_record": "2026-10-30T06:33:01.385070+00:00",
+        "body_sha256": "9d16217614a74a9b064eff900e5cd07a525793cf8227dca1267100e880f0c410"
+      }
+    ]
+  },
+  {
+    "position": 73,
+    "query": "lookup whois ip",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 8100,
+    "dataforseo_keyword_difficulty": 71,
+    "screening_score": "112.50",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "IP WHOIS Lookup: Find the Network Behind an IP Address",
+    "path": "content/blog/en/ip-whois-lookup.md",
+    "existing_revision": false,
+    "writer_group": 7,
+    "reviewed_manuscript_sha256": "194db3afc988574c488b7c82adb9d29ed31a0e5d994e47be4d281151e22e2bce",
+    "primary_sources": [
+      {
+        "url": "https://www.arin.net/resources/registry/whois/",
+        "retrieval_record": "2026-10-30T06:22:30.909884+00:00",
+        "body_sha256": "2a727c0ebb61dbdb306ff2f90bc5d9d32f7c84e8d95fdd6b0963a5eae5894785"
+      },
+      {
+        "url": "https://www.arin.net/resources/registry/whois/",
+        "retrieval_record": "2026-10-30T06:22:30.909884+00:00",
+        "body_sha256": "2a727c0ebb61dbdb306ff2f90bc5d9d32f7c84e8d95fdd6b0963a5eae5894785"
+      },
+      {
+        "url": "https://www.arin.net/resources/registry/whois/",
+        "retrieval_record": "2026-10-30T06:22:30.909884+00:00",
+        "body_sha256": "2a727c0ebb61dbdb306ff2f90bc5d9d32f7c84e8d95fdd6b0963a5eae5894785"
+      },
+      {
+        "url": "https://developers.cloudflare.com/fundamentals/concepts/cloudflare-ip-addresses/",
+        "retrieval_record": "2026-10-30T06:22:30.716536+00:00",
+        "body_sha256": "2ee9ed4156e6e4a93e5d43efc5127265a125d600a7916866c7e5ea1810ccd428"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5737.html",
+        "retrieval_record": "2026-10-30T06:36:44.753510+00:00",
+        "body_sha256": "722db3b34af95ef0fe3a5d823af8bed6ea4135fc148f67564ddfc23c0ba9e3fa"
+      }
+    ]
+  },
+  {
+    "position": 74,
+    "query": "mx toolbox dns lookup",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 6600,
+    "dataforseo_keyword_difficulty": 59,
+    "screening_score": "110.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Check Your Domain’s DNS Records With MXToolbox",
+    "path": "content/blog/en/mxtoolbox-dns-guide.md",
+    "existing_revision": false,
+    "writer_group": 7,
+    "reviewed_manuscript_sha256": "97fb5e1b7983f16b7a76cdd5029c063413b6aea48c5e32b65228507495ccd16f",
+    "primary_sources": [
+      {
+        "url": "https://mxtoolbox.com/DNSCheck.aspx",
+        "retrieval_record": "2026-10-30T04:13:24.926145+00:00",
+        "body_sha256": "934d6bff0f0dd3f8ec9409f263bdb24b2b2be288007200b67a5400ca8b78d272"
+      },
+      {
+        "url": "https://mxtoolbox.com/",
+        "retrieval_record": "2026-10-30T04:13:24.807536+00:00",
+        "body_sha256": "292e57bdfa47f066627da81c0a9ed0c8c7d60e2b36594994ed71f5fd00408019"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc5321.html",
+        "retrieval_record": "2026-10-30T04:24:12.374737+00:00",
+        "body_sha256": "fdd3307d6e2473afe142f821674fee34c0857b31121be020dac7d4d874b2ceca"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc7505.html",
+        "retrieval_record": "2026-10-30T04:24:12.392477+00:00",
+        "body_sha256": "3d5304dc66ea9ea9a9e0ef66bc9d220b6c806efd2cff6e62fe8d9032dd0aabf8"
+      },
+      {
+        "url": "https://mxtoolbox.com/DNSLookup.aspx",
+        "retrieval_record": "2026-10-30T06:51:58.510383+00:00",
+        "body_sha256": "5abceedce328f6688ddf6bb421ac8a4c53b13324bfbae3cde26d375f3b64d162"
+      }
+    ]
+  },
+  {
+    "position": 75,
+    "query": "vps web hosting",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 8100,
+    "dataforseo_keyword_difficulty": 73,
+    "screening_score": "109.46",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Best VPS Hosting: What to Compare Before You Rent a Server",
+    "path": "content/blog/en/vps-web-hosting-guide.md",
+    "existing_revision": false,
+    "writer_group": 7,
+    "reviewed_manuscript_sha256": "de69446be3bb20fb20a649eca84b23da8161856dd5bd2a49c5204aee25eb7628",
+    "primary_sources": [
+      {
+        "url": "https://aws.amazon.com/what-is/vps/",
+        "retrieval_record": "2026-10-30T06:22:30.811085+00:00",
+        "body_sha256": "37bdf3a77d065dbb79d4b62681599bee5c2b542700e1fb3e4128870f3d0a4a33"
+      },
+      {
+        "url": "https://aws.amazon.com/what-is/vps/",
+        "retrieval_record": "2026-10-30T06:22:30.811085+00:00",
+        "body_sha256": "37bdf3a77d065dbb79d4b62681599bee5c2b542700e1fb3e4128870f3d0a4a33"
+      }
+    ]
+  },
+  {
+    "position": 76,
+    "query": "whois host",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 5400,
+    "dataforseo_keyword_difficulty": 50,
+    "screening_score": "105.88",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Who Hosts This Website? How to Find the Provider Behind a Domain",
+    "path": "content/blog/en/find-website-hosting-provider.md",
+    "existing_revision": false,
+    "writer_group": 7,
+    "reviewed_manuscript_sha256": "89ba533332c03b2c0dfb1b34050a12c6f0ca256eb4e32e640de22477052f27e9",
+    "primary_sources": [
+      {
+        "url": "https://docs.cloud.google.com/identity/docs/how-to/identify-host",
+        "retrieval_record": "2026-10-30T04:13:23.263075+00:00",
+        "body_sha256": "7dd099a0b15558514b2e3e0542a120e8378ba894bdd6f7bf44c8e5e3922508e0"
+      },
+      {
+        "url": "https://www.arin.net/resources/registry/whois/",
+        "retrieval_record": "2026-10-30T06:22:30.909884+00:00",
+        "body_sha256": "2a727c0ebb61dbdb306ff2f90bc5d9d32f7c84e8d95fdd6b0963a5eae5894785"
+      },
+      {
+        "url": "https://developers.cloudflare.com/fundamentals/concepts/cloudflare-ip-addresses/",
+        "retrieval_record": "2026-10-30T06:22:30.716536+00:00",
+        "body_sha256": "2ee9ed4156e6e4a93e5d43efc5127265a125d600a7916866c7e5ea1810ccd428"
+      }
+    ]
+  },
+  {
+    "position": 77,
+    "query": "domain expired",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 33,
+    "screening_score": "105.88",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Your Domain Expired: Can You Still Get It Back?",
+    "path": "content/blog/en/expired-domains-and-the-drop-cycle.md",
+    "existing_revision": true,
+    "writer_group": 7,
+    "reviewed_manuscript_sha256": "a0eee30b2a614d7eb33c586a64f68c2ad5db1d5335053e288c34fd00b0677faf",
+    "primary_sources": [
+      {
+        "url": "https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en",
+        "retrieval_record": "2026-10-30T06:22:30.946246+00:00",
+        "body_sha256": "7a3feba0fdf9374f5c3b8cef8df1ce159ad5ae569163358261337e0d5af75562"
+      },
+      {
+        "url": "https://docs.cloud.google.com/identity/docs/how-to/identify-host",
+        "retrieval_record": "2026-10-30T04:13:23.263075+00:00",
+        "body_sha256": "7dd099a0b15558514b2e3e0542a120e8378ba894bdd6f7bf44c8e5e3922508e0"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en",
+        "retrieval_record": "2026-10-30T06:22:30.946246+00:00",
+        "body_sha256": "7a3feba0fdf9374f5c3b8cef8df1ce159ad5ae569163358261337e0d5af75562"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en",
+        "retrieval_record": "2026-10-30T06:22:30.946246+00:00",
+        "body_sha256": "7a3feba0fdf9374f5c3b8cef8df1ce159ad5ae569163358261337e0d5af75562"
+      }
+    ]
+  },
+  {
+    "position": 78,
+    "query": "expired domains",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 33,
+    "screening_score": "105.88",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Find Expired Domains Worth Buying and Avoid the Junk",
+    "path": "content/blog/en/buy-expired-domains.md",
+    "existing_revision": false,
+    "writer_group": 7,
+    "reviewed_manuscript_sha256": "0ecbf09557842d4bdbd2d02c74100f838c4f3fb002104a1b89d7d2cc23c40e7a",
+    "primary_sources": [
+      {
+        "url": "https://developers.google.com/search/docs/essentials/spam-policies",
+        "retrieval_record": "2026-10-30T06:22:31.339478+00:00",
+        "body_sha256": "480515d74cd341c6c91f39b4f8a52bc9697720df7a706165f395a4475eab40ca"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en",
+        "retrieval_record": "2026-10-30T06:22:30.946246+00:00",
+        "body_sha256": "7a3feba0fdf9374f5c3b8cef8df1ce159ad5ae569163358261337e0d5af75562"
+      },
+      {
+        "url": "https://docs.cloud.google.com/identity/docs/how-to/identify-host",
+        "retrieval_record": "2026-10-30T04:13:23.263075+00:00",
+        "body_sha256": "7dd099a0b15558514b2e3e0542a120e8378ba894bdd6f7bf44c8e5e3922508e0"
+      }
+    ]
+  },
+  {
+    "position": 79,
+    "query": "free https certificate",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 8100,
+    "dataforseo_keyword_difficulty": 76,
+    "screening_score": "105.19",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Get a Free HTTPS Certificate for Your Website",
+    "path": "content/blog/en/free-ssl-certificate.md",
+    "existing_revision": true,
+    "writer_group": 7,
+    "reviewed_manuscript_sha256": "8136e6efb445a10d58a3618f6c01863a670b815f5708480c224be07ce60fd2c6",
+    "primary_sources": [
+      {
+        "url": "https://letsencrypt.org/getting-started/",
+        "retrieval_record": "2026-10-30T06:22:30.682308+00:00",
+        "body_sha256": "8bcb27193330f44d3ddb7e4ff3fd82a19e640b0153a98ed91e0d46568cdf291b"
+      },
+      {
+        "url": "https://letsencrypt.org/docs/faq/",
+        "retrieval_record": "2026-10-30T06:22:30.764436+00:00",
+        "body_sha256": "0a3222d6b64806a56ef072968614984b72f55b1686857ddad19ddfb4beee46cb"
+      },
+      {
+        "url": "https://letsencrypt.org/docs/faq/",
+        "retrieval_record": "2026-10-30T06:22:30.764436+00:00",
+        "body_sha256": "0a3222d6b64806a56ef072968614984b72f55b1686857ddad19ddfb4beee46cb"
+      },
+      {
+        "url": "https://letsencrypt.org/docs/challenge-types/",
+        "retrieval_record": "2026-10-30T06:22:30.689189+00:00",
+        "body_sha256": "317b30b008cb540384dd06587d75b5e609a3cc34c20c845826226dd5ccecbbde"
+      }
+    ]
+  },
+  {
+    "position": 80,
+    "query": "cloudflare domain registration",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 4400,
+    "dataforseo_keyword_difficulty": 41,
+    "screening_score": "104.76",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Register a Domain With Cloudflare: What to Check Before You Pay",
+    "path": "content/blog/en/cloudflare-domain-registration.md",
+    "existing_revision": false,
+    "writer_group": 7,
+    "reviewed_manuscript_sha256": "4cfe623ead2eed5095bd538e15de1608fccec24e768ddc4a52f79604f23f7cc1",
+    "primary_sources": [
+      {
+        "url": "https://developers.cloudflare.com/registrar/get-started/register-domain/",
+        "retrieval_record": "2026-10-30T06:22:30.741787+00:00",
+        "body_sha256": "25a604313ab02b7c265f8e93c2a65141f18b756903423594fc5ad7daef79fd90"
+      },
+      {
+        "url": "https://developers.cloudflare.com/registrar/get-started/register-domain/",
+        "retrieval_record": "2026-10-30T06:22:30.741787+00:00",
+        "body_sha256": "25a604313ab02b7c265f8e93c2a65141f18b756903423594fc5ad7daef79fd90"
+      },
+      {
+        "url": "https://developers.cloudflare.com/registrar/faq/",
+        "retrieval_record": "2026-10-30T06:22:30.722949+00:00",
+        "body_sha256": "a5853f25973549a7e37ca858e0836278658b151f6bd9a691285f8b14025b2f68"
+      },
+      {
+        "url": "https://developers.cloudflare.com/registrar/faq/",
+        "retrieval_record": "2026-10-30T06:22:30.722949+00:00",
+        "body_sha256": "a5853f25973549a7e37ca858e0836278658b151f6bd9a691285f8b14025b2f68"
+      }
+    ]
+  },
+  {
+    "position": 81,
+    "query": "check for dkim",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 5400,
+    "dataforseo_keyword_difficulty": 53,
+    "screening_score": "100.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "DKIM Checker: Is Your Email Signature Set Up Correctly?",
+    "path": "content/blog/en/check-dkim-records.md",
+    "existing_revision": false,
+    "writer_group": 7,
+    "reviewed_manuscript_sha256": "0f3e58689a004dcecf799e2cc3fbf6213a66f9a59328d7222967357866b44f34",
+    "primary_sources": [
+      {
+        "url": "https://support.google.com/a/answer/180504?hl=en",
+        "retrieval_record": "2026-10-30T06:22:31.881150+00:00",
+        "body_sha256": "ee735befd4acee9b6cc713a41f81fb73d6351194a853a42d3be6f19fe78dd53d"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc6376.html",
+        "retrieval_record": "2026-10-30T06:22:30.952126+00:00",
+        "body_sha256": "886dd086ee7c5f3f9d86b2bb4efbae626a81e927e467c78bc3a0269cb8d6c071"
+      },
+      {
+        "url": "https://support.google.com/a/answer/180504?hl=en",
+        "retrieval_record": "2026-10-30T06:22:31.881150+00:00",
+        "body_sha256": "ee735befd4acee9b6cc713a41f81fb73d6351194a853a42d3be6f19fe78dd53d"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc6376.html",
+        "retrieval_record": "2026-10-30T06:22:30.952126+00:00",
+        "body_sha256": "886dd086ee7c5f3f9d86b2bb4efbae626a81e927e467c78bc3a0269cb8d6c071"
+      }
+    ]
+  },
+  {
+    "position": 82,
+    "query": "dns speedtest",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 2900,
+    "dataforseo_keyword_difficulty": 28,
+    "screening_score": "100.00",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "DNS Speed Test: Find the Fastest Resolver for Your Connection",
+    "path": "content/blog/en/benchmark-dns-for-gaming.md",
+    "existing_revision": true,
+    "writer_group": 7,
+    "reviewed_manuscript_sha256": "0f1fcd7a8dfe17e8b2d6a2e9384fa9bf060a4e46917ac2eeb661eb965053ed52",
+    "primary_sources": [
+      {
+        "url": "https://developers.google.com/speed/public-dns/docs/performance",
+        "retrieval_record": "2026-10-30T06:22:31.275335+00:00",
+        "body_sha256": "f5274e60a943f96fce3b3f4a7711e2c5221a6f410916e3c643db2ac69b4b506e"
+      },
+      {
+        "url": "https://bind9.readthedocs.io/en/latest/manpages.html",
+        "retrieval_record": "2026-10-30T06:22:30.873723+00:00",
+        "body_sha256": "4e5e3170ce8f4c6fbea5b2f94344878ea05a3691221088b6405b7077bc714058"
+      }
+    ]
+  },
+  {
+    "position": 83,
+    "query": "ssl validation",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 9900,
+    "dataforseo_keyword_difficulty": 100,
+    "screening_score": "98.02",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "SSL Certificate Checker: Is Your Certificate Valid and Trusted?",
+    "path": "content/blog/en/ssl-certificate-check.md",
+    "existing_revision": false,
+    "writer_group": 7,
+    "reviewed_manuscript_sha256": "e46cc307055ecb329b48cbb20e7d21b7b64f83e1ce3f86cd96319cf762638ed6",
+    "primary_sources": [
+      {
+        "url": "https://docs.openssl.org/3.6/man1/openssl-s_client/",
+        "retrieval_record": "2026-10-30T06:22:30.959295+00:00",
+        "body_sha256": "62f5acda9be2f813f3955a5a7488780b1809876682cfe58beac3a3c6e29b8580"
+      },
+      {
+        "url": "https://developers.cloudflare.com/fundamentals/concepts/cloudflare-ip-addresses/",
+        "retrieval_record": "2026-10-30T06:22:30.716536+00:00",
+        "body_sha256": "2ee9ed4156e6e4a93e5d43efc5127265a125d600a7916866c7e5ea1810ccd428"
+      },
+      {
+        "url": "https://docs.openssl.org/3.6/man1/openssl-x509/",
+        "retrieval_record": "2026-10-30T06:22:30.941123+00:00",
+        "body_sha256": "e065f52f477ff5401725dba373497255dffba0e637251124ae363254f55fe202"
+      },
+      {
+        "url": "https://docs.openssl.org/3.6/man1/openssl-s_client/",
+        "retrieval_record": "2026-10-30T06:22:30.959295+00:00",
+        "body_sha256": "62f5acda9be2f813f3955a5a7488780b1809876682cfe58beac3a3c6e29b8580"
+      }
+    ]
+  },
+  {
+    "position": 84,
+    "query": "domains shopify",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 2900,
+    "dataforseo_keyword_difficulty": 29,
+    "screening_score": "96.67",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Should You Buy Your Domain on Shopify or Somewhere Else?",
+    "path": "content/blog/en/shopify-domain-buying-guide.md",
+    "existing_revision": false,
+    "writer_group": 7,
+    "reviewed_manuscript_sha256": "2e479b0a4e664179e9b25697a6f9b8fd601661c1097075cf9b32da041a02636d",
+    "primary_sources": [
+      {
+        "url": "https://help.shopify.com/en/manual/domains",
+        "retrieval_record": "2026-10-30T06:22:31.566794+00:00",
+        "body_sha256": "ad5f74b9b0ff0272cc9f625913272538eb79b1d9f1abd4140afba57d3b408480"
+      },
+      {
+        "url": "https://help.shopify.com/en/manual/domains/add-a-domain/connecting-domains",
+        "retrieval_record": "2026-10-30T06:22:31.314030+00:00",
+        "body_sha256": "9fe636ed4f9af87406ae9c1dddb6a2955e37be9f24271bb916031d97d1767430"
+      },
+      {
+        "url": "https://help.shopify.com/en/manual/domains/email-forwarding-and-hosting",
+        "retrieval_record": "2026-10-30T06:22:31.324773+00:00",
+        "body_sha256": "0de37097ef74508b39f1fcfae8ecf75822753bd8949e66fe8042d0f5e6614173"
+      },
+      {
+        "url": "https://help.shopify.com/en/manual/domains/add-a-domain/buying-domains",
+        "retrieval_record": "2026-10-30T06:51:58.457340+00:00",
+        "body_sha256": "6d9b1e88b536e77b8b143f2f86a2813f02e0ccfcb6473b5d2dfdcadb0f5daa16"
+      }
+    ]
+  },
+  {
+    "position": 85,
+    "query": "web hosting cloud",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 4400,
+    "dataforseo_keyword_difficulty": 46,
+    "screening_score": "93.62",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Cloud Hosting vs. Shared Hosting: Which One Does Your Website Need?",
+    "path": "content/blog/en/cloud-hosting-guide.md",
+    "existing_revision": false,
+    "writer_group": 8,
+    "reviewed_manuscript_sha256": "d023b304390bcc2a9e67b6c09879dfa77b60444cf3ac06b4383cfc71766760f6",
+    "primary_sources": [
+      {
+        "url": "https://aws.amazon.com/what-is/web-hosting/#:~:text=Shared%20hosting",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "5e91690ddd9adf369de3b0a9324c57c7d9aa5f6c030179b39039cb6d61cdf014"
+      },
+      {
+        "url": "https://aws.amazon.com/lightsail/features/#:~:text=Lightsail%20offers%20simplified%20services",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "33c4191c558b1713c42e99974c2cf3431877db6429b138220ddc99ab738c9e5c"
+      },
+      {
+        "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#about-github-pages",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "a7f5379e21e6373e1709125d6231a2c9f555f131627502593dfe887c6e050c49"
+      }
+    ]
+  },
+  {
+    "position": 86,
+    "query": "dnssec",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 38,
+    "screening_score": "92.31",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "What Is DNSSEC? How to Protect DNS Answers Without Breaking Your Domain",
+    "path": "content/blog/en/dnssec-for-domain-owners.md",
+    "existing_revision": true,
+    "writer_group": 8,
+    "reviewed_manuscript_sha256": "991173b2325e57fbfeb42b80e4a1aef7272df4c524fff550e93ff7353caf82a6",
+    "primary_sources": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc4033.html#section-2",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "8afa7cba779594c2f4a316765080a322212303ac61bb5abdbe1f233a2fd92b2e"
+      },
+      {
+        "url": "https://developers.cloudflare.com/dns/dnssec/#enable-dnssec",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "441d4e4a8556d2bcdb56c1631d11fcc9b5070a4b6451e7ea6feb50db885ce547"
+      },
+      {
+        "url": "https://developers.cloudflare.com/dns/dnssec/troubleshooting/#troubleshoot-dnssec-validation-using-dnsviz",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "1bba5350a05b184ab0e6efd2b77f3ca9c7c77171048aa06c45b7a8b9bd86a51b"
+      }
+    ]
+  },
+  {
+    "position": 87,
+    "query": "domain name with free email",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 2900,
+    "dataforseo_keyword_difficulty": 31,
+    "screening_score": "90.62",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Domain Names With Free Email: Which Offers Include a Real Mailbox?",
+    "path": "content/blog/en/domain-with-free-email.md",
+    "existing_revision": false,
+    "writer_group": 8,
+    "reviewed_manuscript_sha256": "af53302ae475486a01b140709af097bd4e05225aa869c8f7014ac667acfbcc93",
+    "primary_sources": [
+      {
+        "url": "https://porkbun.com/products/email#:~:text=Email%20Forwarding",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "c9f08999df70f00abb558ba3a2df3616ab3cce24c0e226b9f567bfa196f98ce8"
+      },
+      {
+        "url": "https://www.zoho.com/mail/zohomail-pricing.html#:~:text=Forever%20Free%20Plan",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "419a6f309d280aadbacde0a09803be378a5fe4670db44ce3844780983183a83e"
+      },
+      {
+        "url": "https://developers.cloudflare.com/email-service/#:~:text=Email%20Sending%20Beta",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "ee8179d1d313795cdce00ef08d0295efe018a52cac284ac42ef7850e93c22b5d"
+      },
+      {
+        "url": "https://www.iana.org/help/example-domains",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "804a0296c08e1733c3f4c22aaccf5600538d52d02bfa232fee1cb1c3de7d3ac4"
+      }
+    ]
+  },
+  {
+    "position": 88,
+    "query": "custom email domain",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 40,
+    "screening_score": "87.80",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Create a Custom Email Address With Your Own Domain",
+    "path": "content/blog/en/set-up-email-with-your-own-domain.md",
+    "existing_revision": true,
+    "writer_group": 8,
+    "reviewed_manuscript_sha256": "7a2a9481ffc5dd902bee2f395ed8ba0adce10fa3f304b7a14686827bf05b122c",
+    "primary_sources": [
+      {
+        "url": "https://knowledge.workspace.google.com/admin/gmail/activate-gmail-with-google-workspace-your-company#required_checklist_of_steps",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "216a34da223b5d2d21203a3ec36ee29afdf3019b681dc35846fdac979d67c832"
+      },
+      {
+        "url": "https://knowledge.workspace.google.com/admin/domains/verify-your-domain-with-a-txt-record#copy-txt-record",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "4c2217cd67ef30a0595cc5f588b7d45c2eda4b7bdc2bd05a14f7bd3eaa3a5b70"
+      },
+      {
+        "url": "https://knowledge.workspace.google.com/admin/domains/set-up-mx-records-for-google-workspace#step_1_add_googles_mx_record_to_your_domain",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "8f92ca259fd4f9007e418a33c43ec78dafe30c52d4435b90be00e70ad48a0da3"
+      },
+      {
+        "url": "https://developers.cloudflare.com/email-service/#:~:text=Email%20Sending%20Beta",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "ee8179d1d313795cdce00ef08d0295efe018a52cac284ac42ef7850e93c22b5d"
+      },
+      {
+        "url": "https://knowledge.workspace.google.com/admin/security/set-up-spf#identify-senders",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "0acac97208dacadae6e1e849e6541898ae5ea41ee49e0907e40e89c3fcabadd9"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc6376.html#section-1.4",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "869fb4c8a76825df80678118ddec25a8cec817411c747c86c64d655254781375"
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9989.html#section-7.4",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "f82cd179f19bd5716bf91be6ce1b373b9c33b3d30d3004defc29e0d3a2659bf6"
+      },
+      {
+        "url": "https://www.iana.org/help/example-domains",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "804a0296c08e1733c3f4c22aaccf5600538d52d02bfa232fee1cb1c3de7d3ac4"
+      }
+    ]
+  },
+  {
+    "position": 89,
+    "query": "good web hosting",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 2900,
+    "dataforseo_keyword_difficulty": 36,
+    "screening_score": "78.38",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Best Web Hosting: Which Provider Fits Your Website and Budget?",
+    "path": "content/blog/en/choose-web-hosting.md",
+    "existing_revision": false,
+    "writer_group": 8,
+    "reviewed_manuscript_sha256": "b97d971b30586ab33ec0ddbd506aab7440dd9e84fc4d9c289baf27aca55aaf1e",
+    "primary_sources": [
+      {
+        "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#about-github-pages",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "a7f5379e21e6373e1709125d6231a2c9f555f131627502593dfe887c6e050c49"
+      },
+      {
+        "url": "https://wordpress.com/support/plan-features/#included-for-free",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "239cdb37c617e0ac610d187a6167e29b290eb67bfef7a28a8ba98c146d35a11b"
+      },
+      {
+        "url": "https://wordpress.com/support/plan-features/#wordpress-com-plans",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "247a0cea98ab513fad99ffc138f00c0f6ece689ffe16c29d4ca62e3cb65a4645"
+      },
+      {
+        "url": "https://aws.amazon.com/lightsail/features/#:~:text=Lightsail%20offers%20simplified%20services",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "33c4191c558b1713c42e99974c2cf3431877db6429b138220ddc99ab738c9e5c"
+      },
+      {
+        "url": "https://aws.amazon.com/what-is/web-hosting/#:~:text=Shared%20hosting",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "5e91690ddd9adf369de3b0a9324c57c7d9aa5f6c030179b39039cb6d61cdf014"
+      }
+    ]
+  },
+  {
+    "position": 90,
+    "query": "domain owner lookup",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 52,
+    "screening_score": "67.92",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Who Owns This Domain? How to Check Public Registration Records",
+    "path": "content/blog/en/domain-owner-lookup.md",
+    "existing_revision": false,
+    "writer_group": 8,
+    "reviewed_manuscript_sha256": "54d044d33e2785341c14b6025a12a7df233b77218e4473be2a60aa78d89c7461",
+    "primary_sources": [
+      {
+        "url": "https://www.icann.org/en/contracted-parties/registry-operators/registration-data-access-protocol/information-for-rdap-users-31-08-2018-en#:~:text=ICANN%20RDAP%20Lookup%20Tool",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "7fb7079be91b2e78dacacbe4fcc4dfbed8406f1902905191c8850892493131c5"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/registration-data-policy-2024-02-21-en/#:~:text=9.2.3.",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "7c29056fed948202280f6946d7406010864c88d6217fb11af39c7689134fccf8"
+      },
+      {
+        "url": "https://www.icann.org/rdrs-en#:~:text=The%20Registration%20Data%20Request%20Service",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "97e69065bac9a0dae164efaf33960520075685fbabc0cc632a3ee58c124d5670"
+      },
+      {
+        "url": "https://www.iana.org/help/example-domains",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "804a0296c08e1733c3f4c22aaccf5600538d52d02bfa232fee1cb1c3de7d3ac4"
+      }
+    ]
+  },
+  {
+    "position": 91,
+    "query": "domains for sale",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 6600,
+    "dataforseo_keyword_difficulty": 100,
+    "screening_score": "65.35",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Domains for Sale: Where to Look and How to Buy Safely",
+    "path": "content/blog/en/buy-domains-for-sale.md",
+    "existing_revision": false,
+    "writer_group": 8,
+    "reviewed_manuscript_sha256": "69bb200f273db182034d96ba3a79f0dbce5fd777f267d6a548c1a5a11a68ab7c",
+    "primary_sources": [
+      {
+        "url": "https://sedo.com/us/buy-domains/#:~:text=Domain%20offers%20come%20in%20three%20types",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "8f70eeb2d4306f166a23483f53f7181cbe0a3d00da7ad3e1a8164bd247b1441f"
+      },
+      {
+        "url": "https://www.escrow.com/domains#:~:text=Since%20the%20Buyer%20pays",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "e6d84588970fcd6b9e66d26b99f1ef41f22768f6945d444d9e637b4858b0cf35"
+      },
+      {
+        "url": "https://www.icann.org/en/contracted-parties/accredited-registrars/resources/domain-name-transfers/policy#:~:text=60%2Dday%20inter%2Dregistrar%20transfer%20lock",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "48e9719e6dd43de74d21a5e19e6e9937461802a3ac85dde93c3750bf88b8515c"
+      }
+    ]
+  },
+  {
+    "position": 92,
+    "query": "domain name maker",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 62,
+    "screening_score": "57.14",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Domain Name Generator: Find a Name You Can Actually Register",
+    "path": "content/blog/en/domain-name-generator-guide.md",
+    "existing_revision": false,
+    "writer_group": 8,
+    "reviewed_manuscript_sha256": "15e4ba7ac830d14bfb6cb0ef6d0500c4677d487856634e841c88c830f2001fc1",
+    "primary_sources": [
+      {
+        "url": "https://domains.squarespace.com/tools/domain-name-generator#:~:text=Describe%20your%20business%2C%20project%2C%20or%20idea%20in%20a%20few%20words%20with%20our%20domain%20name%20generator.",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "116a7f9380c34598382087876c1321ac20c727ab220d0c91ad5d5e0e7066c617"
+      },
+      {
+        "url": "https://namelix.com/#:~:text=Filter%20results",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "cbcd1c004d32e85e9c1aaeed748414e1cb2cc855801ee98addea6a432afa10b6"
+      },
+      {
+        "url": "https://www.uspto.gov/trademarks/search/comprehensive-clearance-search-similar-trademarks#:~:text=A%20comprehensive%20clearance%20search",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "8ed4f202b461e9a491ac1b6ea6fd1a65cec5622a43e1678c594465f30e654633"
+      },
+      {
+        "url": "https://www.iana.org/help/example-domains",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "804a0296c08e1733c3f4c22aaccf5600538d52d02bfa232fee1cb1c3de7d3ac4"
+      }
+    ]
+  },
+  {
+    "position": 93,
+    "query": "domain renewal",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 2900,
+    "dataforseo_keyword_difficulty": 54,
+    "screening_score": "52.73",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Renew Your Domain Before It Expires and What to Do If It Already Has",
+    "path": "content/blog/en/renew-domain-name.md",
+    "existing_revision": true,
+    "writer_group": 8,
+    "reviewed_manuscript_sha256": "08a5e902dc29fb040784e3305a283b3052b87f7c07591c163b24db2b93f14013",
+    "primary_sources": [
+      {
+        "url": "https://www.icann.org/resources/pages/renew-domain-name-2018-12-07-en#:~:text=If%20you%20want%20to%20keep%20using%20it",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "77c9ba9d892eb457eeb010d2d8f4f5567e8c19cb8f89595ab186a512ea7c179a"
+      },
+      {
+        "url": "https://developers.cloudflare.com/registrar/account-options/renew-domains/#renew-a-domain-manually",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "c3a9d2a8296621c05b0b5f1543003739dd96a034e2325803752a18818365895f"
+      },
+      {
+        "url": "https://www.icann.org/en/contracted-parties/consensus-policies/expired-registration-recovery-policy/expired-registration-recovery-policy-21-02-2024-en#:~:text=3.1.",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "ddb21c85db21f2521eb5b539ccece9c0ea54948b527bd373140ee097b1582209"
+      },
+      {
+        "url": "https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en#pendingDelete",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "ff026ab3e59f3138e3a286767b30b4a7d42378e77b2b9f4c0f2d8aec469c9e81"
+      }
+    ]
+  },
+  {
+    "position": 94,
+    "query": "cloudflare ssl certificate",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 2900,
+    "dataforseo_keyword_difficulty": 60,
+    "screening_score": "47.54",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "How to Get an SSL Certificate With Cloudflare and Turn On HTTPS",
+    "path": "content/blog/en/cloudflare-ssl-setup.md",
+    "existing_revision": false,
+    "writer_group": 8,
+    "reviewed_manuscript_sha256": "54fb52939b77b66dc45da9c6060f7a6e2077556e15ed522dfd7dbcf0da2d1352",
+    "primary_sources": [
+      {
+        "url": "https://developers.cloudflare.com/ssl/get-started/#choose-your-encryption-mode",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "6390411770c3c99a551034dc4e19c6031c64139eb73ae5ba753979d78e31086c"
+      },
+      {
+        "url": "https://developers.cloudflare.com/ssl/edge-certificates/universal-ssl/#:~:text=On%20a%20full%20setup",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "4dd948bee55fa86734364e7a1244b728285b5bd4adff0186c84fd97ae06347cd"
+      },
+      {
+        "url": "https://developers.cloudflare.com/ssl/edge-certificates/universal-ssl/enable-universal-ssl/#verify-your-certificate-is-active",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "717695927f91d3d48c85bdfb185644d1f42718683236117503dfe1deb5bab2f9"
+      },
+      {
+        "url": "https://developers.cloudflare.com/ssl/edge-certificates/universal-ssl/limitations/#proxy-status",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "ac7ac41d73bd9f2c9cfcda7797c0f5824f00c88f77199c9982fc97947523558c"
+      },
+      {
+        "url": "https://developers.cloudflare.com/ssl/origin-configuration/ssl-modes/full-strict/#use-when",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "4b39ddf64711b9cc8af8c6764d37d9468150b1d93ef13493ac00a8ed10fdfd75"
+      },
+      {
+        "url": "https://developers.cloudflare.com/ssl/origin-configuration/origin-ca/#deploy-an-origin-ca-certificate",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "4db2c659028821f7ef09186c0fd1e8fc49b238bb5d90373347a5c245001cb658"
+      },
+      {
+        "url": "https://developers.cloudflare.com/ssl/edge-certificates/additional-options/always-use-https/#limitations",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "ae553ef067d4f6510301211c919c39f162bb6592e8d0c954c581b178a781f198"
+      }
+    ]
+  },
+  {
+    "position": 95,
+    "query": "adblocking dns",
+    "demand_metric": "Google Ads approximate average monthly searches; US English; Google Search; October2025–September2026",
+    "average_monthly_searches": 3600,
+    "dataforseo_keyword_difficulty": 78,
+    "screening_score": "45.57",
+    "screening_score_definition": "average monthly searches / (keyword difficulty + 1); not competing page count",
+    "title": "Best Ad-Blocking DNS: What to Use and Why Some Ads Still Get Through",
+    "path": "content/blog/en/ad-blocking-dns.md",
+    "existing_revision": false,
+    "writer_group": 8,
+    "reviewed_manuscript_sha256": "d88a8579d1c8571f94f7479ecd5417df8295b9ecb27339e6d891af7801dfa71d",
+    "primary_sources": [
+      {
+        "url": "https://adguard-dns.io/en/public-dns.html#:~:text=Default%20server",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "b8bbd12ea6e55a723a02e7c39a43afd9585d285c894f8e2b7b008eef980944f9"
+      },
+      {
+        "url": "https://adguard-dns.io/en/public-dns.html#:~:text=94.140.14.14",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "e65d4a42cb7a6764186d94a4f3b9f5bb08cf8f45f1a15db040fdadab89cf452e"
+      },
+      {
+        "url": "https://nextdns.io/#:~:text=Custom%20Denylist%2FAllowlist",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "e9932d93ddb6f10d37569d7f28524d8162bfd38b6a1ad86871b6e1a960c543bd"
+      },
+      {
+        "url": "https://docs.pi-hole.net/#:~:text=Network-wide%20ad%20blocking%20via%20your%20own%20Linux%20hardware",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "f7ce1cd1056bef5f9b66b420a1c5f6bf72b0decaea4112e2f5d597e58d16e50b"
+      },
+      {
+        "url": "https://adguard-dns.io/kb/general/dns-filtering/#dns-filtering-vs-network-filtering",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "6fbba2fe15bbe4fcff37fa2792069d93c05d0b956300d93c961a32d3691e6dd4"
+      },
+      {
+        "url": "https://adguard-dns.io/kb/adguard-home/faq/#limitations",
+        "retrieval_record": "2026-10-30",
+        "body_sha256": "3e02503eb46e32a98dfc4e0af8107da31fc288f6827852674aea446f5bbc6639"
+      }
+    ]
+  }
+]

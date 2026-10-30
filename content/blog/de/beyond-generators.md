@@ -31,7 +31,7 @@ relatedGlossary:
   - /de/glossary/transfer-lock/
 ---
 
-Sie haben einen Satz in einen KI-Namensgenerator eingegeben — „eine Abo-Box für Zimmerpflanzen“ oder was auch immer Ihre Idee war — und dreißig Sekunden später hatten Sie eine Vorauswahl [markenfähiger Domains](/de/glossary/brandable-domain/), ein Logo und vielleicht eine Starter-Website. Dieser Teil fühlte sich magisch an. Dann endete die Magie, und Sie waren wieder bei dem, was Menschen seit 1995 tun: sich durch eine Checkout-Seite klicken, eine Kartennummer eingeben und hoffen, rechtzeitig vor Ablauf an die Verlängerung zu denken.
+Sie haben einen Satz in einen [KI-Namensgenerator](/de/blog/domain-name-generator-guide/) eingegeben — „eine Abo-Box für Zimmerpflanzen“ oder was auch immer Ihre Idee war — und dreißig Sekunden später hatten Sie eine Vorauswahl [markenfähiger Domains](/de/glossary/brandable-domain/), ein Logo und vielleicht eine Starter-Website. Dieser Teil fühlte sich magisch an. Dann endete die Magie, und Sie waren wieder bei dem, was Menschen seit 1995 tun: sich durch eine Checkout-Seite klicken, eine Kartennummer eingeben und hoffen, rechtzeitig vor Ablauf an die Verlängerung zu denken.
 
 Diese Lücke — zwischen „die KI hat einen Namen ausgewählt“ und „der Name ist tatsächlich eine funktionierende, besessene und verlängerte Domain“ — ist der Punkt, an dem die meisten Gespräche über KI und Domains stillschweigend enden. Dieser Beitrag handelt von dem, was dahinter liegt: einer Fähigkeitsleiter, die von der Namensvorschlag bis zur Verwaltung des gesamten Lebens einer Domain reicht, und davon, warum die Werkzeuge, die jeder bereits kennt, nur die ersten zwei Sprossen erklimmen.
 

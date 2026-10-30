@@ -104,7 +104,7 @@ Backorders are cheap to place and easy to over-place, which is exactly the trap.
 
 **Watch the trademark line.** Catching an expired name doesn't launder its history. If the string is somebody's brand, the fact that it lapsed doesn't make it safe to grab and resell. The [UDRP](/en/glossary/udrp/) framework still applies, and an expired [trademarked](/en/glossary/trademark/) name is exactly the kind of thing that triggers a dispute, as we cover in [what is UDRP](/en/blog/what-is-udrp/). Catch generic and brandable names, not lapsed brands.
 
-One more diligence note specific to caught names: an expired domain can carry baggage a fresh registration never would, like a spam history or a Google penalty. Before you bid hard, check its past in the [WHOIS](/en/glossary/whois/) and archive record. A name's history transfers with it.
+One more diligence note specific to caught names: an [expired domain](/en/blog/buy-expired-domains/) can carry baggage a fresh registration never would, like a spam history or a Google penalty. Before you bid hard, check its past in the [WHOIS](/en/glossary/whois/) and archive record. A name's history transfers with it.
 
 ## After the catch: actually owning it
 

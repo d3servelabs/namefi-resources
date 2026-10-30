@@ -63,7 +63,7 @@ relatedGlossary:
 ### **アフターマーケット（Aftermarket）**
 既に誰かが所有したことのあるドメイン名が売買される二次市場です。プレミアムドメイン、年数を経たドメイン、使用されなくなったドメインなどが取引されます。
 
-**主なプラットフォーム**: Sedo、GoDaddy Auctions、Flippa、NameJet
+**主なプラットフォーム**: Sedo、[GoDaddy Auctions](/ja/blog/godaddy-auctions-guide/)、Flippa、NameJet
 
 ---
 

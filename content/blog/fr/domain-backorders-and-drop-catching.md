@@ -89,7 +89,7 @@ Les backorders sont peu coûteux à placer et faciles à placer en excès, ce qu
 
 **Surveillez la ligne des marques.** Attraper un nom expiré ne blanchit pas son historique. Si la chaîne est la marque de quelqu''un, le fait qu''elle ait expiré ne la rend pas sûre à saisir et à revendre. Le cadre [UDRP](/fr/glossary/udrp/) s''applique toujours, et un nom expiré associé à une [marque commerciale](/fr/glossary/trademark/) est exactement le genre de chose qui déclenche un litige, comme nous le couvrons dans [qu''est-ce que l''UDRP](/fr/blog/what-is-udrp/). Attrapez des noms génériques et brandables, pas des marques tombées en déshérence.
 
-Une dernière note de diligence propre aux noms attrapés : un domaine expiré peut traîner un passif qu''un enregistrement neuf n''aurait jamais, comme un historique de spam ou une pénalité Google. Avant d''enchérir gros, vérifiez son passé dans le [WHOIS](/fr/glossary/whois/) et les archives. L''historique d''un nom se transfère avec lui.
+Une dernière note de diligence propre aux noms attrapés : un [domaine expiré](/fr/blog/buy-expired-domains/) peut traîner un passif qu''un enregistrement neuf n''aurait jamais, comme un historique de spam ou une pénalité Google. Avant d''enchérir gros, vérifiez son passé dans le [WHOIS](/fr/glossary/whois/) et les archives. L''historique d''un nom se transfère avec lui.
 
 ## Après la capture : le posséder pour de bon
 
