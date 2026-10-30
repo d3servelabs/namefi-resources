@@ -1,6 +1,7 @@
 ---
 title: 'How to Install an SSL Certificate and Check HTTPS'
 date: '2026-10-22'
+updated: '2026-10-29'
 language: en
 tags: ['https', 'tls', 'certificates', 'security']
 authors: ['namefiteam']
@@ -81,6 +82,8 @@ A working browser connection to a proxy does not establish that the proxy valida
 Cloudflare requires an unexpired certificate, an accepted issuer, and a matching hostname. The origin must accept HTTPS on port `443`. Configure the origin before enabling the mode. An invalid origin certificate can produce error `526`.
 
 ## You should verify the website after installation
+
+If Chrome reports a secure connection error, use the [Chrome connection diagnosis guide](/en/blog/fix-chrome-secure-connection-error/) to record the exact code and select the relevant checks.
 
 Open each intended hostname with `https://`. Inspect the certificate details for the hostname, issuer, and validity period. Check an important page and a form, rather than only the home page.
 

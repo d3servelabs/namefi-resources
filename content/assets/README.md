@@ -38,3 +38,7 @@ The next-twenty batch adds twenty 1200 × 630 covers and eighty 1200 × 675 sect
 ## The October 28 guides share eight reviewed images
 
 The `fix-dns-server-not-responding` and `buy-domain-through-google` prefixes each include a 1200 × 630 cover and three 1200 × 675 section illustrations. The batch evidence preserves all generation attempts and visual checks.
+
+## The October 29 diagnosis guide adds four reviewed images
+
+The `fix-chrome-secure-connection-error` prefix includes one 1200 × 630 cover and three 1200 × 675 section illustrations. The scenes distinguish error categories, comparison scope, and endpoint verification. The batch evidence records a rejected cover that invented a certificate date and its replacement.

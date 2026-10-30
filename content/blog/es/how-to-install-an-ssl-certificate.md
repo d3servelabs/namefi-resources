@@ -1,6 +1,7 @@
 ---
 title: 'Cómo instalar un certificado SSL y comprobar HTTPS'
 date: '2026-10-22'
+updated: '2026-10-29'
 language: es
 tags: ['https', 'tls', 'certificates', 'security']
 authors: ['namefiteam']
@@ -81,6 +82,8 @@ Una conexión correcta entre el navegador y el proxy no demuestra que el proxy v
 Cloudflare requiere un certificado vigente, un emisor aceptado y un nombre coincidente. El origen debe aceptar HTTPS en el puerto `443`. Configura el origen antes de activar el modo. Un certificado de origen no válido puede provocar el error `526`.
 
 ## Debes comprobar el sitio después de la instalación
+
+Si Chrome indica un error de conexión segura, consulta la [guía de diagnóstico de conexiones de Chrome](/es/blog/fix-chrome-secure-connection-error/) para registrar el código exacto y elegir las comprobaciones pertinentes.
 
 Abre cada nombre previsto con `https://`. Revisa el nombre, emisor y periodo de validez del certificado. Comprueba una página importante y un formulario, además de la página de inicio.
 

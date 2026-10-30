@@ -80,3 +80,7 @@ The October 22, 2026 draft `emudhra-ca-compromise-dnssec.md` explains intermedia
 ## The October 28 guides address DNS timeouts and Google registration routes
 
 Two English guides distinguish Windows DNS timeouts from error replies and separate Google Domains from Cloud Domains and Workspace. The guides use opened official sources, reviewed house-style illustrations, and links from existing registration and DNS articles.
+
+## The October 29 guide diagnoses Chrome connection errors
+
+The English guide `fix-chrome-secure-connection-error.md` separates exact browser error codes, visitor comparisons, and named-endpoint TLS checks. The guide links to opened primary documentation and uses one cover with three reviewed section illustrations. Existing HTTPS and certificate-installation articles supply curated inbound links; the existing Spanish installation article mirrors the link.
