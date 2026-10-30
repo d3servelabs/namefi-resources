@@ -1,0 +1,100 @@
+{
+  "verifiedOn": "2026-10-29",
+  "baseCommit": "22e41fcb6",
+  "articles": [
+    {
+      "slug": "from-transferwise-com-to-wise-com",
+      "question": "Is Wise the same as TransferWise?",
+      "title": "TransferWise Became Wise When Money Transfers No Longer Described the Business",
+      "facts": "On 22 February 2021 founder Kristo K\u00e4\u00e4rmann announced TransferWise would become Wise. Holding, spending and receiving money had expanded beyond transfers. Existing customers could use the same account, email and password at wise.com. The announcement said transferwise.com would redirect in a few weeks: report this as an announced plan, not a tested current redirect. The 2023 visual refresh replaced navy with green and did not create a new company or require new accounts. Distinguish 2021 rename from 2023 green branding. Do not discuss present fees or regulated status.",
+      "sources": [
+        "https://wise.com/us/blog/world-meet-wise",
+        "https://wise.com/us/blog/new-look-same-old-wise-dont-let-scammers-trick-you"
+      ],
+      "sections": [
+        "Wise expanded beyond the service named TransferWise",
+        "Wise connected the new name to the existing account",
+        "Wise separated the name change from the later visual refresh"
+      ]
+    },
+    {
+      "slug": "from-priceline-group-to-booking-holdings",
+      "question": "Is Priceline the same as Booking.com?",
+      "title": "Priceline Group Became Booking Holdings While Priceline Kept Its Own Brand",
+      "facts": "21 February 2018: The Priceline Group Inc announced its corporate name became Booking Holdings Inc effective that day. The company said the new name reflected multiple brands and its largest brand Booking.com. This was the parent company name, not a rename of Priceline.com to Booking.com. Company release 21 May 2026 describes Booking.com, Priceline and Agoda as distinct brands participating in BKNG Ads and identifies Booking Holdings as the parent. Corporate domain bookingholdings.com represents the parent while priceline.com and booking.com represent consumer brands. No domain purchase price or consumer domain migration is established by these sources. Do not add acquisition dates or financial statistics.",
+      "sources": [
+        "https://www.bookingholdings.com/press-releases/the-priceline-group-inc-nasdaq-pcln-announces-name-change-to-booking-holdings-inc/",
+        "https://www.bookingholdings.com/press-releases/booking-holdings-unifies-global-advertising-solutions-with-introduction-of-bkng-ads/"
+      ],
+      "sections": [
+        "Booking Holdings gave the parent a broader identity",
+        "Priceline and Booking.com continued as distinct brands",
+        "The corporate domain explains the scope of the rename"
+      ]
+    },
+    {
+      "slug": "from-homeaway-com-to-vrbo-com",
+      "question": "What happened to HomeAway, and is HomeAway now Vrbo?",
+      "title": "HomeAway Became Vrbo as Expedia Consolidated Its Vacation Rental Brands",
+      "facts": "The current Vrbo campaign page says HomeAway is now Vrbo. Expedia Q2 2020 earnings release filed with SEC on 30 July 2020 says Expedia announced retirement of the HomeAway brand IN THE US in June 2020 to streamline vacation rental brands and concentrate resources on Vrbo. On the 30 July 2020 earnings call CEO said HomeAway US had been taken down a few weeks earlier and traffic moved to Vrbo. Report historical US timing, not simultaneous worldwide migration. A current Vrbo help page says some APAC contracting legal entities changed to HomeAway.com Inc effective 1 August 2025. The retired consumer brand name can persist in a legal entity. Do not claim all contracts everywhere use that entity or guarantee transfer of old accounts. No acquisition history or domain purchase price has been verified.",
+      "sources": [
+        "https://www.vrbo.com/travel/campaign/homeaway-vrbo",
+        "https://www.sec.gov/Archives/edgar/data/1324424/000132442420000057/earningsrelease-q22020.htm",
+        "https://www.sec.gov/Archives/edgar/data/1324424/000132442420000061/expediagroup2q20transcri.htm",
+        "https://help.vrbo.com/category/undefined/articles/legal-entity-changes-APAC"
+      ],
+      "sections": [
+        "Expedia retired the HomeAway brand in the United States",
+        "Vrbo received the traffic from the retired brand",
+        "The HomeAway name continued in some legal entities"
+      ]
+    },
+    {
+      "slug": "from-convertkit-com-to-kit-com",
+      "question": "Did ConvertKit change its name to Kit?",
+      "title": "ConvertKit Became Kit After a Domain Opportunity Reopened the Naming Question",
+      "facts": "Official Kit posts confirm ConvertKit is now Kit. The business describes its expansion beyond email into creator-business tools including Recommendations and Commerce. In 2018 ConvertKit tried the name Seva then reverted after creators raised cultural and religious concerns. The founder account says an opportunity to purchase kit.com arose in late 2023. Do not turn that opportunity date into a verified closing date. The team wanted a single word that was easy to hear and spell and less technical. The account describes creator interviews before the Kit decision. No domain price verified. Official article update dates in 2026 are NOT rebrand dates. Do not give an exact 2024 launch day without a separate verified source. The opened Kit newsroom dates the public rebranding announcement to 6 June 2024. This date describes the announcement, not a domain closing or completed migration date.",
+      "sources": [
+        "https://kit.com/resources/blog/rebranding-in-public-why-we-are-becoming-kit",
+        "https://kit.com/resources/blog/convertkit-is-now-kit",
+        "https://kit.com/news"
+      ],
+      "sections": [
+        "ConvertKit had already reversed one name change",
+        "The kit.com opportunity reopened the naming decision",
+        "Kit gave the expanded creator business a shorter address"
+      ]
+    },
+    {
+      "slug": "from-sendinblue-com-to-brevo-com",
+      "question": "Is Brevo the same company as Sendinblue?",
+      "title": "Sendinblue Became Brevo and Its Domain Incident Exposed the Work Behind a Rename",
+      "facts": "Brevo engineering published a first-party incident report on 26 September 2023 about 11 September 2023. The report explicitly says the company acquired brevo.com earlier in 2023 as part of Sendinblue-to-Brevo rebrand. The domain expired; website and some brevo.com API/SMTP access suffered. Report says core platform kept processing scheduled campaigns and old sendinblue.com API/SMTP endpoints were unaffected. A disabled email alias received renewal notices, payment method had expired, and new registrar was absent from automatic monitoring discovery. Report records renewal after 5 hours 53 minutes, NOT all customers down identically. Can omit numeric duration. Postmortem describes centralized registrar monitoring, isolated status page domain and backup critical services. Do NOT repeat its claim registrar transfer rules were legally required. Current invoice help lists Sendinblue SAS in France and Sendinblue GmbH or Brevo GmbH in Germany, illustrating brand/legal entity distinction. No exact rebrand day, purchase price or unsupported CRM history.",
+      "sources": [
+        "https://engineering.brevo.com/sept-11th-2023-brevo-com-domain-name-expiration/",
+        "https://help.brevo.com/hc/en-us/articles/209298225-View-and-download-your-invoices"
+      ],
+      "sections": [
+        "Brevo replaced the Sendinblue brand and acquired brevo.com",
+        "A renewal failure interrupted access to the new domain",
+        "The domain story extends beyond the public name change"
+      ]
+    },
+    {
+      "slug": "from-square-inc-to-block-inc",
+      "question": "Did Square become Block, and is Square still called Square?",
+      "title": "Square Inc. Became Block While the Square Seller Brand Kept Its Name",
+      "facts": "1 December 2021 announcement: Square Inc corporate name would become Block Inc to acknowledge a business beyond its original seller product. Square seller business retained Square name. The release linked block.xyz as corporate site and treated Cash App and other businesses as distinct brands. SEC 2021 annual report confirms effective legal change on 10 December 2021. Do NOT confuse announcement and effective date. The seller business/reportable segment was renamed Square. Do not claim squareup.com redirected or migrated into block.xyz. Do not call Block.com its domain or give domain acquisition prices. Do not repeat historical SQ stock ticker as current. May explain .xyz versus .com in a descriptive way, without claiming ranking or valuation advantages. The opened announcement describes associations including building blocks, neighborhood blocks, music, blockchain and code. The current corporate homepage links Square at squareup.com and Cash App as distinct businesses.",
+      "sources": [
+        "https://squareup.com/gb/en/press/square-changes-name-to-block",
+        "https://www.sec.gov/Archives/edgar/data/1512673/000162828022003825/sq-20211231.htm",
+        "https://block.xyz/"
+      ],
+      "sections": [
+        "Block renamed the corporate parent of the Square business",
+        "Square retained the identity of its seller business",
+        "Block used block.xyz to distinguish the corporate identity"
+      ]
+    }
+  ]
+}

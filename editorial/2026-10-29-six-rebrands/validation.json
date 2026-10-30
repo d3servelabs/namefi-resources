@@ -1,0 +1,55 @@
+{
+  "checkedOn": "2026-10-29",
+  "checks": [
+    {
+      "command": "bun data:validate",
+      "exitCode": 0
+    },
+    {
+      "command": "bun lint:mdx",
+      "exitCode": 0
+    },
+    {
+      "command": "bun links:audit",
+      "exitCode": 0
+    }
+  ],
+  "dataTestResults": {
+    "passed": 13,
+    "failed": 0
+  },
+  "linkRegressionTests": {
+    "command": "bun links:test",
+    "passed": 18,
+    "failed": 0
+  },
+  "dataWarnings": 37,
+  "linkAudit": {
+    "files": 4175,
+    "broken": 0,
+    "missingLocale": 0,
+    "localeMismatch": 0,
+    "relationshipMismatch": 0,
+    "missingTranslationFallback": 550
+  },
+  "imageChecks": {
+    "files": 24,
+    "coversInPixels": [
+      1200,
+      630
+    ],
+    "inlineInPixels": [
+      1200,
+      675
+    ],
+    "reviewedFinalImages": 24
+  },
+  "publicationStatus": "Prepared for pull request review. Not merged or deployed.",
+  "seriesOrderCheck": {
+    "series": "name-change-game-change",
+    "first": 1,
+    "last": 26,
+    "contiguous": true,
+    "duplicates": 0
+  }
+}
